@@ -1,0 +1,454 @@
+{
+  "level": 30,
+  "time": 1691441522379,
+  "pid": 1238,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691441525676,
+  "pid": 1238,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "req": {
+    "method": "POST",
+    "url": "/client/cache/user",
+    "hostname": "localhost:3333",
+    "remoteAddress": "172.29.0.1",
+    "remotePort": 47982
+  },
+  "msg": "incoming request"
+}
+{
+  "level": 30,
+  "time": 1691441525689,
+  "pid": 1238,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "res": {
+    "statusCode": 400
+  },
+  "responseTime": 13.058264002203941,
+  "msg": "request completed"
+}
+{
+  "level": 30,
+  "time": 1691441573592,
+  "pid": 1253,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691441578964,
+  "pid": 1268,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691441580676,
+  "pid": 1268,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "req": {
+    "method": "POST",
+    "url": "/client/cache/user",
+    "hostname": "localhost:3333",
+    "remoteAddress": "172.29.0.1",
+    "remotePort": 43656
+  },
+  "msg": "incoming request"
+}
+{
+  "level": 30,
+  "time": 1691441580694,
+  "pid": 1268,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "res": {
+    "statusCode": 400
+  },
+  "responseTime": 17.316208988428116,
+  "msg": "request completed"
+}
+{
+  "level": 30,
+  "time": 1691442189815,
+  "pid": 1283,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691442190714,
+  "pid": 1283,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "req": {
+    "method": "POST",
+    "url": "/client/cache/user",
+    "hostname": "localhost:3333",
+    "remoteAddress": "172.29.0.1",
+    "remotePort": 55400
+  },
+  "msg": "incoming request"
+}
+{
+  "level": 30,
+  "time": 1691442190740,
+  "pid": 1283,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "res": {
+    "statusCode": 400
+  },
+  "responseTime": 25.517506003379822,
+  "msg": "request completed"
+}
+{
+  "level": 30,
+  "time": 1691442215868,
+  "pid": 1298,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691442336734,
+  "pid": 1298,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "req": {
+    "method": "POST",
+    "url": "/client/cache/user",
+    "hostname": "localhost:3333",
+    "remoteAddress": "172.29.0.1",
+    "remotePort": 39138
+  },
+  "msg": "incoming request"
+}
+{
+  "level": 30,
+  "time": 1691442336747,
+  "pid": 1298,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "res": {
+    "statusCode": 400
+  },
+  "responseTime": 12.838530004024506,
+  "msg": "request completed"
+}
+{
+  "level": 30,
+  "time": 1691442344954,
+  "pid": 1313,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691442345421,
+  "pid": 1313,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "req": {
+    "method": "POST",
+    "url": "/client/cache/user",
+    "hostname": "localhost:3333",
+    "remoteAddress": "172.29.0.1",
+    "remotePort": 51514
+  },
+  "msg": "incoming request"
+}
+{
+  "level": 30,
+  "time": 1691442345456,
+  "pid": 1313,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "res": {
+    "statusCode": 400
+  },
+  "responseTime": 34.346168994903564,
+  "msg": "request completed"
+}
+{
+  "level": 30,
+  "time": 1691442401775,
+  "pid": 1328,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691442406282,
+  "pid": 1328,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "req": {
+    "method": "POST",
+    "url": "/client/cache/user",
+    "hostname": "localhost:3333",
+    "remoteAddress": "172.29.0.1",
+    "remotePort": 45076
+  },
+  "msg": "incoming request"
+}
+{
+  "level": 30,
+  "time": 1691442406296,
+  "pid": 1328,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "res": {
+    "statusCode": 400
+  },
+  "responseTime": 13.85020799934864,
+  "msg": "request completed"
+}
+{
+  "level": 30,
+  "time": 1691442512582,
+  "pid": 1343,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691442524402,
+  "pid": 1358,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691442526021,
+  "pid": 1358,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "req": {
+    "method": "POST",
+    "url": "/client/cache/user",
+    "hostname": "localhost:3333",
+    "remoteAddress": "172.29.0.1",
+    "remotePort": 50080
+  },
+  "msg": "incoming request"
+}
+{
+  "level": 30,
+  "time": 1691442526024,
+  "pid": 1358,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "msg": "#####"
+}
+{
+  "level": 30,
+  "time": 1691442526025,
+  "pid": 1358,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "msg": "#####"
+}
+{
+  "level": 30,
+  "time": 1691442526032,
+  "pid": 1358,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "res": {
+    "statusCode": 400
+  },
+  "responseTime": 10.74787800014019,
+  "msg": "request completed"
+}
+{
+  "level": 30,
+  "time": 1691442545383,
+  "pid": 1358,
+  "hostname": "10e36f375100",
+  "reqId": "req-2",
+  "req": {
+    "method": "POST",
+    "url": "/client/cache/user",
+    "hostname": "localhost:3333",
+    "remoteAddress": "172.29.0.1",
+    "remotePort": 50080
+  },
+  "msg": "incoming request"
+}
+{
+  "level": 30,
+  "time": 1691442545384,
+  "pid": 1358,
+  "hostname": "10e36f375100",
+  "reqId": "req-2",
+  "msg": "#####"
+}
+{
+  "level": 30,
+  "time": 1691442545384,
+  "pid": 1358,
+  "hostname": "10e36f375100",
+  "reqId": "req-2",
+  "msg": "#####"
+}
+{
+  "level": 30,
+  "time": 1691442545387,
+  "pid": 1358,
+  "hostname": "10e36f375100",
+  "reqId": "req-2",
+  "res": {
+    "statusCode": 400
+  },
+  "responseTime": 3.790444001555443,
+  "msg": "request completed"
+}
+{
+  "level": 30,
+  "time": 1691443027428,
+  "pid": 1373,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691443030324,
+  "pid": 1373,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "req": {
+    "method": "POST",
+    "url": "/client/cache/user",
+    "hostname": "localhost:3333",
+    "remoteAddress": "172.29.0.1",
+    "remotePort": 47524
+  },
+  "msg": "incoming request"
+}
+{
+  "level": 30,
+  "time": 1691443030331,
+  "pid": 1373,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "msg": "#####"
+}
+{
+  "level": 30,
+  "time": 1691443030331,
+  "pid": 1373,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "msg": "#####"
+}
+{
+  "level": 30,
+  "time": 1691443030343,
+  "pid": 1373,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "res": {
+    "statusCode": 400
+  },
+  "responseTime": 18.018693998456,
+  "msg": "request completed"
+}
+{
+  "level": 30,
+  "time": 1691443063856,
+  "pid": 1388,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691443135127,
+  "pid": 1403,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691443337400,
+  "pid": 1418,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691444219635,
+  "pid": 1472,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691444260733,
+  "pid": 1487,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691444687360,
+  "pid": 1502,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+{
+  "level": 30,
+  "time": 1691444690748,
+  "pid": 1502,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "req": {
+    "method": "POST",
+    "url": "/client/cache/user",
+    "hostname": "localhost:3333",
+    "remoteAddress": "172.29.0.1",
+    "remotePort": 53644
+  },
+  "msg": "incoming request"
+}
+{
+  "level": 30,
+  "time": 1691444690751,
+  "pid": 1502,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "msg": "#####"
+}
+{
+  "level": 30,
+  "time": 1691444690751,
+  "pid": 1502,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "msg": "#####"
+}
+{
+  "level": 30,
+  "time": 1691444690757,
+  "pid": 1502,
+  "hostname": "10e36f375100",
+  "reqId": "req-1",
+  "res": {
+    "statusCode": 400
+  },
+  "responseTime": 9.535470992326736,
+  "msg": "request completed"
+}
+{
+  "level": 30,
+  "time": 1691444731667,
+  "pid": 1517,
+  "hostname": "10e36f375100",
+  "msg": "Server listening at http://0.0.0.0:3333"
+}
+asd
