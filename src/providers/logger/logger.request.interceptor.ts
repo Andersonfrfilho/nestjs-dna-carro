@@ -35,9 +35,9 @@ export class LoggerRequestInterceptor implements NestInterceptor {
   }
 
   private log(request: any, requestId: string) {
-    this.logger.info({
-      message: 'LoggerRequestInterceptor',
-      params: { requestId, ...request },
+    this.logger.info('LoggerRequestInterceptor - log', {
+      requestId,
+      ...request,
     });
   }
 
