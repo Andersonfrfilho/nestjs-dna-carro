@@ -6,16 +6,17 @@ export const winstonConfig = {
     format.timestamp(),
     format.simple(),
     format.printf((data): string => {
-      const requestId = data?.params?.requestId ?? 'N/A';
+      const [context] = data?.context;
+      let requestId = context ?? 'N/A';
+      requestId = context?.requestId || requestId;
       const phraseDefault = `[${data.level}] [${data.timestamp}] [${requestId}]: ${data.message}`;
-      if (data.params) {
-        const stringParam = JSON.stringify(data.params);
+      if (typeof context === 'object') {
+        const stringParam = JSON.stringify(context);
         return phraseDefault + ' - ' + stringParam;
       }
 
       return phraseDefault;
     }),
-    // format.json(),
   ),
   transports: [
     new transports.DailyRotateFile({
@@ -29,10 +30,12 @@ export const winstonConfig = {
       format: format.combine(
         format.colorize(),
         format.printf((data): string => {
-          const requestId = data?.params?.requestId ?? 'N/A';
+          const [context] = data?.context;
+          let requestId = context ?? 'N/A';
+          requestId = context?.requestId || requestId;
           const phraseDefault = `[${data.level}] [${data.timestamp}] [${requestId}]: ${data.message}`;
-          if (data.params) {
-            const stringParam = JSON.stringify(data.params);
+          if (typeof context === 'object') {
+            const stringParam = JSON.stringify(context);
             return phraseDefault + ' - ' + stringParam;
           }
 
