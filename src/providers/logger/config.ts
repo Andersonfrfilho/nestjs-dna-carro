@@ -1,6 +1,5 @@
 import { format, transports } from 'winston';
 import 'winston-daily-rotate-file';
-import { ParamsObfuscateInformation } from './logger.dto';
 
 export const winstonConfig = {
   format: format.combine(
@@ -46,10 +45,3 @@ export const winstonConfig = {
     }),
   ],
 };
-
-export const obfuscateInformation: ParamsObfuscateInformation[] = [
-  {
-    keys: ['chave5', 'chave4', 'chave1'],
-    obfuscateWith: (value) => `***${value}`,
-  },
-];
