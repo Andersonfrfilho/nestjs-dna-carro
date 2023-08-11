@@ -1,3 +1,4 @@
+import { ErrorModule } from './error/error.module';
 import { Module } from '@nestjs/common';
 import { HealthModule } from './modules/health/health.module';
 import { DatabaseModule } from './providers/database/database.module';
@@ -9,6 +10,7 @@ import { LoggerModule } from './providers/logger/logger.module';
 
 @Module({
   imports: [
+    ErrorModule,
     LoggerModule,
     ConfigEnvsModule,
     CacheClientModule,

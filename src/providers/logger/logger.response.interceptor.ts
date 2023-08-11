@@ -21,17 +21,12 @@ interface RequestInfo {
   statusCode: number;
 }
 
-interface ResponseInfo {
-  data: any;
-  statusCode: number;
-}
-
 export interface Response<T> {
   data: T;
 }
 
 @Injectable()
-export class TransformInterceptor<T>
+export class LoggerResponseInterceptor<T>
   implements NestInterceptor<T, Response<T>>
 {
   constructor(

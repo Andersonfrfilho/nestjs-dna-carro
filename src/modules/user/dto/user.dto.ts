@@ -5,35 +5,46 @@ import {
   IsEnum,
   IsNumber,
   IsObject,
+  IsOptional,
   IsString,
   IsUUID,
+  MaxLength,
+  MinLength,
   ValidateIf,
 } from 'class-validator';
 
 export class UserRelationshipDTO {
-  @IsUUID()
+  @IsUUID(undefined, { message: 'userId need format in uuid valid' })
   userId: string;
 }
 
 export class UserDTO {
-  @IsString()
+  @MaxLength(30, { message: 'name need height max 30 characters' })
+  @MinLength(3, { message: 'name need height min 3 characters' })
+  @IsString({ message: 'name need format in string valid' })
   name: string;
 
-  @IsString()
+  @MaxLength(60, { message: 'name need height max 60 characters' })
+  @MinLength(3, { message: 'name need height min 3 characters' })
+  @IsString({ message: 'last name need format in string valid' })
   lastName: string;
 
-  @ValidateIf((value) => isValidCPF(value))
+  @ValidateIf((value) => isValidCPF(value), {
+    message: 'Cpf property is invalid try other value',
+  })
+  @IsString({ message: 'cpf need format in string valid' })
   cpf: string;
 
-  @IsEmail()
+  @IsEmail({}, { message: 'email need format in email valid' })
   email: string;
 
-  @IsEnum(GENDER)
+  @IsEnum(GENDER, { message: 'gender need to be value M or F' })
   gender: string;
 
   @IsObject()
+  @IsOptional()
   details: any;
 
-  @IsNumber()
+  @IsNumber({}, { message: 'gender need to be value M or F' })
   birthDate: number;
 }

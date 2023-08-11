@@ -5,7 +5,7 @@ import { LOGGER_PROVIDER } from './logger.provider.interface';
 import { LoggerProvider } from './logger.provider';
 import { winstonConfig } from './config';
 import { LoggerRequestInterceptor } from './logger.request.interceptor';
-import { TransformInterceptor } from './logger.response.interceptor';
+import { LoggerResponseInterceptor } from './logger.response.interceptor';
 
 @Module({
   imports: [WinstonModule.forRoot(winstonConfig)],
@@ -20,7 +20,7 @@ import { TransformInterceptor } from './logger.response.interceptor';
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: TransformInterceptor,
+      useClass: LoggerResponseInterceptor,
     },
   ],
   exports: [LOGGER_PROVIDER],
