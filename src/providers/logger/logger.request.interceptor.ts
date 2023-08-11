@@ -29,6 +29,7 @@ export class LoggerRequestInterceptor implements NestInterceptor {
     const http = context.switchToHttp();
     const request = http.getRequest();
     const requestId = this.getRequestIdHeaders(request);
+    request.id = requestId;
     const data = this.makeRequestInfo(request);
     this.log(data, requestId);
     return next.handle();
