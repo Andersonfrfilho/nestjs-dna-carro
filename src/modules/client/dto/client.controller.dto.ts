@@ -31,7 +31,7 @@ export class ClassClientCacheCreateParamsDTO {
   @ValidateNested()
   term: TermDTO;
 
-  @IsString()
+  @IsString({ message: 'key to cache need format string' })
   key: string;
 }
 
