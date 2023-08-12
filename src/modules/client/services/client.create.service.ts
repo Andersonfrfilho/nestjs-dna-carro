@@ -44,13 +44,13 @@ import {
   CacheProviderInterface,
 } from '@src/providers/cache/cache.provider.interface';
 import { CACHE_KEYS } from '@src/providers/cache/constants/cache.constant.keys';
-import { ErrorCustom } from '@src/errors/error.custom';
+import { ErrorCustom } from '@src/error/error.custom';
 import {
   NOT_FOUND_CACHE_INFORMATION,
   NameErrorCacheInformationFlow,
   TERM_NOT_FOUND,
   TYPE_USER_NOT_FOUND,
-} from '@src/errors/error.constant';
+} from '@src/error/error.constant';
 import {
   IMAGE_REPOSITORY,
   ImageRepositoryInterface,
