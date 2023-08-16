@@ -12,6 +12,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { LOGGER_PROVIDER } from './providers/logger/logger.provider.interface';
 import { AllExceptionsFilter } from './error/exception.filter';
 
+import { validationFactoryError } from './error/error.validation.factory';
+
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
@@ -19,7 +21,11 @@ async function bootstrap() {
   );
   const httpAdapter = app.getHttpAdapter();
   app
-    .useGlobalPipes(new ValidationPipe())
+    .useGlobalPipes(
+      new ValidationPipe({
+        exceptionFactory: validationFactoryError,
+      }),
+    )
     .useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.useLogger(app.get(LOGGER_PROVIDER));
   const document = SwaggerModule.createDocument(app, swaggerConfig);
