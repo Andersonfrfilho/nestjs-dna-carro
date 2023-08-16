@@ -8,9 +8,9 @@ import { TermDTO } from '@src/modules/term/dto/term.dto';
 import { Term } from '@src/modules/term/term.entity';
 import { UserDTO } from '@src/modules/user/dto/user.dto';
 import { User } from '@src/modules/user/entities/user.entity';
-import { IsOptional, ValidateNested } from 'class-validator';
+import { IsOptional, IsString, ValidateNested } from 'class-validator';
 
-export class ClientCacheCreateControllerParamsDTO {
+export class ClientCacheCreateServiceParamsDTO {
   @ValidateNested()
   @IsOptional()
   user: UserDTO;
@@ -30,6 +30,9 @@ export class ClientCacheCreateControllerParamsDTO {
   @IsOptional()
   @ValidateNested()
   term: TermDTO;
+
+  @IsString({ message: 'key to cache need format string' })
+  key: string;
 }
 
 export interface ClientCacheCreateParamsDTO {

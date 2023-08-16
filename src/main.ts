@@ -10,15 +10,17 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from './modules/swagger/swagger.config';
 import { ValidationPipe } from '@nestjs/common';
 import { LOGGER_PROVIDER } from './providers/logger/logger.provider.interface';
+import { AllExceptionsFilter } from './error/exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
-
-  app.useGlobalPipes(new ValidationPipe());
-
+  const httpAdapter = app.getHttpAdapter();
+  app
+    .useGlobalPipes(new ValidationPipe())
+    .useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.useLogger(app.get(LOGGER_PROVIDER));
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('doc', app, document);
