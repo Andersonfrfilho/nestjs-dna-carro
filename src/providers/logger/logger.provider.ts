@@ -3,6 +3,7 @@ import { Inject, Injectable, LoggerService } from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { LoggerProviderInterface } from './logger.provider.interface';
 import { obfuscatorObject } from '@src/utils/obfuscator-object';
+import { inspect } from 'util';
 
 @Injectable()
 export class LoggerProvider implements LoggerService, LoggerProviderInterface {
@@ -15,6 +16,7 @@ export class LoggerProvider implements LoggerService, LoggerProviderInterface {
 
   error(message: any, ...optionalParams: any[]) {
     obfuscatorObject(optionalParams);
+
     this.loggerWinston.error(message, optionalParams);
   }
   warn(message: any, ...optionalParams: any[]) {
@@ -27,6 +29,6 @@ export class LoggerProvider implements LoggerService, LoggerProviderInterface {
   }
   info(message: any, ...optionalParams: any[]) {
     obfuscatorObject(optionalParams);
-    this.loggerWinston.log(message, optionalParams);
+    this.loggerWinston.info(message, optionalParams);
   }
 }

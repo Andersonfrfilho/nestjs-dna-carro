@@ -19,15 +19,15 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
-  const httpAdapter = app.getHttpAdapter();
+
+  app.useLogger(app.get(LOGGER_PROVIDER));
   app
     .useGlobalPipes(
       new ValidationPipe({
         exceptionFactory: validationFactoryError,
       }),
     )
-    .useGlobalFilters(new AllExceptionsFilter(httpAdapter));
-  app.useLogger(app.get(LOGGER_PROVIDER));
+    .useGlobalFilters(new AllExceptionsFilter(app.get(LOGGER_PROVIDER)));
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('doc', app, document);
 

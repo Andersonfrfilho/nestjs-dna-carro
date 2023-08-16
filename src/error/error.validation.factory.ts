@@ -1,5 +1,5 @@
 import { ValidationError } from 'class-validator';
-import { ErrorCustom } from './error.custom';
+import { ExceptionCustom } from './exception.custom';
 import { VALIDATION_FIELDS_REQUEST_ERROR } from './error.constant';
 
 export const validationFactoryError = (
@@ -7,10 +7,10 @@ export const validationFactoryError = (
 ) => {
   const contents = validationErrors.map((validate) => ({
     property: validate.property,
-    message: validate.constraints,
+    message: !!validate.constraints && Object.values(validate.constraints),
   }));
 
-  return new ErrorCustom({
+  return new ExceptionCustom({
     code: VALIDATION_FIELDS_REQUEST_ERROR.code,
     message: VALIDATION_FIELDS_REQUEST_ERROR.message,
     contents,

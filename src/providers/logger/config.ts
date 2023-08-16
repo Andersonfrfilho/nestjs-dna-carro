@@ -6,7 +6,7 @@ export const winstonConfig = {
     format.timestamp(),
     format.simple(),
     format.printf((data): string => {
-      const [context] = data?.context;
+      const context = data?.context ?? {};
       let requestId = context ?? 'N/A';
       requestId = context?.requestId || requestId;
       const phraseDefault = `[${data.level}] [${data.timestamp}] [${requestId}]: ${data.message}`;
@@ -30,7 +30,7 @@ export const winstonConfig = {
       format: format.combine(
         format.colorize(),
         format.printf((data): string => {
-          const [context] = data?.context;
+          const context = data?.context ?? {};
           let requestId = context ?? 'N/A';
           requestId = context?.requestId || requestId;
           const phraseDefault = `[${data.level}] [${data.timestamp}] [${requestId}]: ${data.message}`;
