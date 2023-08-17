@@ -34,9 +34,9 @@ const getTypeByLog = (
 };
 
 function formatLog(param: any) {
-  const context = param?.context ?? {};
+  const context = param?.context?.[0] ?? {};
   let requestId = context ?? 'N/A';
-  requestId = param?.context?.[0]?.requestId ?? requestId;
+  requestId = param?.context?.requestId ?? requestId;
 
   const phraseDefault = `[${param.level}] [${param.timestamp}] [${requestId}]: ${param.message}`;
   if (typeof context === 'object') {
@@ -48,7 +48,7 @@ function formatLog(param: any) {
 }
 
 function formatLogError(param: any): string {
-  const requestId = param?.stack?.[0][0]?.requestId ?? 'N/A';
+  const requestId = param?.stack?.[0]?.requestId ?? 'N/A';
   const phraseDefault = `[${param.level}] [${param.timestamp}] [${requestId}]: ${param.message}`;
   if (typeof param.stack === 'object') {
     const stringParam = JSON.stringify(param?.stack);
