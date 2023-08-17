@@ -14,7 +14,6 @@ export class ClientController {
     @Param('key') key: string,
     @Body() createCache: ClientCacheCreateControllerParamsDTO,
   ): Promise<void> {
-    console.log(key);
     await this.clientCreateCacheService.execute({ ...createCache, key });
   }
 }
