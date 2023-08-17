@@ -29,6 +29,6 @@ export class LoggerProvider implements LoggerService, LoggerProviderInterface {
   }
   info(message: any, ...optionalParams: any[]) {
     obfuscatorObject(optionalParams);
-    this.loggerWinston.info(message, optionalParams);
+    this.loggerWinston.log(message, optionalParams);
   }
 }
