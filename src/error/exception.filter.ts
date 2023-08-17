@@ -1,4 +1,3 @@
-import { FastifyReply } from 'fastify';
 import { Catch, ArgumentsHost, Injectable, Inject } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { ExceptionCustom } from './exception.custom';
@@ -19,8 +18,13 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
 
   catch(exception: Error, host: ArgumentsHost): unknown {
     const http = host.switchToHttp();
-    const response = http.getResponse<FastifyReply>();
-    console.log(this.logger.error('AllExceptionsFilter - catch', exception));
+    const request = http.getRequest();
+    const response = http.getResponse();
+
+    this.logger.error('AllExceptionsFilter - catch', {
+      exception,
+      requestId: request.id,
+    });
     if (exception instanceof ExceptionCustom) {
       return response.status(exception.statusCode).send({
         code: exception.code,

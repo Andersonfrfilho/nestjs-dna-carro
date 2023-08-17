@@ -10,7 +10,7 @@ export const validationFactoryError = (
     message: !!validate.constraints && Object.values(validate.constraints),
   }));
 
-  return new ExceptionCustom({
+  throw new ExceptionCustom({
     code: VALIDATION_FIELDS_REQUEST_ERROR.code,
     message: VALIDATION_FIELDS_REQUEST_ERROR.message,
     contents,
