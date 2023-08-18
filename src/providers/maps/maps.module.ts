@@ -2,6 +2,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { MAPS_PROVIDER } from './maps.provider.interface';
 import { MapsProvider } from './maps.provider';
+import { LoggerModule } from '../logger/logger.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { MapsProvider } from './maps.provider';
       maxRedirects: 5,
       baseURL: 'https://maps.googleapis.com/maps/api',
     }),
+    LoggerModule,
   ],
   providers: [
     {
