@@ -1,6 +1,3 @@
-import { IsString } from 'class-validator';
+import { MapsGeoCodeSearchAddressParamsDTO } from '@src/providers/maps/maps.geocodeSearchAddress.dto';
 
-export class AddressFindGeocodingControllerParamsDTO {
-  @IsString()
-  address: string;
-}
+export class AddressFindGeocodingControllerParamsDTO extends MapsGeoCodeSearchAddressParamsDTO {}

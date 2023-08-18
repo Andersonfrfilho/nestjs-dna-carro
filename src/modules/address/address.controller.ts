@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import {
   ADDRESS_FIND_GEOCODING_SERVICE,
   AddressFindGeocodingServiceInterface,
@@ -17,13 +17,10 @@ export class AddressController {
     @Inject(ADDRESS_FIND_GEOCODING_SERVICE)
     private addressFindGeocodingService: AddressFindGeocodingServiceInterface,
   ) {}
-  @Get('/find/geocoding')
+  @Post('/find/geocoding')
   async cacheCreate(
     @Body() addressFindGeocoding: AddressFindGeocodingControllerParamsDTO,
   ): Promise<void> {
-    this.logger.info('initializa cache create');
-    await this.addressFindGeocodingService.execute(
-      addressFindGeocoding.address,
-    );
+    await this.addressFindGeocodingService.execute(addressFindGeocoding);
   }
 }
