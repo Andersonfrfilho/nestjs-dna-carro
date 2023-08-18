@@ -44,7 +44,7 @@ import {
   CacheProviderInterface,
 } from '@src/providers/cache/cache.provider.interface';
 import { CACHE_KEYS } from '@src/providers/cache/constants/cache.constant.keys';
-import { ExceptionCustom } from '@src/error/exception.custom';
+import { CustomException } from '@src/error/custom.exception';
 import {
   NOT_FOUND_CACHE_INFORMATION,
   NameErrorCacheInformationFlow,
@@ -102,35 +102,35 @@ export class ClientCreateService implements ClientCreateServiceInterface {
       await this.cacheProvider.get<ClientCreateServiceParamsDTO>(key);
 
     if (!userCache) {
-      throw new ExceptionCustom(NOT_FOUND_CACHE_INFORMATION());
+      throw new CustomException(NOT_FOUND_CACHE_INFORMATION());
     }
 
     if (!userCache.user) {
-      throw new ExceptionCustom(
+      throw new CustomException(
         NOT_FOUND_CACHE_INFORMATION(NameErrorCacheInformationFlow.user),
       );
     }
 
     if (!userCache.phone) {
-      throw new ExceptionCustom(
+      throw new CustomException(
         NOT_FOUND_CACHE_INFORMATION(NameErrorCacheInformationFlow.phone),
       );
     }
 
     if (!userCache.address) {
-      throw new ExceptionCustom(
+      throw new CustomException(
         NOT_FOUND_CACHE_INFORMATION(NameErrorCacheInformationFlow.address),
       );
     }
 
     if (!userCache.term || !userCache.term.id) {
-      throw new ExceptionCustom(
+      throw new CustomException(
         NOT_FOUND_CACHE_INFORMATION(NameErrorCacheInformationFlow.term),
       );
     }
 
     if (!userCache.photo) {
-      throw new ExceptionCustom(
+      throw new CustomException(
         NOT_FOUND_CACHE_INFORMATION(NameErrorCacheInformationFlow.photo),
       );
     }
@@ -138,7 +138,7 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     const term = await this.termRepository.findById(userCache.term.id);
 
     if (!term) {
-      throw new ExceptionCustom(TERM_NOT_FOUND);
+      throw new CustomException(TERM_NOT_FOUND);
     }
 
     const userType = await this.typesUserRepository.findByName(
@@ -146,7 +146,7 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     );
 
     if (!userType) {
-      throw new ExceptionCustom(TYPE_USER_NOT_FOUND);
+      throw new CustomException(TYPE_USER_NOT_FOUND);
     }
 
     const user = await this.userRepository.save(userCache.user);

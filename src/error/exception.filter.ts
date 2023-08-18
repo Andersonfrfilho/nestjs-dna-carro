@@ -1,6 +1,6 @@
 import { Catch, ArgumentsHost, Injectable, Inject } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { ExceptionCustom } from './exception.custom';
+import { CustomException } from './custom.exception';
 import { GENERIC_INTERNAL_SERVER_ERROR } from './error.constant';
 import {
   LOGGER_PROVIDER,
@@ -18,14 +18,13 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
 
   catch(exception: Error, host: ArgumentsHost): unknown {
     const http = host.switchToHttp();
-    const request = http.getRequest();
     const response = http.getResponse();
 
     this.logger.error('AllExceptionsFilter - catch', {
       exception,
-      requestId: request.id,
     });
-    if (exception instanceof ExceptionCustom) {
+
+    if (exception instanceof CustomException) {
       return response.status(exception.statusCode).send({
         code: exception.code,
         message: exception.message,

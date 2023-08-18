@@ -1,10 +1,10 @@
-interface ExceptionCustomParamsDTO<T> {
+interface CustomExceptionParamsDTO<T> {
   message: string;
   contents?: Array<T>;
   code: number;
   statusCode: number;
 }
-export class ExceptionCustom<T> {
+export class CustomException<T> {
   public message: string;
   public code: number;
   public contents?: Array<T>;
@@ -15,7 +15,7 @@ export class ExceptionCustom<T> {
     code,
     contents,
     statusCode,
-  }: ExceptionCustomParamsDTO<T>) {
+  }: CustomExceptionParamsDTO<T>) {
     this.message = message;
     this.code = code;
     this.contents = contents ?? undefined;

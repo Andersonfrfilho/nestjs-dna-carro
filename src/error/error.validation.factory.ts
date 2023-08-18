@@ -1,5 +1,5 @@
 import { ValidationError } from 'class-validator';
-import { ExceptionCustom } from './exception.custom';
+import { CustomException } from './custom.exception';
 import { VALIDATION_FIELDS_REQUEST_ERROR } from './error.constant';
 
 export const validationFactoryError = (
@@ -10,7 +10,7 @@ export const validationFactoryError = (
     message: !!validate.constraints && Object.values(validate.constraints),
   }));
 
-  throw new ExceptionCustom({
+  throw new CustomException({
     code: VALIDATION_FIELDS_REQUEST_ERROR.code,
     message: VALIDATION_FIELDS_REQUEST_ERROR.message,
     contents,

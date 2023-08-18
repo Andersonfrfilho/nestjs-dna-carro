@@ -66,10 +66,9 @@ export const winstonConfig = {
       const level = getTypeByLog(values);
       if (level === LOG_LEVEL.ERROR) {
         return formatLogError(data);
-      } else if (level === LOG_LEVEL.INFO) {
+      } else {
         return formatLog(data);
       }
-      return '';
     }),
   ),
   transports: [
@@ -90,10 +89,9 @@ export const winstonConfig = {
           const level = getTypeByLog(values);
           if (level === LOG_LEVEL.ERROR) {
             return formatLogError(data);
-          } else if (level === LOG_LEVEL.INFO) {
+          } else {
             return formatLog(data);
           }
-          return '';
         }),
       ),
     }),

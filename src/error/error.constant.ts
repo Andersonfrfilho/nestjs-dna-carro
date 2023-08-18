@@ -40,3 +40,15 @@ export const GENERIC_INTERNAL_SERVER_ERROR = {
   message: 'Internal server error',
   statusCode: HttpStatusCode.InternalServerError,
 };
+
+export const GOOGLE_API_GEOCODING_ADDRESS_NOT_FOUND = {
+  code: 1005,
+  message: 'Address not found',
+  statusCode: HttpStatusCode.NotFound,
+};
+
+export const GOOGLE_API_GEOCODING_ERROR = {
+  code: 1005,
+  message: 'GOOGLE_API_GEOCODING_ERROR',
+  statusCode: HttpStatusCode.BadRequest,
+};
