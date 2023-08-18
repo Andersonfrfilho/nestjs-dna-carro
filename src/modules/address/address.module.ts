@@ -7,9 +7,10 @@ import { AddressController } from './address.controller';
 import { MapsModule } from '@src/providers/maps/maps.module';
 import { ADDRESS_FIND_GEOCODING_SERVICE } from './interfaces/address.find-geocoding.service.interface';
 import { AddressFindGeocodingService } from './services/address.find-geocoding.service';
+import { LoggerModule } from '@src/providers/logger/logger.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Address]), MapsModule],
+  imports: [TypeOrmModule.forFeature([Address]), MapsModule, LoggerModule],
   providers: [
     {
       provide: ADDRESS_REPOSITORY,
