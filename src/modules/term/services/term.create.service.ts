@@ -7,9 +7,9 @@ import {
   TERM_REPOSITORY,
   TermRepositoryInterface,
 } from '../interfaces/term.repository.interface';
-import { TermCreateParamsDto } from '../dto/term.create.dto';
 import { TERM_VERSION_ALREADY_EXIST } from '../term.error';
 import { Term } from '../term.entity';
+import { TermCreateServiceParamsDto } from '../dto/term.create.dto';
 
 @Injectable()
 export class TermCreateService implements TermCreateServiceInterface {
@@ -17,7 +17,10 @@ export class TermCreateService implements TermCreateServiceInterface {
     @Inject(TERM_REPOSITORY)
     private termRepository: TermRepositoryInterface,
   ) {}
-  async execute({ version, description }: TermCreateParamsDto): Promise<Term> {
+  async execute({
+    version,
+    description,
+  }: TermCreateServiceParamsDto): Promise<Term> {
     const termFound = await this.termRepository.findByVersion(version);
 
     if (termFound) {

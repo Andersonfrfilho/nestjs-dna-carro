@@ -1,31 +1,21 @@
-import { Body, Controller, Inject, Param, Post } from '@nestjs/common';
-import { ClientCacheCreateControllerParamsdto } from './dto/client.controller.dto';
-import { CLIENT_CREATE_CACHE_SERVICE } from './interfaces/client.interfaces';
-import {
-  ClientCreateCacheServiceInterface,
-  KEY_CACHE,
-} from './interfaces/client.create.cache.service.interface';
-import { IsEnum } from 'class-validator';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 
-export class CacheCreatePathParamdto {
-  @IsEnum(KEY_CACHE)
-  key: string;
-}
+import { TermCreateControllerParamsDto } from './dto/term.create.dto';
+import {
+  TERM_CREATE_SERVICE,
+  TermCreateServiceInterface,
+} from './interfaces/term.create.service.interface';
 
 @Controller('term')
 export class ClientController {
   constructor(
-    @Inject(CLIENT_CREATE_CACHE_SERVICE)
-    private clientCreateCacheService: ClientCreateCacheServiceInterface,
+    @Inject(TERM_CREATE_SERVICE)
+    private termCreateService: TermCreateServiceInterface,
   ) {}
   @Post()
   async cacheCreate(
-    @Param() path: CacheCreatePathParamdto,
-    @Body() createCache: ClientCacheCreateControllerParamsdto,
+    @Body() createTerm: TermCreateControllerParamsDto,
   ): Promise<void> {
-    await this.clientCreateCacheService.execute({
-      ...createCache,
-      key: path.key,
-    });
+    await this.termCreateService.execute(createTerm);
   }
 }
