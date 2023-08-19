@@ -52,3 +52,15 @@ export const GOOGLE_API_GEOCODING_ERROR = {
   message: 'GOOGLE_API_GEOCODING_ERROR',
   statusCode: HttpStatusCode.BadRequest,
 };
+
+export const NOT_FOUND_HTTP_INTERCEPTOR = {
+  code: 1006,
+  message: 'NOT_FOUND_HTTP_INTERCEPTOR',
+  statusCode: HttpStatusCode.NotFound,
+};
+
+export const TIMEOUT_HTTP_INTERCEPTOR = {
+  code: 1007,
+  message: 'TIMEOUT_HTTP_INTERCEPTOR',
+  statusCode: HttpStatusCode.RequestTimeout,
+};

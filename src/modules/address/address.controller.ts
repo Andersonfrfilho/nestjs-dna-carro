@@ -12,8 +12,6 @@ import {
 @Controller('address')
 export class AddressController {
   constructor(
-    @Inject(LOGGER_PROVIDER)
-    private logger: LoggerProviderInterface,
     @Inject(ADDRESS_FIND_GEOCODING_SERVICE)
     private addressFindGeocodingService: AddressFindGeocodingServiceInterface,
   ) {}
@@ -21,6 +19,6 @@ export class AddressController {
   async cacheCreate(
     @Body() addressFindGeocoding: AddressFindGeocodingControllerParamsDTO,
   ): Promise<void> {
-    await this.addressFindGeocodingService.execute(addressFindGeocoding);
+    return this.addressFindGeocodingService.execute(addressFindGeocoding);
   }
 }

@@ -16,7 +16,6 @@ export class AddressFindGeocodingService
     private mapsProvider: MapsProviderInterface,
   ) {}
   async execute(data: MapsGeoCodeSearchAddressParamsDTO): Promise<any> {
-    const addresses = await this.mapsProvider.geocodeSearchByAddress(data);
-    return addresses;
+    return this.mapsProvider.geocodeSearchByAddress(data);
   }
 }
