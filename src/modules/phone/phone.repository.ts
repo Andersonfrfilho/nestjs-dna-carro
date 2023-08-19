@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Phone } from './phone.entity';
 import { PhoneRepositoryInterface } from './interfaces/phone.repository.interface';
-import { PhoneRepositoryParamsDTO } from './phone.repository.dto';
+import { PhoneRepositoryParamsDto } from './phone.repository.dto';
 
 @Injectable()
 export class PhoneRepository implements PhoneRepositoryInterface {
@@ -15,7 +15,7 @@ export class PhoneRepository implements PhoneRepositoryInterface {
     ddd,
     countryCode,
     number,
-  }: PhoneRepositoryParamsDTO): Promise<Phone | null> {
+  }: PhoneRepositoryParamsDto): Promise<Phone | null> {
     return this.phoneRepository.findOne({
       where: {
         ddd,

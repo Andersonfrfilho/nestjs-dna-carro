@@ -4,7 +4,7 @@ import { Phone } from '@src/modules/phone/phone.entity';
 import { Term } from '@src/modules/term/term.entity';
 import { User } from '@src/modules/user/entities/user.entity';
 
-export interface ClientCreateServiceParamsDTO {
+export interface ClientCreateServiceParamsdto {
   user: Partial<User>;
   phone: Partial<Phone>;
   address: Partial<Address>;
@@ -13,5 +13,5 @@ export interface ClientCreateServiceParamsDTO {
 }
 
 export interface ClientCreateServiceInterface {
-  execute(params: ClientCreateServiceParamsDTO): Promise<void>;
+  execute(params: ClientCreateServiceParamsdto): Promise<void>;
 }

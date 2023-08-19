@@ -18,17 +18,17 @@ import {
   UserRepositoryInterface,
 } from '@src/modules/user/interfaces/repositories/user.repository.interface';
 import { EMAIL_ALREADY_EXIST } from '@src/error/error.constant';
-import { CLIENT_CACHE_KEYS } from '../client.constant';
+import { TermCreateServiceInterface } from '../interfaces/term.create.service.interface';
+import {
+  TERM_REPOSITORY,
+  TermRepositoryInterface,
+} from '../interfaces/term.repository.interface';
 
 @Injectable()
-export class ClientCreateCacheService
-  implements ClientCreateCacheServiceInterface
-{
+export class TermCreateService implements TermCreateServiceInterface {
   constructor(
-    @Inject(CACHE_PROVIDER)
-    private cacheProvider: CacheProviderInterface,
-    @Inject(USER_REPOSITORY)
-    private userRepository: UserRepositoryInterface,
+    @Inject(TERM_REPOSITORY)
+    private termRepository: TermRepositoryInterface,
   ) {}
   async execute(params: ClientCacheCreateServiceParamsdto): Promise<void> {
     const email = params?.user?.email;

@@ -1,4 +1,4 @@
-import { ClientCacheCreateServiceParamsDTO } from '../dto/client.service.dto';
+import { ClientCacheCreateServiceParamsDto } from '../dto/client.service.dto';
 
 export enum KEY_CACHE {
   user = 'user',
@@ -6,5 +6,5 @@ export enum KEY_CACHE {
   phone = 'phone',
 }
 export interface ClientCreateCacheServiceInterface {
-  execute(params: ClientCacheCreateServiceParamsDTO): Promise<void>;
+  execute(params: ClientCacheCreateServiceParamsDto): Promise<void>;
 }

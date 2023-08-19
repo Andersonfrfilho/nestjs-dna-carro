@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '@modules/user/entities/user.entity';
 import { UserRepositoryInterface } from '@modules/user/interfaces/repositories/user.repository.interface';
 import { UserPhone } from '../entities/user.phone.entity';
-import { UserFindByPhoneParamsDTO } from '../dto/user.repository.dto';
+import { UserFindByPhoneParamsDto } from '../dto/user.repository.dto';
 import {
   PHONE_REPOSITORY,
   PhoneRepositoryInterface,
@@ -27,7 +27,7 @@ export class UserRepository implements UserRepositoryInterface {
     return this.userRepository.findOne({ where: { email: emailParam } });
   }
   async findByPhone(
-    phoneParams: UserFindByPhoneParamsDTO,
+    phoneParams: UserFindByPhoneParamsDto,
   ): Promise<UserPhone[] | null> {
     const phone = await this.phoneRepository.findByCountryCodeDDDNumberUser(
       phoneParams,

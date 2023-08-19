@@ -11,7 +11,7 @@ import {
   ADDRESS_FIND_GEOCODING_SERVICE,
   AddressFindGeocodingServiceInterface,
 } from './interfaces/address.find-geocoding.service.interface';
-import { AddressFindGeocodingControllerParamsDTO } from './dto/address.find-geocoding.dto';
+import { AddressFindGeocodingControllerParamsDto } from './dto/address.find-geocoding.dto';
 
 @Controller('address')
 export class AddressController {
@@ -22,7 +22,7 @@ export class AddressController {
   @Post('/find/geocoding')
   @HttpCode(HttpStatus.OK)
   async cacheCreate(
-    @Body() addressFindGeocoding: AddressFindGeocodingControllerParamsDTO,
+    @Body() addressFindGeocoding: AddressFindGeocodingControllerParamsDto,
   ): Promise<void> {
     return this.addressFindGeocodingService.execute(addressFindGeocoding);
   }

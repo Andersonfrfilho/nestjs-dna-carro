@@ -1,3 +1,3 @@
-import { MapsGeoCodeSearchAddressParamsDTO } from '@src/providers/maps/maps.geocodeSearchAddress.dto';
+import { MapsGeoCodeSearchAddressParamsDto } from '@src/providers/maps/maps.geocodeSearchAddress.dto';
 
-export class AddressFindGeocodingControllerParamsDTO extends MapsGeoCodeSearchAddressParamsDTO {}
+export class AddressFindGeocodingControllerParamsDto extends MapsGeoCodeSearchAddressParamsDto {}

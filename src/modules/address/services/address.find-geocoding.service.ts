@@ -5,7 +5,7 @@ import {
   MAPS_PROVIDER,
   MapsProviderInterface,
 } from '@src/providers/maps/maps.provider.interface';
-import { MapsGeoCodeSearchAddressParamsDTO } from '@src/providers/maps/maps.geocodeSearchAddress.dto';
+import { MapsGeoCodeSearchAddressParamsDto } from '@src/providers/maps/maps.geocodeSearchAddress.dto';
 
 @Injectable()
 export class AddressFindGeocodingService
@@ -15,7 +15,7 @@ export class AddressFindGeocodingService
     @Inject(MAPS_PROVIDER)
     private mapsProvider: MapsProviderInterface,
   ) {}
-  async execute(data: MapsGeoCodeSearchAddressParamsDTO): Promise<any> {
+  async execute(data: MapsGeoCodeSearchAddressParamsDto): Promise<any> {
     return this.mapsProvider.geocodeSearchByAddress(data);
   }
 }

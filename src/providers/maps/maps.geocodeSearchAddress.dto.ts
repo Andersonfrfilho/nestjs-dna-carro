@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class MapsGeoCodeSearchAddressParamsDTO {
+export class MapsGeoCodeSearchAddressParamsDto {
   @IsString()
   @IsOptional()
   address?: string;

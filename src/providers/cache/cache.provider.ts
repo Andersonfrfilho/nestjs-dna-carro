@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { GetParamsDTO } from './cache.dto';
+import { GetParamsDto } from './cache.dto';
 import { CacheProviderInterface } from './cache.provider.interface';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
@@ -14,7 +14,7 @@ export class CacheProvider implements CacheProviderInterface {
     key,
     payload,
     ttl = config.cache.ttl,
-  }: GetParamsDTO<T>): Promise<void> {
+  }: GetParamsDto<T>): Promise<void> {
     const convertPayloadToString = JSON.stringify(payload);
     await this.cacheService.set(key, convertPayloadToString, ttl);
   }

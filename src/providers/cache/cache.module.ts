@@ -6,14 +6,14 @@ import { Module } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CACHE_PROVIDER } from './cache.provider.interface';
 import { CacheProvider } from './cache.provider';
-interface ParamsDTO {
+interface ParamsDto {
   ttl: number;
 }
 @Module({
   imports: [
     CacheModule.registerAsync<RedisClientOptions>({
       imports: [ConfigModule],
-      useFactory: async (_: ConfigService & ParamsDTO) => ({
+      useFactory: async (_: ConfigService & ParamsDto) => ({
         store: await redisStore({
           socket: {
             host: config.cache.host,

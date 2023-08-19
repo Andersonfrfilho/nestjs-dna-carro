@@ -1,41 +1,41 @@
 import { Address } from '@src/modules/address/address.entity';
-import { AddressDTO } from '@src/modules/address/dto/address.dto';
-import { ImageDTO } from '@src/modules/image/dto/image.dto';
+import { AddressDto } from '@src/modules/address/dto/address.dto';
+import { ImageDto } from '@src/modules/image/dto/image.dto';
 import { Image } from '@src/modules/image/image.entity';
-import { PhoneDTO } from '@src/modules/phone/dto/phone.dto';
+import { PhoneDto } from '@src/modules/phone/dto/phone.dto';
 import { Phone } from '@src/modules/phone/phone.entity';
-import { TermDTO } from '@src/modules/term/dto/term.dto';
+import { TermDto } from '@src/modules/term/dto/term.dto';
 import { Term } from '@src/modules/term/term.entity';
-import { UserDTO } from '@src/modules/user/dto/user.dto';
+import { UserDto } from '@src/modules/user/dto/user.dto';
 import { User } from '@src/modules/user/entities/user.entity';
 import { IsOptional, IsString, ValidateNested } from 'class-validator';
 
-export class ClientCacheCreateServiceParamsDTO {
+export class ClientCacheCreateServiceParamsDto {
   @ValidateNested()
   @IsOptional()
-  user: UserDTO;
+  user: UserDto;
 
   @IsOptional()
   @ValidateNested()
-  address: AddressDTO;
+  address: AddressDto;
 
   @IsOptional()
   @ValidateNested()
-  phone: PhoneDTO;
+  phone: PhoneDto;
 
   @IsOptional()
   @ValidateNested()
-  image: ImageDTO;
+  image: ImageDto;
 
   @IsOptional()
   @ValidateNested()
-  term: TermDTO;
+  term: TermDto;
 
   @IsString({ message: 'key to cache need format string' })
   key: string;
 }
 
-export interface ClientCacheCreateParamsDTO {
+export interface ClientCacheCreateParamsDto {
   user: Partial<User>;
   phone: Partial<Phone>;
   address: Partial<Address>;

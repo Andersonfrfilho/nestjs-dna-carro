@@ -62,7 +62,7 @@ import {
 import { TypesUsers } from '@src/modules/types-users/types-users.constant';
 import {
   ClientCreateServiceInterface,
-  ClientCreateServiceParamsDTO,
+  ClientCreateServiceParamsDto,
 } from '../interfaces/client.create.service.interface';
 
 @Injectable()
@@ -95,11 +95,11 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     @Inject(CACHE_PROVIDER)
     private cacheProvider: CacheProviderInterface,
   ) {}
-  async execute(params: ClientCreateServiceParamsDTO): Promise<void> {
+  async execute(params: ClientCreateServiceParamsDto): Promise<void> {
     const key = `${CACHE_KEYS.CLIENT_CREATE_SERVICE}:${params.user.cpf}`;
 
     const userCache =
-      await this.cacheProvider.get<ClientCreateServiceParamsDTO>(key);
+      await this.cacheProvider.get<ClientCreateServiceParamsDto>(key);
 
     if (!userCache) {
       throw new CustomException(NOT_FOUND_CACHE_INFORMATION());

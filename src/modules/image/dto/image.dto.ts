@@ -1,11 +1,11 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class AddressRelationshipDTO {
+export class AddressRelationshipDto {
   @IsNumber()
   addressId: number;
 }
 
-export class ImageDTO {
+export class ImageDto {
   @IsString()
   name: string;
 

@@ -1,4 +1,4 @@
-export interface LoggerParamsDTO {
+export interface LoggerParamsDto {
   message: string;
   params?: any;
 }
@@ -8,7 +8,7 @@ export interface ParamsObfuscateInformation {
   obfuscateWith: (param: string | number) => string;
 }
 
-export interface ObfuscatorObjectParamsDTO {
+export interface ObfuscatorObjectParamsDto {
   params: any[];
   obfuscatorConfigs: ParamsObfuscateInformation[];
   typeAcceptToFormats: string[];

@@ -14,7 +14,7 @@ import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '../logger/logger.provider.interface';
-import { MapsGeoCodeSearchAddressParamsDTO } from './maps.geocodeSearchAddress.dto';
+import { MapsGeoCodeSearchAddressParamsDto } from './maps.geocodeSearchAddress.dto';
 import {
   HTTP_INTERCEPTOR_PROVIDER,
   HttpInterceptorProviderInterface,
@@ -44,7 +44,7 @@ export class MapsProvider implements MapsProviderInterface {
     zipcode,
     latitude,
     longitude,
-  }: MapsGeoCodeSearchAddressParamsDTO): Promise<any> {
+  }: MapsGeoCodeSearchAddressParamsDto): Promise<any> {
     const apiKey = `key=${this.apiKey}`;
     const language = `language=${GOOGLE_LANGUAGE_ACCEPT.BRAZIL}`;
     const region = `region=.br`;
@@ -111,7 +111,7 @@ export class MapsProvider implements MapsProviderInterface {
     number,
     state,
     zipcode,
-  }: MapsGeoCodeSearchAddressParamsDTO): string {
+  }: MapsGeoCodeSearchAddressParamsDto): string {
     if (placeId) {
       const pathPlaceId = `place_id=${placeId}`;
       return `&${pathPlaceId}`;
