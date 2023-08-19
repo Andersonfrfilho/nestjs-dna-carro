@@ -10,7 +10,7 @@ import {
   ClientCreateCacheServiceInterface,
   KEY_CACHE,
 } from '../interfaces/client.create.cache.service.interface';
-import { ClientCacheCreateServiceParamsdto } from '../dto/client.service.dto';
+import { ClientCacheCreateServiceParamsDto } from '../dto/client.service.dto';
 import { CustomException } from '@src/error/custom.exception';
 import { EMAIL_INFO_NOT_FOUND, KEY_PARAM_INVALID } from '../client.errors';
 import {
@@ -30,7 +30,7 @@ export class ClientCreateCacheService
     @Inject(USER_REPOSITORY)
     private userRepository: UserRepositoryInterface,
   ) {}
-  async execute(params: ClientCacheCreateServiceParamsdto): Promise<void> {
+  async execute(params: ClientCacheCreateServiceParamsDto): Promise<void> {
     const email = params?.user?.email;
     if (!email) {
       throw new CustomException(EMAIL_INFO_NOT_FOUND);

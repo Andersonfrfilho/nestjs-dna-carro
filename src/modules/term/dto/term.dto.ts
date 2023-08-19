@@ -1,11 +1,11 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class TermRelationshipdto {
+export class TermRelationshipDto {
   @IsNumber()
   termId: number;
 }
 
-export class Termdto {
+export class TermDto {
   @IsString()
   version: string;
 
