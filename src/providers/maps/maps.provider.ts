@@ -112,16 +112,14 @@ export class MapsProvider implements MapsProviderInterface {
     state,
     zipcode,
   }: MapsGeoCodeSearchAddressParamsDTO): string {
-    let latitudeLongitude = '';
-
     if (placeId) {
       const pathPlaceId = `place_id=${placeId}`;
       return `&${pathPlaceId}`;
     }
 
     if (latitude && longitude) {
-      latitudeLongitude = `${latitude}, ${longitude}`;
-      const pathLocation = `location=${latitudeLongitude}`;
+      const latitudeLongitude = `${latitude}, ${longitude}`;
+      const pathLocation = `latlng=${latitudeLongitude}`;
       return `&${pathLocation}`;
     }
 

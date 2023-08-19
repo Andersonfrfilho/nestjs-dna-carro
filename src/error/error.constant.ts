@@ -64,3 +64,9 @@ export const TIMEOUT_HTTP_INTERCEPTOR = {
   message: 'TIMEOUT_HTTP_INTERCEPTOR',
   statusCode: HttpStatusCode.RequestTimeout,
 };
+
+export const EMAIL_ALREADY_EXIST = {
+  code: 1009,
+  message: 'EMAIL_ALREADY_EXIST',
+  statusCode: HttpStatusCode.BadRequest,
+};

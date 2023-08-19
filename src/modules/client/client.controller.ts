@@ -1,7 +1,16 @@
 import { Body, Controller, Inject, Param, Post } from '@nestjs/common';
 import { ClientCacheCreateControllerParamsDTO } from './dto/client.controller.dto';
 import { CLIENT_CREATE_CACHE_SERVICE } from './interfaces/client.interfaces';
-import { ClientCreateCacheServiceInterface } from './interfaces/client.create.cache.service.interface';
+import {
+  ClientCreateCacheServiceInterface,
+  KEY_CACHE,
+} from './interfaces/client.create.cache.service.interface';
+import { IsEnum } from 'class-validator';
+
+export class CacheCreatePathParamDTO {
+  @IsEnum(KEY_CACHE)
+  key: string;
+}
 
 @Controller('client')
 export class ClientController {
@@ -11,9 +20,12 @@ export class ClientController {
   ) {}
   @Post('/cache/:key')
   async cacheCreate(
-    @Param('key') key: string,
+    @Param() path: CacheCreatePathParamDTO,
     @Body() createCache: ClientCacheCreateControllerParamsDTO,
   ): Promise<void> {
-    await this.clientCreateCacheService.execute({ ...createCache, key });
+    await this.clientCreateCacheService.execute({
+      ...createCache,
+      key: path.key,
+    });
   }
 }
