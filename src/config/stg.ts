@@ -17,4 +17,7 @@ export const stg = (): Config => ({
     password: process.env.CACHE_PASSWORD ?? '102030',
     ttl: parseInt(process.env.CACHE_TTL ?? '0'),
   },
+  maps: {
+    apiKey: process.env.MAPS_API_KEY ?? '',
+  },
 });

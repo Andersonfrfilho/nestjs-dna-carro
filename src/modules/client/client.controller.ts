@@ -1,8 +1,14 @@
 import { Body, Controller, Inject, Param, Post } from '@nestjs/common';
-import { ClassClientCacheCreateParamsDTO } from './dto/client.controller.dto';
+import { ClientCacheCreateControllerParamsDto } from './dto/client.controller.dto';
 import { CLIENT_CREATE_CACHE_SERVICE } from './interfaces/client.interfaces';
 import { ClientCreateCacheServiceInterface } from './interfaces/client.create.cache.service.interface';
-import * as fastify from 'fastify';
+import { IsEnum } from 'class-validator';
+import { NameCacheKeyFlow } from './client.constant';
+
+export class CacheCreatePathParamDto {
+  @IsEnum(NameCacheKeyFlow)
+  key: NameCacheKeyFlow;
+}
 
 @Controller('client')
 export class ClientController {
@@ -12,9 +18,12 @@ export class ClientController {
   ) {}
   @Post('/cache/:key')
   async cacheCreate(
-    @Body() createCache: ClassClientCacheCreateParamsDTO,
-    @Param() key: string,
+    @Param() path: CacheCreatePathParamDto,
+    @Body() createCache: ClientCacheCreateControllerParamsDto,
   ): Promise<void> {
-    await this.clientCreateCacheService.execute({ ...createCache, key });
+    await this.clientCreateCacheService.execute({
+      ...createCache,
+      key: path.key,
+    });
   }
 }

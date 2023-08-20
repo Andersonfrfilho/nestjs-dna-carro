@@ -1,12 +1,12 @@
 import { isValidCPF } from '@src/utils/is-valid-cpf';
 import { IsString, IsUUID, ValidateIf } from 'class-validator';
 
-export class PhoneRelationshipDTO {
+export class PhoneRelationshipDto {
   @IsUUID()
   phoneId: string;
 }
 
-export class PhoneDTO {
+export class PhoneDto {
   @IsString()
   countryCode: string;
 

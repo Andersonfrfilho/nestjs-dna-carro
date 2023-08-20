@@ -1,7 +1,7 @@
 import { IsUUID } from 'class-validator';
-import { UserRelationshipDTO } from './user.dto';
+import { UserRelationshipDto } from './user.dto';
 
-export class UserTokenDTO extends UserRelationshipDTO {
+export class UserTokenDto extends UserRelationshipDto {
   @IsUUID()
   tokenId: string;
 }

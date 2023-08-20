@@ -3,7 +3,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { WinstonModule } from 'nest-winston';
 import { LOGGER_PROVIDER } from './logger.provider.interface';
 import { LoggerProvider } from './logger.provider';
-import { winstonConfig } from './config';
+import { winstonConfig } from './logger.config';
 import { LoggerRequestInterceptor } from './logger.request.interceptor';
 import { LoggerResponseInterceptor } from './logger.response.interceptor';
 

@@ -10,6 +10,9 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from './modules/swagger/swagger.config';
 import { ValidationPipe } from '@nestjs/common';
 import { LOGGER_PROVIDER } from './providers/logger/logger.provider.interface';
+import { AllExceptionsFilter } from './error/exception.filter';
+
+import { validationFactoryError } from './error/error.validation.factory';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -17,9 +20,14 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
-  app.useGlobalPipes(new ValidationPipe());
-
   app.useLogger(app.get(LOGGER_PROVIDER));
+  app
+    .useGlobalPipes(
+      new ValidationPipe({
+        exceptionFactory: validationFactoryError,
+      }),
+    )
+    .useGlobalFilters(new AllExceptionsFilter(app.get(LOGGER_PROVIDER)));
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('doc', app, document);
 

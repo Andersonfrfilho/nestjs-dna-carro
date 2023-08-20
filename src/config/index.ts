@@ -25,6 +25,9 @@ export type Config = {
     ttl: number;
     password: string;
   };
+  maps: {
+    apiKey: string;
+  };
 };
 
 type Configs = {

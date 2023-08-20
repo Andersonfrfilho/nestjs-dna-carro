@@ -4,6 +4,7 @@ import {
   CallHandler,
   ExecutionContext,
   Inject,
+  Scope,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import {
@@ -20,7 +21,7 @@ interface RequestInfo {
   headers: any;
 }
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class LoggerRequestInterceptor implements NestInterceptor {
   constructor(
     @Inject(LOGGER_PROVIDER) private readonly logger: LoggerProviderInterface,
@@ -29,15 +30,14 @@ export class LoggerRequestInterceptor implements NestInterceptor {
     const http = context.switchToHttp();
     const request = http.getRequest();
     const requestId = this.getRequestIdHeaders(request);
-    request.id = requestId;
+    this.logger.setRequestId(requestId);
     const data = this.makeRequestInfo(request);
-    this.log(data, requestId);
+    this.log(data);
     return next.handle();
   }
 
-  private log(request: any, requestId: string) {
+  private log(request: any) {
     this.logger.info('LoggerRequestInterceptor - log', {
-      requestId,
       ...request,
     });
   }

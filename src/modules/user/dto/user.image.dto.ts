@@ -1,7 +1,7 @@
 import { IsUUID } from 'class-validator';
-import { UserRelationshipDTO } from './user.dto';
+import { UserRelationshipDto } from './user.dto';
 
-export class UserImageDTO extends UserRelationshipDTO {
+export class UserImageDto extends UserRelationshipDto {
   @IsUUID()
   imageId: string;
 }

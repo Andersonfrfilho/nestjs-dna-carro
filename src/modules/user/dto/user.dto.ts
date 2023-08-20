@@ -13,12 +13,12 @@ import {
   ValidateIf,
 } from 'class-validator';
 
-export class UserRelationshipDTO {
+export class UserRelationshipDto {
   @IsUUID(undefined, { message: 'userId need format in uuid valid' })
   userId: string;
 }
 
-export class UserDTO {
+export class UserDto {
   @MaxLength(30, { message: 'name need height max 30 characters' })
   @MinLength(3, { message: 'name need height min 3 characters' })
   @IsString({ message: 'name need format in string valid' })

@@ -1,15 +1,17 @@
-import { isValidCPF } from '@src/utils/is-valid-cpf';
-import { IsNumber, IsString, ValidateIf } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
-export class TermRelationshipDTO {
+export class TermRelationshipDto {
   @IsNumber()
   termId: number;
 }
 
-export class TermDTO {
+export class TermDto {
   @IsString()
   version: string;
 
   @IsString()
   description: string;
+
+  @IsBoolean()
+  active: boolean;
 }

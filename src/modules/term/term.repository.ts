@@ -10,6 +10,9 @@ export class TermRepository implements TermRepositoryInterface {
     @InjectRepository(Term)
     private termRepository: Repository<Term>,
   ) {}
+  async findByVersion(version: string): Promise<Term | null> {
+    return this.termRepository.findOne({ where: { version } });
+  }
   async findById(id: string): Promise<Term | null> {
     return this.termRepository.findOne({ where: { id } });
   }

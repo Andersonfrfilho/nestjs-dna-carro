@@ -1,6 +1,6 @@
 type Milliseconds = number;
 
-export interface GetParamsDTO<T> {
+export interface GetParamsDto<T> {
   payload: T;
   key: string;
   ttl: Milliseconds;

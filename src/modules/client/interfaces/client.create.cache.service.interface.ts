@@ -1,10 +1,5 @@
-import { Address } from '@src/modules/address/address.entity';
-import { Image } from '@src/modules/image/image.entity';
-import { Phone } from '@src/modules/phone/phone.entity';
-import { Term } from '@src/modules/term/term.entity';
-import { User } from '@src/modules/user/entities/user.entity';
-import { ClassClientCacheCreateParamsDTO } from '../dto/client.controller.dto';
+import { ClientCacheCreateServiceParamsDto } from '../dto/client.service.dto';
 
 export interface ClientCreateCacheServiceInterface {
-  execute(params: ClassClientCacheCreateParamsDTO): Promise<void>;
+  execute(params: ClientCacheCreateServiceParamsDto): Promise<void>;
 }

@@ -44,10 +44,9 @@ import {
   CacheProviderInterface,
 } from '@src/providers/cache/cache.provider.interface';
 import { CACHE_KEYS } from '@src/providers/cache/constants/cache.constant.keys';
-import { ErrorCustom } from '@src/error/error.custom';
+import { CustomException } from '@src/error/custom.exception';
 import {
   NOT_FOUND_CACHE_INFORMATION,
-  NameErrorCacheInformationFlow,
   TERM_NOT_FOUND,
   TYPE_USER_NOT_FOUND,
 } from '@src/error/error.constant';
@@ -62,8 +61,9 @@ import {
 import { TypesUsers } from '@src/modules/types-users/types-users.constant';
 import {
   ClientCreateServiceInterface,
-  ClientCreateServiceParamsDTO,
+  ClientCreateServiceParamsDto,
 } from '../interfaces/client.create.service.interface';
+import { NameCacheKeyFlow } from '../client.constant';
 
 @Injectable()
 export class ClientCreateService implements ClientCreateServiceInterface {
@@ -95,50 +95,50 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     @Inject(CACHE_PROVIDER)
     private cacheProvider: CacheProviderInterface,
   ) {}
-  async execute(params: ClientCreateServiceParamsDTO): Promise<void> {
+  async execute(params: ClientCreateServiceParamsDto): Promise<void> {
     const key = `${CACHE_KEYS.CLIENT_CREATE_SERVICE}:${params.user.cpf}`;
 
     const userCache =
-      await this.cacheProvider.get<ClientCreateServiceParamsDTO>(key);
+      await this.cacheProvider.get<ClientCreateServiceParamsDto>(key);
 
     if (!userCache) {
-      throw new ErrorCustom(NOT_FOUND_CACHE_INFORMATION());
+      throw new CustomException(NOT_FOUND_CACHE_INFORMATION());
     }
 
     if (!userCache.user) {
-      throw new ErrorCustom(
-        NOT_FOUND_CACHE_INFORMATION(NameErrorCacheInformationFlow.user),
+      throw new CustomException(
+        NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.user),
       );
     }
 
     if (!userCache.phone) {
-      throw new ErrorCustom(
-        NOT_FOUND_CACHE_INFORMATION(NameErrorCacheInformationFlow.phone),
+      throw new CustomException(
+        NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.phone),
       );
     }
 
     if (!userCache.address) {
-      throw new ErrorCustom(
-        NOT_FOUND_CACHE_INFORMATION(NameErrorCacheInformationFlow.address),
+      throw new CustomException(
+        NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.address),
       );
     }
 
     if (!userCache.term || !userCache.term.id) {
-      throw new ErrorCustom(
-        NOT_FOUND_CACHE_INFORMATION(NameErrorCacheInformationFlow.term),
+      throw new CustomException(
+        NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.term),
       );
     }
 
-    if (!userCache.photo) {
-      throw new ErrorCustom(
-        NOT_FOUND_CACHE_INFORMATION(NameErrorCacheInformationFlow.photo),
+    if (!userCache.image) {
+      throw new CustomException(
+        NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.image),
       );
     }
 
     const term = await this.termRepository.findById(userCache.term.id);
 
     if (!term) {
-      throw new ErrorCustom(TERM_NOT_FOUND);
+      throw new CustomException(TERM_NOT_FOUND);
     }
 
     const userType = await this.typesUserRepository.findByName(
@@ -146,7 +146,7 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     );
 
     if (!userType) {
-      throw new ErrorCustom(TYPE_USER_NOT_FOUND);
+      throw new CustomException(TYPE_USER_NOT_FOUND);
     }
 
     const user = await this.userRepository.save(userCache.user);
@@ -155,7 +155,7 @@ export class ClientCreateService implements ClientCreateServiceInterface {
 
     const address = await this.addressRepository.save(userCache.address);
 
-    const photo = await this.imageRepository.save(userCache.photo);
+    const image = await this.imageRepository.save(userCache.image);
 
     await this.userPhoneRepository.save({
       userId: user.id,
@@ -172,7 +172,7 @@ export class ClientCreateService implements ClientCreateServiceInterface {
 
     await this.userImageProfileRepository.save({
       userId: user.id,
-      userImageProfileId: photo.id,
+      userImageProfileId: image.id,
     });
 
     await this.userTermRepository.save({
