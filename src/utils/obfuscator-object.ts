@@ -1,8 +1,18 @@
 const typeAcceptToFormats: string[] = ['number', 'string'];
-const dataObfuscated = [
+
+type ObfuscateWithParamsDto = string | number;
+interface Obfuscated {
+  keys: Array<string>;
+  obfuscateWith: (value: ObfuscateWithParamsDto) => string;
+}
+const dataObfuscated: Obfuscated[] = [
   {
     keys: ['chave8', 'chave4', 'chave5'],
-    obfuscateWith: (value: string | number) => `***${value}`,
+    obfuscateWith: (value: ObfuscateWithParamsDto) => `***${value}`,
+  },
+  {
+    keys: ['base64'],
+    obfuscateWith: () => `***`,
   },
 ];
 

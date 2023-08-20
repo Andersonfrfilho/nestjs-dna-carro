@@ -9,6 +9,7 @@ import { Term } from '@src/modules/term/term.entity';
 import { UserDto } from '@src/modules/user/dto/user.dto';
 import { User } from '@src/modules/user/entities/user.entity';
 import { IsOptional, IsString, ValidateNested } from 'class-validator';
+import { NameCacheKeyFlow } from '../client.constant';
 
 export class ClientCacheCreateServiceParamsDto {
   @ValidateNested()
@@ -32,7 +33,7 @@ export class ClientCacheCreateServiceParamsDto {
   term: TermDto;
 
   @IsString({ message: 'key to cache need format string' })
-  key: string;
+  key: NameCacheKeyFlow;
 }
 
 export interface ClientCacheCreateParamsDto {

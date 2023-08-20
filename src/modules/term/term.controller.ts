@@ -5,17 +5,18 @@ import {
   TERM_CREATE_SERVICE,
   TermCreateServiceInterface,
 } from './interfaces/term.create.service.interface';
+import { Term } from './term.entity';
 
 @Controller('term')
-export class ClientController {
+export class TermController {
   constructor(
     @Inject(TERM_CREATE_SERVICE)
     private termCreateService: TermCreateServiceInterface,
   ) {}
   @Post()
-  async cacheCreate(
+  async create(
     @Body() createTerm: TermCreateControllerParamsDto,
-  ): Promise<void> {
-    await this.termCreateService.execute(createTerm);
+  ): Promise<Term> {
+    return this.termCreateService.execute(createTerm);
   }
 }

@@ -8,7 +8,7 @@ export interface ClientCreateServiceParamsDto {
   user: Partial<User>;
   phone: Partial<Phone>;
   address: Partial<Address>;
-  photo: Partial<Image>;
+  image: Partial<Image>;
   term: Partial<Term>;
 }
 

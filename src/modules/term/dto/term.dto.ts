@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class TermRelationshipDto {
   @IsNumber()
@@ -11,4 +11,7 @@ export class TermDto {
 
   @IsString()
   description: string;
+
+  @IsBoolean()
+  active: boolean;
 }

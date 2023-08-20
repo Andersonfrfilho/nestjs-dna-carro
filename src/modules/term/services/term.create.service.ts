@@ -20,13 +20,14 @@ export class TermCreateService implements TermCreateServiceInterface {
   async execute({
     version,
     description,
+    active,
   }: TermCreateServiceParamsDto): Promise<Term> {
     const termFound = await this.termRepository.findByVersion(version);
-
+    console.log();
     if (termFound) {
       throw new CustomException(TERM_VERSION_ALREADY_EXIST);
     }
 
-    return this.termRepository.save({ version, description });
+    return this.termRepository.save({ version, description, active });
   }
 }

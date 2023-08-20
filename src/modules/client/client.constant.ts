@@ -1,1 +1,7 @@
-export const CLIENT_CACHE_KEYS = ['user', 'address', 'phone', 'image'];
+export enum NameCacheKeyFlow {
+  user = 'user',
+  phone = 'phone',
+  address = 'address',
+  term = 'term',
+  image = 'image',
+}

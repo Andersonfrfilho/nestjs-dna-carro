@@ -1,17 +1,13 @@
+import { NameCacheKeyFlow } from '@src/modules/client/client.constant';
 import { HttpStatusCode } from 'axios';
 
-export enum NameErrorCacheInformationFlow {
-  all = 'all',
-  user = 'user',
-  phone = 'phone',
-  address = 'address',
-  term = 'term',
-  photo = 'photo',
-}
+export const NOT_FOUND_ROUTE_API = (nameRoute = '') => ({
+  code: 1012,
+  message: `Not found ${nameRoute}`,
+  statusCode: HttpStatusCode.NotFound,
+});
 
-export const NOT_FOUND_CACHE_INFORMATION = (
-  nameFlow = NameErrorCacheInformationFlow.all,
-) => ({
+export const NOT_FOUND_CACHE_INFORMATION = (nameFlow = '') => ({
   code: 1001,
   message: `Not found cache information for save retry flow ${nameFlow}`,
   statusCode: HttpStatusCode.NotFound,

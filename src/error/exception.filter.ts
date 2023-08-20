@@ -1,7 +1,16 @@
-import { Catch, ArgumentsHost, Injectable, Inject } from '@nestjs/common';
+import {
+  Catch,
+  ArgumentsHost,
+  Injectable,
+  Inject,
+  NotFoundException,
+} from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { CustomException } from './custom.exception';
-import { GENERIC_INTERNAL_SERVER_ERROR } from './error.constant';
+import {
+  GENERIC_INTERNAL_SERVER_ERROR,
+  NOT_FOUND_ROUTE_API,
+} from './error.constant';
 import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
@@ -24,6 +33,10 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
       exception,
     });
 
+    if (exception instanceof NotFoundException) {
+      const error = new CustomException(NOT_FOUND_ROUTE_API(exception.message));
+      return response.status(error.statusCode).send(error);
+    }
     if (exception instanceof CustomException) {
       return response.status(exception.statusCode).send({
         code: exception.code,

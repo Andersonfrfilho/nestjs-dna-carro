@@ -1,15 +1,13 @@
 import { Body, Controller, Inject, Param, Post } from '@nestjs/common';
 import { ClientCacheCreateControllerParamsDto } from './dto/client.controller.dto';
 import { CLIENT_CREATE_CACHE_SERVICE } from './interfaces/client.interfaces';
-import {
-  ClientCreateCacheServiceInterface,
-  KEY_CACHE,
-} from './interfaces/client.create.cache.service.interface';
+import { ClientCreateCacheServiceInterface } from './interfaces/client.create.cache.service.interface';
 import { IsEnum } from 'class-validator';
+import { NameCacheKeyFlow } from './client.constant';
 
 export class CacheCreatePathParamDto {
-  @IsEnum(KEY_CACHE)
-  key: string;
+  @IsEnum(NameCacheKeyFlow)
+  key: NameCacheKeyFlow;
 }
 
 @Controller('client')
