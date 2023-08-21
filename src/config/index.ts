@@ -12,6 +12,9 @@ export type Config = {
   api: {
     port: number;
   };
+  token: {
+    secret: string;
+  };
   database: {
     port: number;
     host: string;

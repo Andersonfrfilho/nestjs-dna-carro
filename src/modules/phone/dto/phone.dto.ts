@@ -1,4 +1,4 @@
-import { isValidCPF } from '@src/utils/is-valid-cpf';
+import { isValidPhoneNumber } from '@src/utils/is-valid-phone-number';
 import { IsString, IsUUID, ValidateIf } from 'class-validator';
 
 export class PhoneRelationshipDto {
@@ -13,6 +13,6 @@ export class PhoneDto {
   @IsString()
   ddd: string;
 
-  @ValidateIf((value) => isValidCPF(value))
+  @ValidateIf((value) => isValidPhoneNumber(value))
   number: string;
 }
