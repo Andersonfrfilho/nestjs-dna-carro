@@ -4,6 +4,9 @@ export const dev = (): Config => ({
   api: {
     port: parseInt(process.env.PORT ?? '', 10) || 3333,
   },
+  token: {
+    secret: process.env.TOKEN_SECRET ?? '',
+  },
   database: {
     port: parseInt(process.env.DATABASE_PORT ?? '', 10) || 5432,
     host: process.env.DATABASE_HOST ?? '',
