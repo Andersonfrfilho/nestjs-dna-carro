@@ -1,4 +1,8 @@
 export interface TokenProviderAssignParamsDto<T> {
-  payload: T;
-  expireIn: number;
+  payloadParams: T;
+  expiresIn: number;
+}
+
+export interface TokenProviderVerifyParamsDto {
+  token: string;
 }

@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { LoggerModule } from '../logger/logger.module';
 import { JwtModule } from '@nestjs/jwt';
 import config from '@src/config';
+import { TOKEN_PROVIDER } from './token.provider.interface';
+import { TokenProvider } from './token.provider';
 
 @Module({
   imports: [

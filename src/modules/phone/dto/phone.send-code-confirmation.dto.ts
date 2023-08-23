@@ -1,5 +1,7 @@
 import { isValidPhoneNumber } from '@src/utils/is-valid-phone-number';
-import { IsString, ValidateIf } from 'class-validator';
+import { IsEmail, IsString, ValidateIf } from 'class-validator';
+
+export type PhoneSendCodeConfirmationTokenPayload = { code: string };
 
 export class PhoneSendCodeConfirmationDto {
   @IsString()
@@ -7,6 +9,9 @@ export class PhoneSendCodeConfirmationDto {
 
   @ValidateIf((value) => isValidPhoneNumber(value))
   number: string;
+
+  @IsEmail()
+  email: string;
 }
 
 export type PhoneSendCodeConfirmationServiceParamsDto =

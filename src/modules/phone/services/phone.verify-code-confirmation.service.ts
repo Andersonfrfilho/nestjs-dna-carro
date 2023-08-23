@@ -3,6 +3,12 @@ import {
   USER_REPOSITORY,
   UserRepositoryInterface,
 } from '@modules/user/interfaces/repositories/user.repository.interface';
+import {
+  PHONE_REPOSITORY,
+  PhoneRepositoryInterface,
+} from '../interfaces/phone.repository.interface';
+import { PhoneVerifyCodeConfirmationServiceInterface } from '../interfaces/phone.verify-code-confirmation.interface';
+import { PhoneVerifyCodeConfirmationServiceParamsDto } from '../dto/phone.verify-code-confirmation.dto';
 
 @Injectable()
 export class PhoneVerifyCodeConfirmationService
@@ -16,7 +22,5 @@ export class PhoneVerifyCodeConfirmationService
   ) {}
   async execute(
     params: PhoneVerifyCodeConfirmationServiceParamsDto,
-  ): Promise<void> {
-    return '';
-  }
+  ): Promise<void> {}
 }

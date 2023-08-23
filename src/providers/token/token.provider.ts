@@ -1,22 +1,59 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { TokenProviderInterface } from './token.provider.interface';
+import {
+  TokenProviderInterface,
+  TokenAssignParamsPayloadDto,
+} from './token.provider.interface';
 import config from '@src/config';
-import { TokenProviderAssignParamsDto } from './token.dto';
+import {
+  TokenProviderAssignParamsDto,
+  TokenProviderVerifyParamsDto,
+} from './token.dto';
 import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '../logger/logger.provider.interface';
-
+import { JwtService } from '@nestjs/jwt';
+import { CustomException } from '@src/error/custom.exception';
+import { TOKEN_ERROR } from './token.error';
 @Injectable()
 export class TokenProvider implements TokenProviderInterface {
   private secret: string;
   constructor(
     @Inject(LOGGER_PROVIDER)
     private readonly loggerProvider: LoggerProviderInterface,
+    private jwtService: JwtService,
   ) {
     this.secret = config.token.secret;
   }
-  assign<T>(data: TokenProviderAssignParamsDto<T>): Promise<string> {
-    throw new Error('Method not implemented.');
+  async verify<T>({ token }: TokenProviderVerifyParamsDto): Promise<T> {
+    try {
+      const payload = await this.jwtService.verifyAsync<any>(token, {
+        secret: this.secret,
+      });
+      return payload as T;
+    } catch (error) {
+      this.loggerProvider.error('TokenProvider - verify', {
+        error,
+      });
+      throw new CustomException(TOKEN_ERROR);
+    }
+  }
+
+  async assign<T>({
+    expiresIn,
+    payloadParams,
+  }: TokenProviderAssignParamsDto<
+    T & TokenAssignParamsPayloadDto
+  >): Promise<string> {
+    const payload = { sub: payloadParams?.id, email: payloadParams.email };
+    try {
+      const token = await this.jwtService.signAsync(payload, { expiresIn });
+      return token;
+    } catch (error) {
+      this.loggerProvider.error('TokenProvider - verify', {
+        error,
+      });
+      throw new CustomException(TOKEN_ERROR);
+    }
   }
 }
