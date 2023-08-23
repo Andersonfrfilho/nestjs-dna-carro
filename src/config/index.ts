@@ -12,6 +12,11 @@ export type Config = {
   api: {
     port: number;
   };
+  sms: {
+    accountId: string;
+    authToken: string;
+    number: string;
+  };
   token: {
     secret: string;
   };

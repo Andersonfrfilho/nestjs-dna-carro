@@ -7,6 +7,11 @@ export const stg = (): Config => ({
   token: {
     secret: process.env.TOKEN_SECRET ?? '',
   },
+  sms: {
+    accountId: process.env.SMS_ACCOUNT_ID ?? '',
+    authToken: process.env.SMS_AUTH_TOKEN ?? '',
+    number: process.env.SMS_NUMBER ?? '',
+  },
   database: {
     port: parseInt(process.env.DATABASE_PORT ?? '', 10) || 5432,
     host: process.env.DATABASE_HOST ?? '',
