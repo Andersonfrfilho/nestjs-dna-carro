@@ -21,7 +21,7 @@ export class CreateAppointmentPaymentType1690697960428
           },
           {
             name: 'payment_type_id',
-            type: 'uuid',
+            type: 'integer',
           },
           {
             name: 'amount',

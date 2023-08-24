@@ -19,7 +19,7 @@ export class CreateUserTermsAccept1690696775753 implements MigrationInterface {
           },
           {
             name: 'term_id',
-            type: 'uuid',
+            type: 'integer',
           },
           {
             name: 'accept',
@@ -66,8 +66,11 @@ export class CreateUserTermsAccept1690696775753 implements MigrationInterface {
         ],
         indices: [
           {
-            columnNames: ['user_id', 'type'],
+            columnNames: ['user_id'],
             isUnique: true,
+          },
+          {
+            columnNames: ['term_id'],
           },
         ],
       }),
@@ -75,6 +78,6 @@ export class CreateUserTermsAccept1690696775753 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users_terms_accepts');
+    await queryRunner.dropTable('users_terms');
   }
 }
