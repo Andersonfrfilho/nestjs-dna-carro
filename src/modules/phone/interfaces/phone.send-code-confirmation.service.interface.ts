@@ -1,5 +1,7 @@
-import { PhoneSendCodeConfirmationServiceParamsDto } from '../dto/phone.send-code-confirmation.dto';
+import { PhoneSendCodeConfirmationCreateClientParamsDto } from '../dto/phone.send-code-confirmation.dto';
 
-export interface PhoneSendCodeConfirmationServiceInterface {
-  execute(params: PhoneSendCodeConfirmationServiceParamsDto): Promise<void>;
+export interface PhoneSendCodeConfirmationCreateClientInterface {
+  execute(
+    params: PhoneSendCodeConfirmationCreateClientParamsDto,
+  ): Promise<void>;
 }

@@ -4,10 +4,10 @@ import {
   CacheProviderInterface,
 } from '@src/providers/cache/cache.provider.interface';
 import {
-  PhoneSendCodeConfirmationServiceParamsDto,
-  PhoneSendCodeConfirmationTokenPayload,
+  PhoneSendCodeConfirmationCreateClientParamsDto,
+  PhoneSendCodeConfirmationCreateClientTokenPayload,
 } from '../dto/phone.send-code-confirmation.dto';
-import { PhoneSendCodeConfirmationServiceInterface } from '../interfaces/phone.send-code-confirmation.service.interface';
+import { PhoneSendCodeConfirmationCreateClientInterface } from '../interfaces/phone.send-code-confirmation.service.interface';
 import {
   SMS_PROVIDER,
   SmsProviderInterface,
@@ -29,8 +29,8 @@ import {
 } from '../phone.constant';
 
 @Injectable()
-export class PhoneSendCodeConfirmationService
-  implements PhoneSendCodeConfirmationServiceInterface
+export class PhoneSendCodeConfirmationCreateClient
+  implements PhoneSendCodeConfirmationCreateClientInterface
 {
   constructor(
     @Inject(CACHE_PROVIDER)
@@ -42,7 +42,7 @@ export class PhoneSendCodeConfirmationService
   ) {}
   async execute({
     email,
-  }: PhoneSendCodeConfirmationServiceParamsDto): Promise<void> {
+  }: PhoneSendCodeConfirmationCreateClientParamsDto): Promise<void> {
     const keyGetData = CACHE_KEYS.CLIENT_CREATE_SERVICE({
       email: email,
       key: NameCacheKeyFlow.phone,
@@ -65,13 +65,15 @@ export class PhoneSendCodeConfirmationService
     });
 
     const token =
-      await this.tokenProvider.assign<PhoneSendCodeConfirmationTokenPayload>({
-        expiresIn: EXPIRE_IN_TOKEN_SEND_CODE,
-        payloadParams: {
-          email,
-          code,
+      await this.tokenProvider.assign<PhoneSendCodeConfirmationCreateClientTokenPayload>(
+        {
+          expiresIn: EXPIRE_IN_TOKEN_SEND_CODE,
+          payloadParams: {
+            email,
+            code,
+          },
         },
-      });
+      );
 
     await this.cacheProvider.set({
       key,
