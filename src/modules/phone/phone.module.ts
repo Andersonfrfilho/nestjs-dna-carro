@@ -6,9 +6,11 @@ import { PHONE_REPOSITORY } from './interfaces/phone.repository.interface';
 import { PhoneRepository } from './phone.repository';
 import { CacheClientModule } from '@src/providers/cache/cache.module';
 import { SmsModule } from '@src/providers/sms/sms.module';
-import { PhoneSendCodeConfirmationCreateClient } from './services/phone.send-code-confirmation.service';
-import { PHONE_SEND_CODE_CONFIRMATION } from '@src/providers/sms/sms.constant';
+import { PhoneSendCodeConfirmationCreateClientService } from './services/phone.send-code-confirmation-create-client.service';
 import { TokenModule } from '@src/providers/token/token.module';
+import { PHONE_SEND_CODE_CONFIRMATION_CREATE_CLIENT_SERVICE } from './interfaces/phone.send-code-confirmation-create-client.interface';
+import { PHONE_VERIFY_CODE_CONFIRMATION_CREATE_CLIENT_SERVICE } from './interfaces/phone.verify-code-confirmation-create-client.interface';
+import { PhoneVerifyCodeConfirmationCreateClientService } from './services/phone.verify-code-confirmation-create-client.service';
 
 @Module({
   imports: [
@@ -23,8 +25,12 @@ import { TokenModule } from '@src/providers/token/token.module';
       useClass: PhoneRepository,
     },
     {
-      provide: PHONE_SEND_CODE_CONFIRMATION,
-      useClass: PhoneSendCodeConfirmationCreateClient,
+      provide: PHONE_SEND_CODE_CONFIRMATION_CREATE_CLIENT_SERVICE,
+      useClass: PhoneSendCodeConfirmationCreateClientService,
+    },
+    {
+      provide: PHONE_VERIFY_CODE_CONFIRMATION_CREATE_CLIENT_SERVICE,
+      useClass: PhoneVerifyCodeConfirmationCreateClientService,
     },
   ],
   controllers: [PhoneController],

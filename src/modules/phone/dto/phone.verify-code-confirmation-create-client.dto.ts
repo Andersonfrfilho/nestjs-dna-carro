@@ -1,16 +1,28 @@
-import { isValidPhoneNumber } from '@src/utils/is-valid-phone-number';
-import { IsString, ValidateIf } from 'class-validator';
+import { IsEmail, IsString, Length } from 'class-validator';
+import { PhoneDto } from './phone.dto';
 
-export class PhoneVerifyCodeConfirmationDto {
+export class PhoneVerifyCodeConfirmationCreateClientDto extends PhoneDto {
   @IsString()
-  ddd: string;
+  @Length(4)
+  code: string;
 
-  @ValidateIf((value) => isValidPhoneNumber(value))
-  number: string;
+  @IsEmail()
+  email: string;
 }
 
-export type PhoneVerifyCodeConfirmationServiceParamsDto =
-  PhoneVerifyCodeConfirmationDto;
+export type PhoneVerifyCodeConfirmationCreateClientServiceParamsDto =
+  PhoneVerifyCodeConfirmationCreateClientDto;
 
-export type PhoneVerifyCodeConfirmationControllerParamsDto =
-  PhoneVerifyCodeConfirmationDto;
+export type PhoneVerifyCodeConfirmationCreateClientControllerParamsDto =
+  PhoneVerifyCodeConfirmationCreateClientDto;
+
+export type PhoneVerifyCodeConfirmationGetTokenCacheDto = {
+  token: string;
+};
+
+export type PhoneVerifyCodeConfirmationGetTokenPayloadCacheDto = {
+  email: string;
+  code: string;
+  iat: number;
+  exp: number;
+};

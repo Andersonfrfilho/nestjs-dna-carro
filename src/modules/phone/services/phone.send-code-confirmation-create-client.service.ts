@@ -6,8 +6,7 @@ import {
 import {
   PhoneSendCodeConfirmationCreateClientParamsDto,
   PhoneSendCodeConfirmationCreateClientTokenPayload,
-} from '../dto/phone.send-code-confirmation.dto';
-import { PhoneSendCodeConfirmationCreateClientInterface } from '../interfaces/phone.send-code-confirmation.service.interface';
+} from '../dto/phone.send-code-confirmation-create-client.dto';
 import {
   SMS_PROVIDER,
   SmsProviderInterface,
@@ -21,16 +20,18 @@ import {
 } from '@src/providers/token/token.provider.interface';
 import { CustomException } from '@src/error/custom.exception';
 import { CACHE_DATA_CONFIRMATION_PHONE_NOT_FOUND } from '../phone.error';
-import { PHONE_SEND_CODE_CONFIRMATION } from '@src/providers/sms/sms.constant';
+import { PHONE_SEND_CODE_CONFIRMATION_SMS_MESSAGE } from '@src/providers/sms/sms.constant';
 import { randomInt } from 'crypto';
 import {
   EXPIRE_IN_TOKEN_SEND_CODE,
   EXPIRE_IN_TOKEN_SEND_CODE_TTL,
 } from '../phone.constant';
+import { PhoneSendCodeConfirmationCreateClientServiceInterface } from '../interfaces/phone.send-code-confirmation-create-client.interface';
+import { ENVIRONMENT_TEST_CONFIG, configEnvironment } from '@src/config';
 
 @Injectable()
-export class PhoneSendCodeConfirmationCreateClient
-  implements PhoneSendCodeConfirmationCreateClientInterface
+export class PhoneSendCodeConfirmationCreateClientService
+  implements PhoneSendCodeConfirmationCreateClientServiceInterface
 {
   constructor(
     @Inject(CACHE_PROVIDER)
@@ -56,13 +57,20 @@ export class PhoneSendCodeConfirmationCreateClient
 
     const { countryCode, ddd, number } = cacheData;
 
-    const to = `+${countryCode}${ddd}${number}`;
-
-    const code = randomInt(1000, 9999).toString();
+    const to = `${countryCode}${ddd}${number}`;
 
     const key = CACHE_KEYS.PHONE_SEND_VERIFY_CODE({
       email,
     });
+
+    const isSendMessageAble =
+      !ENVIRONMENT_TEST_CONFIG.includes(configEnvironment);
+
+    const GET_LAST_FOUR_DIGIT_NUMBER = 4;
+
+    const code = isSendMessageAble
+      ? randomInt(1000, 9999).toString()
+      : number.slice(-GET_LAST_FOUR_DIGIT_NUMBER);
 
     const token =
       await this.tokenProvider.assign<PhoneSendCodeConfirmationCreateClientTokenPayload>(
@@ -81,9 +89,11 @@ export class PhoneSendCodeConfirmationCreateClient
       ttl: EXPIRE_IN_TOKEN_SEND_CODE_TTL,
     });
 
-    await this.smsProvider.send({
-      message: PHONE_SEND_CODE_CONFIRMATION(code),
-      to,
-    });
+    if (isSendMessageAble) {
+      await this.smsProvider.send({
+        message: PHONE_SEND_CODE_CONFIRMATION_SMS_MESSAGE(code),
+        to,
+      });
+    }
   }
 }

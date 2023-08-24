@@ -36,7 +36,7 @@ export class SmsProvider implements SmsProviderInterface {
     const url = new URL(
       `${this.baseURL}/${this.accountId}/Messages.json`,
     ).toString();
-
+    console.log(to);
     const params = new URLSearchParams({
       To: to,
       From: this.from,

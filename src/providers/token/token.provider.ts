@@ -30,7 +30,7 @@ export class TokenProvider implements TokenProviderInterface {
       const payload = await this.jwtService.verifyAsync<any>(token, {
         secret: this.secret,
       });
-      return payload as T;
+      return payload as unknown as T;
     } catch (error) {
       this.loggerProvider.error('TokenProvider - verify', {
         error,
@@ -45,7 +45,8 @@ export class TokenProvider implements TokenProviderInterface {
   }: TokenProviderAssignParamsDto<
     T & TokenAssignParamsPayloadDto
   >): Promise<string> {
-    const payload = { sub: payloadParams?.id, email: payloadParams.email };
+    const { id, email, ...rest } = payloadParams;
+    const payload = { sub: id, email: email, ...rest };
     try {
       const token = await this.jwtService.signAsync(payload, { expiresIn });
       return token;
