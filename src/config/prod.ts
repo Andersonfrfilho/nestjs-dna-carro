@@ -3,6 +3,18 @@ import { Config } from '.';
 export const prod = (): Config => ({
   api: {
     port: parseInt(process.env.PORT ?? '', 10) || 3333,
+    phone: {
+      numberPossibleAttempts:
+        parseInt(process.env.SMS_ACCOUNT_ID ?? '', 10) ?? 3,
+    },
+  },
+  token: {
+    secret: process.env.TOKEN_SECRET ?? '',
+  },
+  sms: {
+    accountId: process.env.SMS_ACCOUNT_ID ?? '',
+    authToken: process.env.SMS_AUTH_TOKEN ?? '',
+    number: process.env.SMS_NUMBER ?? '',
   },
   database: {
     port: parseInt(process.env.DATABASE_PORT ?? '', 10) || 5432,

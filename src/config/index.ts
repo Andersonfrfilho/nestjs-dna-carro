@@ -8,9 +8,25 @@ enum EnvironmentConfig {
   stg = 'stg',
 }
 
+export const ENVIRONMENT_TEST_CONFIG = [
+  EnvironmentConfig.dev,
+  EnvironmentConfig.stg,
+];
+
 export type Config = {
   api: {
     port: number;
+    phone: {
+      numberPossibleAttempts: number;
+    };
+  };
+  sms: {
+    accountId: string;
+    authToken: string;
+    number: string;
+  };
+  token: {
+    secret: string;
   };
   database: {
     port: number;
@@ -40,7 +56,7 @@ const configs: Configs = {
   stg: stg(),
 };
 
-const configEnvironment: EnvironmentConfig =
+export const configEnvironment: EnvironmentConfig =
   (process.env.ENVIRONMENT as EnvironmentConfig) || EnvironmentConfig.dev;
 
 const config: Config = configs[configEnvironment];
