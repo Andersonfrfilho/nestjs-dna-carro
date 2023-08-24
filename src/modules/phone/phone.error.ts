@@ -29,3 +29,9 @@ export const EMAIL_TOKEN_CONFIRMATION_INCORRECT = {
   message: 'EMAIL_TOKEN_CONFIRMATION_INCORRECT',
   statusCode: HttpStatusCode.BadRequest,
 };
+
+export const EXCESSIVE_TRY_CODE_PHONE_CONFIRMATION = {
+  code: 1025,
+  message: 'EXCESSIVE_TRY_CODE_PHONE_CONFIRMATION',
+  statusCode: HttpStatusCode.BadRequest,
+};

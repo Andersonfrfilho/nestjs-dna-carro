@@ -16,6 +16,9 @@ export const ENVIRONMENT_TEST_CONFIG = [
 export type Config = {
   api: {
     port: number;
+    phone: {
+      numberPossibleAttempts: number;
+    };
   };
   sms: {
     accountId: string;

@@ -15,7 +15,7 @@ import {
   CACHE_PROVIDER,
   CacheProviderInterface,
 } from '@src/providers/cache/cache.provider.interface';
-import { PhoneDto } from '../dto/phone.dto';
+import { PhoneCacheCreateDto, PhoneDto } from '../dto/phone.dto';
 import { CustomException } from '@src/error/custom.exception';
 import {
   CACHE_DATA_CONFIRMATION_PHONE_NOT_FOUND,
@@ -43,14 +43,12 @@ export class PhoneVerifyCodeConfirmationCreateClientService
     number,
     email,
   }: PhoneVerifyCodeConfirmationCreateClientServiceParamsDto): Promise<void> {
-    console.log('############## - 1');
     const keyGetPhoneData = CACHE_KEYS.CLIENT_CREATE_SERVICE({
       email: email,
       key: NameCacheKeyFlow.phone,
     });
-    console.log('############## - 1');
 
-    const cachePhoneData = await this.cacheProvider.get<PhoneDto>(
+    const cachePhoneData = await this.cacheProvider.get<PhoneCacheCreateDto>(
       keyGetPhoneData,
     );
 
@@ -62,6 +60,7 @@ export class PhoneVerifyCodeConfirmationCreateClientService
       countryCode: countryCodeCache,
       ddd: dddCache,
       number: numberCache,
+      numberAttempts,
     } = cachePhoneData;
 
     if (
@@ -95,16 +94,22 @@ export class PhoneVerifyCodeConfirmationCreateClientService
       throw new CustomException(EMAIL_TOKEN_CONFIRMATION_INCORRECT);
     }
 
-    if (codeToken.code !== code) {
-      throw new CustomException(PHONE_NUMBER_CODE_CONFIRMATION_INCORRECT);
-    }
-
     const payload = {
       countryCode,
       ddd,
       number,
       confirm: true,
+      numberAttempts: numberAttempts + 1,
     };
+
+    if (codeToken.code !== code) {
+      this.cacheProvider.set({
+        key: keyGetPhoneData,
+        payload,
+        ttl: CACHE_TTL.CLIENT_CREATE_SERVICE,
+      });
+      throw new CustomException(PHONE_NUMBER_CODE_CONFIRMATION_INCORRECT);
+    }
 
     this.cacheProvider.set({
       key: keyGetPhoneData,

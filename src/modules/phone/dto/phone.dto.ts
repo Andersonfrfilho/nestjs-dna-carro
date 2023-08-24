@@ -16,3 +16,7 @@ export class PhoneDto {
   @ValidateIf((value) => isValidPhoneNumber(value))
   number: string;
 }
+
+export class PhoneCacheCreateDto extends PhoneDto {
+  numberAttempts: number;
+}

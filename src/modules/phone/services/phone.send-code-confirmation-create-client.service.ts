@@ -13,18 +13,22 @@ import {
 } from '@src/providers/sms/sms.provider.interface';
 import { CACHE_KEYS } from '@src/providers/cache/constants/cache.constant.keys';
 import { NameCacheKeyFlow } from '@src/modules/client/client.constant';
-import { PhoneDto } from '../dto/phone.dto';
+import { PhoneCacheCreateDto, PhoneDto } from '../dto/phone.dto';
 import {
   TOKEN_PROVIDER,
   TokenProviderInterface,
 } from '@src/providers/token/token.provider.interface';
 import { CustomException } from '@src/error/custom.exception';
-import { CACHE_DATA_CONFIRMATION_PHONE_NOT_FOUND } from '../phone.error';
+import {
+  CACHE_DATA_CONFIRMATION_PHONE_NOT_FOUND,
+  EXCESSIVE_TRY_CODE_PHONE_CONFIRMATION,
+} from '../phone.error';
 import { PHONE_SEND_CODE_CONFIRMATION_SMS_MESSAGE } from '@src/providers/sms/sms.constant';
 import { randomInt } from 'crypto';
 import {
   EXPIRE_IN_TOKEN_SEND_CODE,
   EXPIRE_IN_TOKEN_SEND_CODE_TTL,
+  NUMBER_POSSIBLE_ATTEMPTS_CONFIRMATION_NUMBER,
 } from '../phone.constant';
 import { PhoneSendCodeConfirmationCreateClientServiceInterface } from '../interfaces/phone.send-code-confirmation-create-client.interface';
 import { ENVIRONMENT_TEST_CONFIG, configEnvironment } from '@src/config';
@@ -49,10 +53,18 @@ export class PhoneSendCodeConfirmationCreateClientService
       key: NameCacheKeyFlow.phone,
     });
 
-    const cacheData = await this.cacheProvider.get<PhoneDto>(keyGetData);
+    const cacheData = await this.cacheProvider.get<PhoneCacheCreateDto>(
+      keyGetData,
+    );
 
     if (!cacheData) {
       throw new CustomException(CACHE_DATA_CONFIRMATION_PHONE_NOT_FOUND);
+    }
+
+    const { numberAttempts } = cacheData;
+
+    if (numberAttempts > NUMBER_POSSIBLE_ATTEMPTS_CONFIRMATION_NUMBER) {
+      throw new CustomException(EXCESSIVE_TRY_CODE_PHONE_CONFIRMATION);
     }
 
     const { countryCode, ddd, number } = cacheData;
