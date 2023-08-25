@@ -10,10 +10,10 @@ const dataObfuscated: Obfuscated[] = [
     keys: ['chave8', 'chave4', 'chave5'],
     obfuscateWith: (value: ObfuscateWithParamsDto) => `***${value}`,
   },
-  {
-    keys: ['base64'],
-    obfuscateWith: () => `***`,
-  },
+  // {
+  //   keys: ['base64'],
+  //   obfuscateWith: () => `***`,
+  // },
 ];
 
 export function obfuscatorObject(params: any[]) {

@@ -14,6 +14,7 @@ import { AddressModule } from '@src/modules/address/address.module';
 import { TermModule } from '@src/modules/term/term.module';
 import { TypesUserModule } from '@src/modules/types-users/types-users.module';
 import { ImageModule } from '@src/modules/image/image.module';
+import { StorageModule } from '@src/providers/storage/storage.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ImageModule } from '@src/modules/image/image.module';
     TermModule,
     TypesUserModule,
     CacheClientModule,
+    StorageModule,
   ],
   providers: [
     {

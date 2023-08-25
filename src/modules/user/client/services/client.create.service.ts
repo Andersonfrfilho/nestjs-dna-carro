@@ -66,6 +66,10 @@ import { User } from '@src/modules/user/entities/user.entity';
 import { EMAIL_INFO_NOT_FOUND, USER_NOT_FOUND } from '../client.errors';
 import { ClientCreateServiceParamsDto } from '../dto/client.create.dto';
 import { ClientCacheCreateServiceParamsDto } from '../dto/client.create.cache.dto';
+import {
+  STORAGE_PROVIDER,
+  StorageProviderInterface,
+} from '@src/providers/storage/storage.provider.interface';
 
 @Injectable()
 export class ClientCreateService implements ClientCreateServiceInterface {
@@ -94,9 +98,10 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     private userTypesUserRepository: UserTypesUserRepositoryInterface,
     @Inject(CACHE_PROVIDER)
     private cacheProvider: CacheProviderInterface,
+    @Inject(STORAGE_PROVIDER)
+    private storageProvider: StorageProviderInterface,
   ) {}
   async execute(params: ClientCreateServiceParamsDto): Promise<User> {
-    console.log(params);
     if (!params.email) {
       throw new CustomException(EMAIL_INFO_NOT_FOUND);
     }
@@ -163,7 +168,13 @@ export class ClientCreateService implements ClientCreateServiceInterface {
 
       const address = await this.addressRepository.save(userCache.address);
 
-      const image = await this.imageRepository.save(userCache.image);
+      const imageUploaded = await this.storageProvider.uploadImageProfileBase64(
+        {
+          imageBase64: userCache.image.base64,
+        },
+      );
+
+      const image = await this.imageRepository.save({ name: '', url: '' });
 
       await this.userPhoneRepository.save({
         userId: user.id,

@@ -11,6 +11,14 @@ export const stg = (): Config => ({
   token: {
     secret: process.env.TOKEN_SECRET ?? '',
   },
+  storage: {
+    image: {
+      profile: {
+        name: process.env.STORAGE_IMAGE_PROFILE_BUCKET_NAME ?? '',
+        keyFileJson: process.env.STORAGE_IMAGE_PROFILE_PATH_KEY_JSON ?? '',
+      },
+    },
+  },
   sms: {
     accountId: process.env.SMS_ACCOUNT_ID ?? '',
     authToken: process.env.SMS_AUTH_TOKEN ?? '',

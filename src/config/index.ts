@@ -25,6 +25,14 @@ export type Config = {
     authToken: string;
     number: string;
   };
+  storage: {
+    image: {
+      profile: {
+        name: string;
+        keyFileJson: string;
+      };
+    };
+  };
   token: {
     secret: string;
   };

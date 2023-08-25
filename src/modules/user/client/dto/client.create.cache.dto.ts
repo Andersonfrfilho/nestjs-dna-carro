@@ -1,6 +1,5 @@
 import { Address } from '@src/modules/address/address.entity';
 import { AddressDto } from '@src/modules/address/dto/address.dto';
-import { ImageDto } from '@src/modules/image/dto/image.dto';
 import { Image } from '@src/modules/image/image.entity';
 import { PhoneDto } from '@src/modules/phone/dto/phone.dto';
 import { Phone } from '@src/modules/phone/phone.entity';
@@ -21,6 +20,12 @@ class TermCreateCacheDto extends TermDto {
   id: number;
 }
 
+class ImageBase64CreateCacheDto {
+  @IsOptional()
+  @IsString()
+  base64: string;
+}
+
 export class ClientCacheCreateDto {
   @ValidateNested()
   @IsOptional()
@@ -36,7 +41,7 @@ export class ClientCacheCreateDto {
 
   @IsOptional()
   @ValidateNested()
-  image: ImageDto;
+  image: ImageBase64CreateCacheDto;
 
   @IsOptional()
   @ValidateNested()
