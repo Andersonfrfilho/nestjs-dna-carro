@@ -18,7 +18,7 @@ export class UserTerm {
   userId: string;
 
   @Column({ name: 'term_id' })
-  termId: string;
+  termId: number;
 
   @Column()
   accept: boolean;

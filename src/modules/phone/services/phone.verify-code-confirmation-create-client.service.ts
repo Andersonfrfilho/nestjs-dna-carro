@@ -10,7 +10,7 @@ import {
   TokenProviderInterface,
 } from '@src/providers/token/token.provider.interface';
 import { CACHE_KEYS } from '@src/providers/cache/constants/cache.constant.keys';
-import { NameCacheKeyFlow } from '@src/modules/client/client.constant';
+import { NameCacheKeyFlow } from '@src/modules/user/client/client.constant';
 import {
   CACHE_PROVIDER,
   CacheProviderInterface,

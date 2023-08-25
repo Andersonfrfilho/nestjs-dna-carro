@@ -8,9 +8,20 @@ import { TermDto } from '@src/modules/term/dto/term.dto';
 import { Term } from '@src/modules/term/term.entity';
 import { UserDto } from '@src/modules/user/dto/user.dto';
 import { User } from '@src/modules/user/entities/user.entity';
-import { IsOptional, ValidateNested } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { NameCacheKeyFlow } from '../client.constant';
 
-export class ClientCacheCreateControllerParamsDto {
+class TermCreateCacheDto extends TermDto {
+  @IsNumber()
+  id: number;
+}
+
+export class ClientCacheCreateDto {
   @ValidateNested()
   @IsOptional()
   user: UserDto;
@@ -29,7 +40,7 @@ export class ClientCacheCreateControllerParamsDto {
 
   @IsOptional()
   @ValidateNested()
-  term: TermDto;
+  term: TermCreateCacheDto;
 }
 
 export interface ClientCacheCreateParamsDto {
@@ -38,4 +49,11 @@ export interface ClientCacheCreateParamsDto {
   address: Partial<Address>;
   photo: Partial<Image>;
   term: Partial<Term>;
+}
+
+export class ClientCacheCreateControllerParamsDto extends ClientCacheCreateDto {}
+
+export class ClientCacheCreateServiceParamsDto extends ClientCacheCreateDto {
+  @IsString({ message: 'key to cache need format string' })
+  key: NameCacheKeyFlow;
 }

@@ -12,8 +12,8 @@ import {
   SmsProviderInterface,
 } from '@src/providers/sms/sms.provider.interface';
 import { CACHE_KEYS } from '@src/providers/cache/constants/cache.constant.keys';
-import { NameCacheKeyFlow } from '@src/modules/client/client.constant';
-import { PhoneCacheCreateDto, PhoneDto } from '../dto/phone.dto';
+import { NameCacheKeyFlow } from '@src/modules/user/client/client.constant';
+import { PhoneCacheCreateDto } from '../dto/phone.dto';
 import {
   TOKEN_PROVIDER,
   TokenProviderInterface,

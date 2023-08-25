@@ -59,11 +59,13 @@ import {
   UserImageProfileRepositoryInterface,
 } from '@src/modules/user/interfaces/repositories/user.image.profile.repository.interface';
 import { TypesUsers } from '@src/modules/types-users/types-users.constant';
-import {
-  ClientCreateServiceInterface,
-  ClientCreateServiceParamsDto,
-} from '../interfaces/client.create.service.interface';
+import { ClientCreateServiceInterface } from '../interfaces/client.create.interface';
 import { NameCacheKeyFlow } from '../client.constant';
+import databaseSource from '@src/providers/database/database.source';
+import { User } from '@src/modules/user/entities/user.entity';
+import { EMAIL_INFO_NOT_FOUND, USER_NOT_FOUND } from '../client.errors';
+import { ClientCreateServiceParamsDto } from '../dto/client.create.dto';
+import { ClientCacheCreateServiceParamsDto } from '../dto/client.create.cache.dto';
 
 @Injectable()
 export class ClientCreateService implements ClientCreateServiceInterface {
@@ -86,8 +88,6 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     private termRepository: TermRepositoryInterface,
     @Inject(USER_TERM_REPOSITORY)
     private userTermRepository: UserTermRepositoryInterface,
-    @Inject(USER_TOKEN_REPOSITORY)
-    private userTokenRepository: UserTokenRepositoryInterface,
     @Inject(TYPES_USER_REPOSITORY)
     private typesUserRepository: TypesUserRepositoryInterface,
     @Inject(USER_TYPES_USER_REPOSITORY)
@@ -95,11 +95,16 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     @Inject(CACHE_PROVIDER)
     private cacheProvider: CacheProviderInterface,
   ) {}
-  async execute(params: ClientCreateServiceParamsDto): Promise<void> {
-    const key = `${CACHE_KEYS.CLIENT_CREATE_SERVICE}:${params.user.cpf}`;
+  async execute(params: ClientCreateServiceParamsDto): Promise<User> {
+    console.log(params);
+    if (!params.email) {
+      throw new CustomException(EMAIL_INFO_NOT_FOUND);
+    }
+
+    const key = `${CACHE_KEYS.CLIENT_CREATE_SERVICE}:${params.email}`;
 
     const userCache =
-      await this.cacheProvider.get<ClientCreateServiceParamsDto>(key);
+      await this.cacheProvider.get<ClientCacheCreateServiceParamsDto>(key);
 
     if (!userCache) {
       throw new CustomException(NOT_FOUND_CACHE_INFORMATION());
@@ -149,54 +154,67 @@ export class ClientCreateService implements ClientCreateServiceInterface {
       throw new CustomException(TYPE_USER_NOT_FOUND);
     }
 
-    const user = await this.userRepository.save(userCache.user);
+    const queryRunner = databaseSource.createQueryRunner();
+    await queryRunner.startTransaction();
+    try {
+      const user = await this.userRepository.save(userCache.user);
 
-    const phone = await this.phoneRepository.save(userCache.phone);
+      const phone = await this.phoneRepository.save(userCache.phone);
 
-    const address = await this.addressRepository.save(userCache.address);
+      const address = await this.addressRepository.save(userCache.address);
 
-    const image = await this.imageRepository.save(userCache.image);
+      const image = await this.imageRepository.save(userCache.image);
 
-    await this.userPhoneRepository.save({
-      userId: user.id,
-      phoneId: phone.id,
-      active: true,
-      confirm: true,
-    });
+      await this.userPhoneRepository.save({
+        userId: user.id,
+        phoneId: phone.id,
+        active: true,
+        confirm: true,
+      });
 
-    await this.userAddressRepository.save({
-      userId: user.id,
-      addressId: address.id,
-      active: true,
-    });
+      await this.userAddressRepository.save({
+        userId: user.id,
+        addressId: address.id,
+        active: true,
+      });
 
-    await this.userImageProfileRepository.save({
-      userId: user.id,
-      userImageProfileId: image.id,
-    });
+      await this.userImageProfileRepository.save({
+        userId: user.id,
+        userImageProfileId: image.id,
+      });
 
-    await this.userTermRepository.save({
-      userId: user.id,
-      termId: userCache.term.id,
-      accept: true,
-      active: true,
-    });
+      await this.userTermRepository.save({
+        userId: user.id,
+        termId: userCache.term.id,
+        accept: true,
+        active: true,
+      });
 
-    await this.userTypesUserRepository.save({
-      userId: user.id,
-      userTypeId: userType.id,
-      active: true,
-      confirm: true,
-    });
+      await this.userTypesUserRepository.save({
+        userId: user.id,
+        userTypeId: userType.id,
+        active: true,
+        confirm: true,
+      });
 
-    await this.userTermRepository.save({
-      userId: user.id,
-      termId: term.id,
-      accept: true,
-      active: true,
-      confirm: true,
-    });
+      await this.userTermRepository.save({
+        userId: user.id,
+        termId: term.id,
+        accept: true,
+        active: true,
+        confirm: true,
+      });
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.commitTransaction();
+    }
+    const userFound = await this.userRepository.findByEmail(params.email);
 
-    return user as any;
+    if (!userFound) {
+      throw new CustomException(USER_NOT_FOUND);
+    }
+
+    return userFound;
   }
 }

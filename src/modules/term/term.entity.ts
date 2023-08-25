@@ -9,8 +9,8 @@ import {
 
 @Entity('terms')
 export class Term {
-  @PrimaryGeneratedColumn()
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  public id: number;
 
   @Column()
   version: string;

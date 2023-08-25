@@ -13,7 +13,7 @@ export class TermRepository implements TermRepositoryInterface {
   async findByVersion(version: string): Promise<Term | null> {
     return this.termRepository.findOne({ where: { version } });
   }
-  async findById(id: string): Promise<Term | null> {
+  async findById(id: number): Promise<Term | null> {
     return this.termRepository.findOne({ where: { id } });
   }
   async save(props: Partial<Term>): Promise<Term> {

@@ -1,4 +1,4 @@
-import { NameCacheKeyFlow } from '@src/modules/client/client.constant';
+import { NameCacheKeyFlow } from '@src/modules/user/client/client.constant';
 
 interface ParamsDto {
   email: string;

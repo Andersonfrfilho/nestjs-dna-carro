@@ -6,8 +6,8 @@ import {
 } from '@src/providers/cache/cache.provider.interface';
 import { CACHE_KEYS } from '@src/providers/cache/constants/cache.constant.keys';
 import { CACHE_TTL } from '@src/providers/cache/constants/cache.constant.ttl';
-import { ClientCreateCacheServiceInterface } from '../interfaces/client.create.cache.service.interface';
-import { ClientCacheCreateServiceParamsDto } from '../dto/client.service.dto';
+import { ClientCreateCacheServiceInterface } from '../interfaces/client.create.cache.interface';
+import { ClientCacheCreateServiceParamsDto } from '../dto/client.create.cache.dto';
 import { CustomException } from '@src/error/custom.exception';
 import { EMAIL_INFO_NOT_FOUND, KEY_PARAM_INVALID } from '../client.errors';
 import {
