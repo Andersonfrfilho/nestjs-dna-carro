@@ -28,10 +28,6 @@ import {
   UserTermRepositoryInterface,
 } from '@src/modules/user/interfaces/repositories/user.term.repository.interface';
 import {
-  USER_TOKEN_REPOSITORY,
-  UserTokenRepositoryInterface,
-} from '@src/modules/user/interfaces/repositories/user.token.repository.interface';
-import {
   USER_TYPES_USER_REPOSITORY,
   UserTypesUserRepositoryInterface,
 } from '@src/modules/user/interfaces/repositories/user.types.user.repository.interface';
@@ -70,6 +66,7 @@ import {
   STORAGE_PROVIDER,
   StorageProviderInterface,
 } from '@src/providers/storage/storage.provider.interface';
+import { TYPE_NAME_IMAGE } from '@src/modules/image/image.constant';
 
 @Injectable()
 export class ClientCreateService implements ClientCreateServiceInterface {
@@ -174,7 +171,10 @@ export class ClientCreateService implements ClientCreateServiceInterface {
         },
       );
 
-      const image = await this.imageRepository.save({ name: '', url: '' });
+      const image = await this.imageRepository.save({
+        name: TYPE_NAME_IMAGE.PROFILE,
+        url: imageUploaded,
+      });
 
       await this.userPhoneRepository.save({
         userId: user.id,
