@@ -13,8 +13,9 @@ import {
 import { StorageProviderInterface } from './storage.provider.interface';
 import { StorageUploadBase64ParamsDto } from './dtos/storage.uploadBase64.dto';
 import { Storage } from '@google-cloud/storage';
-import { Readable, Stream } from 'stream';
 import { randomUUID } from 'crypto';
+import { CustomException } from '@src/error/custom.exception';
+import { STORAGE_GOOGLE_BUCKET_ERROR } from './storage.error';
 
 @Injectable()
 export class StorageProvider implements StorageProviderInterface {
@@ -29,12 +30,8 @@ export class StorageProvider implements StorageProviderInterface {
 
   async uploadImageProfileBase64({
     imageBase64,
-  }: StorageUploadBase64ParamsDto): Promise<void> {
+  }: StorageUploadBase64ParamsDto): Promise<string> {
     try {
-      const bufferStream = new Readable();
-      bufferStream.push(Buffer.from(imageBase64, 'base64'));
-      bufferStream.push(null); // Indique o fim do fluxo
-
       const storage = new Storage({
         keyFilename: config.storage.image.profile.keyFileJson,
       }).bucket(config.storage.image.profile.name);
@@ -54,8 +51,12 @@ export class StorageProvider implements StorageProviderInterface {
           public: true,
         },
       );
+      return `https://storage.cloud.google.com/${config.storage.image.profile.name}/${fileName}`;
     } catch (error) {
-      console.error(error);
+      this.loggerProvider.error('StorageProvider - uploadImageProfileBase64', {
+        error: error.message,
+      });
+      throw new CustomException(STORAGE_GOOGLE_BUCKET_ERROR);
     }
   }
 }
