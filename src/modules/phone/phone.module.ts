@@ -11,6 +11,7 @@ import { TokenModule } from '@src/providers/token/token.module';
 import { PHONE_SEND_CODE_CONFIRMATION_CREATE_CLIENT_SERVICE } from './interfaces/phone.send-code-confirmation-create-client.interface';
 import { PHONE_VERIFY_CODE_CONFIRMATION_CREATE_CLIENT_SERVICE } from './interfaces/phone.verify-code-confirmation-create-client.interface';
 import { PhoneVerifyCodeConfirmationCreateClientService } from './services/phone.verify-code-confirmation-create-client.service';
+import { LoggerModule } from '@src/providers/logger/logger.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PhoneVerifyCodeConfirmationCreateClientService } from './services/phone
     CacheClientModule,
     SmsModule,
     TokenModule,
+    LoggerModule,
   ],
   providers: [
     {

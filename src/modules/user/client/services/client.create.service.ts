@@ -39,7 +39,6 @@ import {
   CACHE_PROVIDER,
   CacheProviderInterface,
 } from '@src/providers/cache/cache.provider.interface';
-import { CACHE_KEYS } from '@src/providers/cache/constants/cache.constant.keys';
 import { CustomException } from '@src/error/custom.exception';
 import {
   NOT_FOUND_CACHE_INFORMATION,
@@ -56,7 +55,7 @@ import {
 } from '@src/modules/user/interfaces/repositories/user.image.profile.repository.interface';
 import { TypesUsers } from '@src/modules/types-users/types-users.constant';
 import { ClientCreateServiceInterface } from '../interfaces/client.create.interface';
-import { NameCacheKeyFlow } from '../client.constant';
+import { NameCacheKeyFlow, USER_CLIENT_CACHE_KEYS } from '../client.constant';
 import databaseSource from '@src/providers/database/database.source';
 import { User } from '@src/modules/user/entities/user.entity';
 import { EMAIL_INFO_NOT_FOUND, USER_NOT_FOUND } from '../client.errors';
@@ -67,6 +66,10 @@ import {
   StorageProviderInterface,
 } from '@src/providers/storage/storage.provider.interface';
 import { TYPE_NAME_IMAGE } from '@src/modules/image/image.constant';
+import {
+  LOGGER_PROVIDER,
+  LoggerProviderInterface,
+} from '@src/providers/logger/logger.provider.interface';
 
 @Injectable()
 export class ClientCreateService implements ClientCreateServiceInterface {
@@ -97,68 +100,73 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     private cacheProvider: CacheProviderInterface,
     @Inject(STORAGE_PROVIDER)
     private storageProvider: StorageProviderInterface,
+    @Inject(LOGGER_PROVIDER)
+    private loggerProvider: LoggerProviderInterface,
   ) {}
   async execute(params: ClientCreateServiceParamsDto): Promise<User> {
-    if (!params.email) {
-      throw new CustomException(EMAIL_INFO_NOT_FOUND);
-    }
-
-    const key = `${CACHE_KEYS.CLIENT_CREATE_SERVICE}:${params.email}`;
-
-    const userCache =
-      await this.cacheProvider.get<ClientCacheCreateServiceParamsDto>(key);
-
-    if (!userCache) {
-      throw new CustomException(NOT_FOUND_CACHE_INFORMATION());
-    }
-
-    if (!userCache.user) {
-      throw new CustomException(
-        NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.user),
-      );
-    }
-
-    if (!userCache.phone) {
-      throw new CustomException(
-        NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.phone),
-      );
-    }
-
-    if (!userCache.address) {
-      throw new CustomException(
-        NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.address),
-      );
-    }
-
-    if (!userCache.term || !userCache.term.id) {
-      throw new CustomException(
-        NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.term),
-      );
-    }
-
-    if (!userCache.image) {
-      throw new CustomException(
-        NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.image),
-      );
-    }
-
-    const term = await this.termRepository.findById(userCache.term.id);
-
-    if (!term) {
-      throw new CustomException(TERM_NOT_FOUND);
-    }
-
-    const userType = await this.typesUserRepository.findByName(
-      TypesUsers.client,
-    );
-
-    if (!userType) {
-      throw new CustomException(TYPE_USER_NOT_FOUND);
-    }
-
     const queryRunner = databaseSource.createQueryRunner();
-    await queryRunner.startTransaction();
     try {
+      if (!params.email) {
+        throw new CustomException(EMAIL_INFO_NOT_FOUND);
+      }
+
+      const key = USER_CLIENT_CACHE_KEYS.CLIENT_CREATE_SERVICE_ALL({
+        email: params.email,
+      });
+
+      const userCache =
+        await this.cacheProvider.getAll<ClientCacheCreateServiceParamsDto>(key);
+
+      if (!userCache) {
+        throw new CustomException(NOT_FOUND_CACHE_INFORMATION());
+      }
+      console.log(userCache);
+      if (!userCache.user) {
+        throw new CustomException(
+          NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.user),
+        );
+      }
+
+      if (!userCache.phone) {
+        throw new CustomException(
+          NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.phone),
+        );
+      }
+
+      if (!userCache.address) {
+        throw new CustomException(
+          NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.address),
+        );
+      }
+
+      if (!userCache.term || !userCache.term.id) {
+        throw new CustomException(
+          NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.term),
+        );
+      }
+
+      if (!userCache.image) {
+        throw new CustomException(
+          NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.image),
+        );
+      }
+
+      const term = await this.termRepository.findById(userCache.term.id);
+
+      if (!term) {
+        throw new CustomException(TERM_NOT_FOUND);
+      }
+
+      const userType = await this.typesUserRepository.findByName(
+        TypesUsers.client,
+      );
+
+      if (!userType) {
+        throw new CustomException(TYPE_USER_NOT_FOUND);
+      }
+
+      await queryRunner.startTransaction();
+
       const user = await this.userRepository.save(userCache.user);
 
       const phone = await this.phoneRepository.save(userCache.phone);
@@ -216,7 +224,13 @@ export class ClientCreateService implements ClientCreateServiceInterface {
         confirm: true,
       });
     } catch (error) {
+      this.loggerProvider.error('ClientCreateService - execute - error', {
+        error: error.message,
+      });
+
       await queryRunner.rollbackTransaction();
+
+      throw error;
     } finally {
       await queryRunner.commitTransaction();
     }

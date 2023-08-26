@@ -15,6 +15,7 @@ import { TermModule } from '@src/modules/term/term.module';
 import { TypesUserModule } from '@src/modules/types-users/types-users.module';
 import { ImageModule } from '@src/modules/image/image.module';
 import { StorageModule } from '@src/providers/storage/storage.module';
+import { LoggerModule } from '@src/providers/logger/logger.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { StorageModule } from '@src/providers/storage/storage.module';
     TypesUserModule,
     CacheClientModule,
     StorageModule,
+    LoggerModule,
   ],
   providers: [
     {

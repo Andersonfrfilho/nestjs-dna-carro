@@ -13,6 +13,6 @@ export default new DataSource({
   password: config.database.password || '102030',
   database: config.database.name || 'dna_carro',
   logging: devEnvironment || false,
-  entities: [`dist/**/*.entity{.ts,.js}`],
+  entities: [`dist/**/*.entity{.ts,.js}`, `src/**/*.entity{.ts,.js}`],
   migrations: [`./src/providers/database/migrations/*{.ts,.js}`],
 });

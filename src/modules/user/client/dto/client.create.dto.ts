@@ -1,4 +1,3 @@
-import { UserDto } from '@src/modules/user/dto/user.dto';
 import { IsString } from 'class-validator';
 
 export class ClientCreateDto {
