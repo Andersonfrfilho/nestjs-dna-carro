@@ -70,6 +70,10 @@ import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
+import {
+  HASH_PROVIDER,
+  HashProviderInterface,
+} from '@src/providers/hash/hash.provider.interface';
 
 @Injectable()
 export class ClientCreateService implements ClientCreateServiceInterface {
@@ -102,8 +106,11 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     private storageProvider: StorageProviderInterface,
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
+    @Inject(HASH_PROVIDER)
+    private hashProvider: HashProviderInterface,
   ) {}
   async execute(params: ClientCreateServiceParamsDto): Promise<User> {
+    databaseSource.initialize();
     const queryRunner = databaseSource.createQueryRunner();
     try {
       if (!params.email) {
@@ -120,7 +127,7 @@ export class ClientCreateService implements ClientCreateServiceInterface {
       if (!userCache) {
         throw new CustomException(NOT_FOUND_CACHE_INFORMATION());
       }
-      console.log(userCache);
+
       if (!userCache.user) {
         throw new CustomException(
           NOT_FOUND_CACHE_INFORMATION(NameCacheKeyFlow.user),
@@ -164,10 +171,18 @@ export class ClientCreateService implements ClientCreateServiceInterface {
       if (!userType) {
         throw new CustomException(TYPE_USER_NOT_FOUND);
       }
-
       await queryRunner.startTransaction();
 
-      const user = await this.userRepository.save(userCache.user);
+      const password = await this.hashProvider.hash(userCache.user.password);
+      const result = await this.hashProvider.compare({
+        hash: password,
+        value: userCache.user.password,
+      });
+      console.log(result);
+      const user = await this.userRepository.save({
+        ...userCache.user,
+        password_hash: password,
+      });
 
       const phone = await this.phoneRepository.save(userCache.phone);
 
@@ -225,7 +240,7 @@ export class ClientCreateService implements ClientCreateServiceInterface {
       });
     } catch (error) {
       this.loggerProvider.error('ClientCreateService - execute - error', {
-        error: error.message,
+        error: error,
       });
 
       await queryRunner.rollbackTransaction();

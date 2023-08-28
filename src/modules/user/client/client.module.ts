@@ -16,6 +16,7 @@ import { TypesUserModule } from '@src/modules/types-users/types-users.module';
 import { ImageModule } from '@src/modules/image/image.module';
 import { StorageModule } from '@src/providers/storage/storage.module';
 import { LoggerModule } from '@src/providers/logger/logger.module';
+import { HashModule } from '@src/providers/hash/hash.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { LoggerModule } from '@src/providers/logger/logger.module';
     CacheClientModule,
     StorageModule,
     LoggerModule,
+    HashModule,
   ],
   providers: [
     {

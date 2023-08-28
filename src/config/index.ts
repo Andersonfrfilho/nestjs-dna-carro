@@ -20,6 +20,9 @@ export type Config = {
       numberPossibleAttempts: number;
     };
   };
+  hash: {
+    salt: string;
+  };
   sms: {
     accountId: string;
     authToken: string;

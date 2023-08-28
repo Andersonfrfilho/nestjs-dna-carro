@@ -11,6 +11,9 @@ export const dev = (): Config => ({
   token: {
     secret: process.env.TOKEN_SECRET ?? '',
   },
+  hash: {
+    salt: process.env.SALT ?? '',
+  },
   storage: {
     image: {
       profile: {
