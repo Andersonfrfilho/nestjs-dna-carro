@@ -4,15 +4,19 @@ import {
   CLIENT_CREATE_SERVICE,
 } from './interfaces/client.interfaces';
 import { ClientCreateService } from './services/client.create.service';
-import { UserModule } from '../user/user.module';
-import { PhoneModule } from '../phone/phone.module';
-import { AddressModule } from '../address/address.module';
-import { TermModule } from '../term/term.module';
-import { TypesUserModule } from '../types-users/types-users.module';
+
 import { CacheClientModule } from '@src/providers/cache/cache.module';
 import { ClientController } from './client.controller';
 import { ClientCreateCacheService } from './services/client.create.cache.service';
-import { ImageModule } from '../image/image.module';
+import { UserModule } from '../user.module';
+import { PhoneModule } from '@src/modules/phone/phone.module';
+import { AddressModule } from '@src/modules/address/address.module';
+import { TermModule } from '@src/modules/term/term.module';
+import { TypesUserModule } from '@src/modules/types-users/types-users.module';
+import { ImageModule } from '@src/modules/image/image.module';
+import { StorageModule } from '@src/providers/storage/storage.module';
+import { LoggerModule } from '@src/providers/logger/logger.module';
+import { HashModule } from '@src/providers/hash/hash.module';
 
 @Module({
   imports: [
@@ -23,6 +27,9 @@ import { ImageModule } from '../image/image.module';
     TermModule,
     TypesUserModule,
     CacheClientModule,
+    StorageModule,
+    LoggerModule,
+    HashModule,
   ],
   providers: [
     {

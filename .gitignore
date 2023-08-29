@@ -37,3 +37,5 @@ lerna-debug.log*
 .history/
 .env
 .logs/
+
+dna-carro-stg**.json

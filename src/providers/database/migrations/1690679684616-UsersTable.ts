@@ -52,7 +52,7 @@ export class UsersTable1690679684616 implements MigrationInterface {
           },
           {
             name: 'birth_date',
-            type: 'int',
+            type: 'bigint',
             isNullable: true,
           },
           {

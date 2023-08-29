@@ -9,6 +9,10 @@ import {
   PHONE_REPOSITORY,
   PhoneRepositoryInterface,
 } from '@src/modules/phone/interfaces/phone.repository.interface';
+import {
+  LOGGER_PROVIDER,
+  LoggerProviderInterface,
+} from '@src/providers/logger/logger.provider.interface';
 
 @Injectable()
 export class UserRepository implements UserRepositoryInterface {
@@ -19,6 +23,8 @@ export class UserRepository implements UserRepositoryInterface {
     private phoneRepository: PhoneRepositoryInterface,
     @InjectRepository(UserPhone)
     private userPhoneRepository: Repository<UserPhone>,
+    @Inject(LOGGER_PROVIDER)
+    private loggerProvider: LoggerProviderInterface,
   ) {}
   async findByCpf(cpfParam: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { cpf: cpfParam } });
@@ -44,6 +50,15 @@ export class UserRepository implements UserRepositoryInterface {
     });
   }
   async save(props: Partial<User>): Promise<User> {
-    return this.userRepository.save(props);
+    try {
+      const user = await this.userRepository.save(props);
+      return user;
+    } catch (error) {
+      this.loggerProvider.error('UserRepository - save -', {
+        error,
+      });
+
+      throw error;
+    }
   }
 }

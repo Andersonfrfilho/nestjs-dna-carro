@@ -24,6 +24,7 @@ import { UserToken } from './entities/user.token.entity';
 import { PhoneModule } from '../phone/phone.module';
 import { AddressModule } from '../address/address.module';
 import { TypesUserModule } from '../types-users/types-users.module';
+import { LoggerModule } from '@src/providers/logger/logger.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { TypesUserModule } from '../types-users/types-users.module';
     PhoneModule,
     AddressModule,
     TypesUserModule,
+    LoggerModule,
   ],
   providers: [
     {

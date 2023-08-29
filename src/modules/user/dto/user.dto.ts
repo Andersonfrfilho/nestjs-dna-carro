@@ -35,6 +35,9 @@ export class UserDto {
   @IsString({ message: 'cpf need format in string valid' })
   cpf: string;
 
+  @IsString({ message: 'password need format in string valid' })
+  password: string;
+
   @IsEmail({}, { message: 'email need format in email valid' })
   email: string;
 

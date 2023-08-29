@@ -20,10 +20,21 @@ export type Config = {
       numberPossibleAttempts: number;
     };
   };
+  hash: {
+    salt: string;
+  };
   sms: {
     accountId: string;
     authToken: string;
     number: string;
+  };
+  storage: {
+    image: {
+      profile: {
+        name: string;
+        keyFileJson: string;
+      };
+    };
   };
   token: {
     secret: string;

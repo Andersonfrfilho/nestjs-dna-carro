@@ -65,3 +65,9 @@ export const EMAIL_ALREADY_EXIST = {
   message: 'EMAIL_ALREADY_EXIST',
   statusCode: HttpStatusCode.BadRequest,
 };
+
+export const EMAIL_NOT_FOUND = {
+  code: 1030,
+  message: 'EMAIL_NOT_FOUND',
+  statusCode: HttpStatusCode.NotFound,
+};

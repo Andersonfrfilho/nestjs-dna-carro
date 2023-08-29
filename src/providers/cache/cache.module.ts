@@ -6,6 +6,7 @@ import { Module } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CACHE_PROVIDER } from './cache.provider.interface';
 import { CacheProvider } from './cache.provider';
+import { LoggerModule } from '../logger/logger.module';
 interface ParamsDto {
   ttl: number;
 }
@@ -24,6 +25,7 @@ interface ParamsDto {
       }),
       inject: [ConfigService],
     }),
+    LoggerModule,
   ],
   providers: [
     {

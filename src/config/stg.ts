@@ -8,8 +8,19 @@ export const stg = (): Config => ({
         parseInt(process.env.SMS_ACCOUNT_ID ?? '', 10) ?? 3,
     },
   },
+  hash: {
+    salt: process.env.SALT ?? '',
+  },
   token: {
     secret: process.env.TOKEN_SECRET ?? '',
+  },
+  storage: {
+    image: {
+      profile: {
+        name: process.env.STORAGE_IMAGE_PROFILE_BUCKET_NAME ?? '',
+        keyFileJson: process.env.STORAGE_IMAGE_PROFILE_PATH_KEY_JSON ?? '',
+      },
+    },
   },
   sms: {
     accountId: process.env.SMS_ACCOUNT_ID ?? '',

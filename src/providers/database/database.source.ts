@@ -4,6 +4,15 @@ import config from '../../config';
 const devEnvironment = !!(
   process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === ''
 );
+const entities = process.env.TYPEORM_INTERNAL
+  ? [`dist/**/*.entity{.ts,.js}`, `src/**/*.entity{.ts,.js}`]
+  : [`dist/**/*.entity{.ts,.js}`];
+const migrations = process.env.TYPEORM_INTERNAL
+  ? [
+      `./dist/providers/database/migrations/*{.js}`,
+      `./src/providers/database/migrations/*{.ts,.js}`,
+    ]
+  : [`./dist/providers/database/migrations/*{.js}`];
 
 export default new DataSource({
   type: 'postgres',
@@ -13,6 +22,6 @@ export default new DataSource({
   password: config.database.password || '102030',
   database: config.database.name || 'dna_carro',
   logging: devEnvironment || false,
-  entities: [`dist/**/*.entity{.ts,.js}`],
-  migrations: [`./src/providers/database/migrations/*{.ts,.js}`],
+  entities,
+  migrations,
 });
