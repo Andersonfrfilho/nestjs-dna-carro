@@ -27,7 +27,7 @@ export class UsersToken1690696102686 implements MigrationInterface {
           },
           {
             name: 'expires_date',
-            type: 'int',
+            type: 'bigint',
           },
           {
             name: 'created_at',

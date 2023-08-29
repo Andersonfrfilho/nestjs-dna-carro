@@ -7,7 +7,7 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 
-@Entity('users_profile_images')
+@Entity('users_profiles_images')
 export class UserImageProfile {
   @PrimaryGeneratedColumn()
   id: string;

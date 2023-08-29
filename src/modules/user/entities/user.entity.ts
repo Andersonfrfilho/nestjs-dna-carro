@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  JoinTable,
 } from 'typeorm';
 import { UserPhone } from './user.phone.entity';
 
@@ -42,6 +43,7 @@ export class User {
   active: boolean;
 
   @OneToMany(() => UserPhone, (userPhone) => userPhone.user)
+  @JoinTable()
   public usersPhones: UserPhone[];
 
   @CreateDateColumn({ name: 'created_at' })

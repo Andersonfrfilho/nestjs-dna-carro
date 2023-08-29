@@ -4,4 +4,5 @@ export const STORAGE_PROVIDER = 'STORAGE_PROVIDER';
 
 export interface StorageProviderInterface {
   uploadImageProfileBase64(data: StorageUploadBase64ParamsDto): Promise<string>;
+  deleteImageProfile(fileName: string): Promise<void>;
 }

@@ -74,6 +74,15 @@ import {
   HASH_PROVIDER,
   HashProviderInterface,
 } from '@src/providers/hash/hash.provider.interface';
+import { Phone } from '@src/modules/phone/phone.entity';
+import { Address } from '@src/modules/address/address.entity';
+import { COUNTRY_ADDRESS_CODE } from '@src/modules/address/address.constante';
+import { UserPhone } from '../../entities/user.phone.entity';
+import { UserAddress } from '../../entities/user.address.entity';
+import { UserImageProfile } from '../../entities/user.image.profile.entity';
+import { UserTerm } from '../../entities/user.term.entity';
+import { UserTypesUser } from '../../entities/user.types.user.entity';
+import { Image } from '@src/modules/image/image.entity';
 
 @Injectable()
 export class ClientCreateService implements ClientCreateServiceInterface {
@@ -110,7 +119,10 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     private hashProvider: HashProviderInterface,
   ) {}
   async execute(params: ClientCreateServiceParamsDto): Promise<User> {
-    databaseSource.initialize();
+    if (!databaseSource.isInitialized) {
+      databaseSource.initialize();
+    }
+    let imageProfileUrl: string | undefined;
     const queryRunner = databaseSource.createQueryRunner();
     try {
       if (!params.email) {
@@ -174,34 +186,45 @@ export class ClientCreateService implements ClientCreateServiceInterface {
       await queryRunner.startTransaction();
 
       const password = await this.hashProvider.hash(userCache.user.password);
-      const result = await this.hashProvider.compare({
+
+      await this.hashProvider.compare({
         hash: password,
         value: userCache.user.password,
       });
-      console.log(result);
-      const user = await this.userRepository.save({
+
+      const user = await queryRunner.manager.save(User, {
         ...userCache.user,
         password_hash: password,
       });
 
-      const phone = await this.phoneRepository.save(userCache.phone);
+      const phone = await queryRunner.manager.save(Phone, userCache.phone);
 
-      const address = await this.addressRepository.save(userCache.address);
-
-      const imageUploaded = await this.storageProvider.uploadImageProfileBase64(
-        {
-          imageBase64: userCache.image.base64,
-        },
-      );
-
-      const image = await this.imageRepository.save({
-        name: TYPE_NAME_IMAGE.PROFILE,
-        url: imageUploaded,
+      const address = await queryRunner.manager.save(Address, {
+        ...userCache.address,
+        country: COUNTRY_ADDRESS_CODE.BRAZIL,
       });
+
+      imageProfileUrl = await this.storageProvider.uploadImageProfileBase64({
+        imageBase64: userCache.image.base64,
+      });
+
+      const image: Image = await queryRunner.manager.save(Image, {
+        name: TYPE_NAME_IMAGE.PROFILE,
+        url: imageProfileUrl,
+      });
+
+      await queryRunner.commitTransaction();
 
       await this.userPhoneRepository.save({
         userId: user.id,
         phoneId: phone.id,
+        active: true,
+        confirm: true,
+      });
+
+      await this.userTypesUserRepository.save({
+        userId: user.id,
+        userTypeId: userType.id,
         active: true,
         confirm: true,
       });
@@ -221,22 +244,6 @@ export class ClientCreateService implements ClientCreateServiceInterface {
         userId: user.id,
         termId: userCache.term.id,
         accept: true,
-        active: true,
-      });
-
-      await this.userTypesUserRepository.save({
-        userId: user.id,
-        userTypeId: userType.id,
-        active: true,
-        confirm: true,
-      });
-
-      await this.userTermRepository.save({
-        userId: user.id,
-        termId: term.id,
-        accept: true,
-        active: true,
-        confirm: true,
       });
     } catch (error) {
       this.loggerProvider.error('ClientCreateService - execute - error', {
@@ -245,9 +252,11 @@ export class ClientCreateService implements ClientCreateServiceInterface {
 
       await queryRunner.rollbackTransaction();
 
+      if (imageProfileUrl) {
+        await this.storageProvider.deleteImageProfile(imageProfileUrl);
+      }
+
       throw error;
-    } finally {
-      await queryRunner.commitTransaction();
     }
     const userFound = await this.userRepository.findByEmail(params.email);
 

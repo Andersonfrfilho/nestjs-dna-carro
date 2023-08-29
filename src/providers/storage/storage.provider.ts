@@ -27,6 +27,25 @@ export class StorageProvider implements StorageProviderInterface {
     @Inject(LOGGER_PROVIDER)
     private readonly loggerProvider: LoggerProviderInterface,
   ) {}
+  async deleteImageProfile(fileName: string): Promise<void> {
+    try {
+      const name = fileName.replace(
+        `https://storage.cloud.google.com/${config.storage.image.profile.name}/`,
+        '',
+      );
+      await new Storage({
+        keyFilename: config.storage.image.profile.keyFileJson,
+      })
+        .bucket(config.storage.image.profile.name)
+        .file(name)
+        .delete();
+    } catch (error) {
+      this.loggerProvider.error('StorageProvider - deleteImage', {
+        error: error.message,
+      });
+      throw new CustomException(STORAGE_GOOGLE_BUCKET_ERROR);
+    }
+  }
 
   async uploadImageProfileBase64({
     imageBase64,

@@ -26,12 +26,6 @@ export class UserTerm {
   @Column('jsonb', { nullable: false, default: {} })
   details: string;
 
-  @Column()
-  confirm: boolean;
-
-  @Column()
-  active: boolean;
-
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
 

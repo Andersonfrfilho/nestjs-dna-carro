@@ -10,7 +10,17 @@ export class UserPhoneRepository implements UserPhoneRepositoryInterface {
     @InjectRepository(UserPhone)
     private userPhoneRepository: Repository<UserPhone>,
   ) {}
-  async save(props: Partial<UserPhone>): Promise<UserPhone> {
-    return this.userPhoneRepository.save(props);
+  async save({
+    active,
+    confirm,
+    userId,
+    phoneId,
+  }: Partial<UserPhone>): Promise<UserPhone> {
+    return this.userPhoneRepository.save({
+      active,
+      confirm,
+      phoneId,
+      userId,
+    });
   }
 }

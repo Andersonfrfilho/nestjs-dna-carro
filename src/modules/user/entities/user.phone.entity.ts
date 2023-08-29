@@ -6,6 +6,8 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
+  JoinTable,
+  JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Phone } from '../../../modules/phone/phone.entity';
@@ -28,10 +30,12 @@ export class UserPhone {
   confirm: boolean;
 
   @ManyToOne(() => User, (user) => user.usersPhones)
-  public user: User;
+  @JoinColumn({ name: 'user_id' })
+  user?: User;
 
   @ManyToOne(() => Phone, (phone) => phone.usersPhones)
-  public phone: Phone;
+  @JoinColumn({ name: 'phone_id' })
+  phone?: Phone;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
