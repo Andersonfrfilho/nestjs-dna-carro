@@ -24,7 +24,7 @@ import {
 } from '@src/providers/token/token.provider.interface';
 import config from '@src/config';
 import * as moment from 'moment';
-import { separatedCharacterNumber } from '@src/utils/separeted-character-number';
+import { separatedCharacterNumber } from '@src/utils/separated-character-number';
 
 @Injectable()
 export class AuthCreateSessionService

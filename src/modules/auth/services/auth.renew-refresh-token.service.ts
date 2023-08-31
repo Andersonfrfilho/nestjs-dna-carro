@@ -10,17 +10,14 @@ import {
 } from '@src/modules/user/interfaces/repositories/user.repository.interface';
 import { CustomException } from '@src/error/custom.exception';
 import { USER_NOT_FOUND } from '../auth.error';
-import {
-  HASH_PROVIDER,
-  HashProviderInterface,
-} from '@src/providers/hash/hash.provider.interface';
+
 import {
   TOKEN_PROVIDER,
   TokenProviderInterface,
 } from '@src/providers/token/token.provider.interface';
 import config from '@src/config';
 import * as moment from 'moment';
-import { separatedCharacterNumber } from '@src/utils/separeted-character-number';
+import { separatedCharacterNumber } from '@src/utils/separated-character-number';
 import { AuthRenewRefreshTokenServiceInterface } from '../interfaces/auth.renew-refresh-token.interface';
 import {
   AuthRenewRefreshTokenServiceParamsDto,
@@ -36,8 +33,6 @@ export class AuthRenewRefreshTokenService
     @Inject(LOGGER_PROVIDER) private loggerProvider: LoggerProviderInterface,
     @Inject(USER_REPOSITORY)
     private userRepository: UserRepositoryInterface,
-    @Inject(HASH_PROVIDER)
-    private hashProvider: HashProviderInterface,
     @Inject(TOKEN_PROVIDER)
     private tokenProvider: TokenProviderInterface,
   ) {}

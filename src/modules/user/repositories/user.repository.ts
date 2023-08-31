@@ -26,6 +26,27 @@ export class UserRepository implements UserRepositoryInterface {
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
+  async findByPhoneActiveUserActive(
+    phoneParams: UserFindByPhoneParamsDto,
+  ): Promise<UserPhone[] | null> {
+    const phone =
+      await this.phoneRepository.findByCountryCodeDDDNumberUserActive(
+        phoneParams,
+      );
+
+    if (!phone) {
+      return null;
+    }
+
+    return this.userPhoneRepository.find({
+      where: {
+        phoneId: phone.id,
+        user: {
+          active: true,
+        },
+      },
+    });
+  }
   async findByIdActive(idParam: string): Promise<User | null> {
     return this.userRepository.findOne({
       where: { id: idParam, active: true },
