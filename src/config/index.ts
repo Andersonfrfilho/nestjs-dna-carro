@@ -38,6 +38,8 @@ export type Config = {
   };
   token: {
     secret: string;
+    expireIn: string;
+    expireInRefresh: string;
   };
   database: {
     port: number;

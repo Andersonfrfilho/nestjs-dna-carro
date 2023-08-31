@@ -1,6 +1,6 @@
 export interface TokenProviderAssignParamsDto<T> {
   payloadParams: T;
-  expiresIn: number;
+  expiresIn: string;
 }
 
 export interface TokenProviderVerifyParamsDto {

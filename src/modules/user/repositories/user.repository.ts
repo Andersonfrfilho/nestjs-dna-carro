@@ -26,6 +26,11 @@ export class UserRepository implements UserRepositoryInterface {
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
+  async findByEmailActive(emailParam: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { email: emailParam, active: true },
+    });
+  }
   async findByCpf(cpfParam: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { cpf: cpfParam } });
   }

@@ -13,6 +13,8 @@ export const prod = (): Config => ({
   },
   token: {
     secret: process.env.TOKEN_SECRET ?? '',
+    expireIn: process.env.TOKEN_EXPIRE_IN_NAME ?? '60s',
+    expireInRefresh: process.env.TOKEN_EXPIRE_IN_NAME ?? '15d',
   },
   storage: {
     image: {

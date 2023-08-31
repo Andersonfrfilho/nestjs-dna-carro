@@ -19,11 +19,8 @@ export class LoggerProvider implements LoggerService, LoggerProviderInterface {
   }
 
   error(message: any, ...optionalParams: any[]) {
-    const obfuscatedParams = deepClone(optionalParams);
-    obfuscatorObject(obfuscatedParams);
-
     this.loggerWinston.error(message, {
-      ...obfuscatedParams,
+      ...optionalParams,
       requestId: this.requestId,
     });
   }
