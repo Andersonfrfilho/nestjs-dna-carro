@@ -12,4 +12,5 @@ export interface UserRepositoryInterface {
     phoneParams: UserFindByPhoneParamsDto,
   ): Promise<UserPhone[] | null>;
   findByEmailActive(emailParam: string): Promise<User | null>;
+  findByIdActive(id: string): Promise<User | null>;
 }
