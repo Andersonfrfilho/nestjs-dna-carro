@@ -195,9 +195,13 @@ export class ClientCreateService implements ClientCreateServiceInterface {
       const user = await queryRunner.manager.save(User, {
         ...userCache.user,
         password_hash: password,
+        active: true,
       });
 
-      const phone = await queryRunner.manager.save(Phone, userCache.phone);
+      const phone = await queryRunner.manager.save(Phone, {
+        ...userCache.phone,
+        active: true,
+      });
 
       const address = await queryRunner.manager.save(Address, {
         ...userCache.address,
