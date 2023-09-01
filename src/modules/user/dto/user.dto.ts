@@ -51,3 +51,8 @@ export class UserDto {
   @IsNumber({}, { message: 'gender need to be value M or F' })
   birthDate: number;
 }
+
+export interface UpdatePasswordByEmailParamsDto {
+  email: string;
+  passwordHash: string;
+}

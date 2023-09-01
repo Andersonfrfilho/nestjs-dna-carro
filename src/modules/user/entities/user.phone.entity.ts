@@ -29,11 +29,11 @@ export class UserPhone {
   @Column()
   confirm: boolean;
 
-  @ManyToOne(() => User, (user) => user.usersPhones)
+  @ManyToOne(() => User, (user) => user.usersPhones, { eager: true })
   @JoinColumn({ name: 'user_id' })
   user?: User;
 
-  @ManyToOne(() => Phone, (phone) => phone.usersPhones)
+  @ManyToOne(() => Phone, (phone) => phone.usersPhones, { eager: true })
   @JoinColumn({ name: 'phone_id' })
   phone?: Phone;
 

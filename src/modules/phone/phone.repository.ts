@@ -19,7 +19,6 @@ export class PhoneRepository implements PhoneRepositoryInterface {
         ...props,
         active: true,
       },
-      relations: ['users'],
     });
   }
   async findByCountryCodeDDDNumberUser({

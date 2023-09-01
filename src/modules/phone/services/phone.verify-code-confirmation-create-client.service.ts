@@ -110,7 +110,7 @@ export class PhoneVerifyCodeConfirmationCreateClientService
         countryCode,
         ddd,
         number,
-        confirm: true,
+        confirm: false,
         numberAttempts: numberAttempts + 1,
       };
 
@@ -122,6 +122,8 @@ export class PhoneVerifyCodeConfirmationCreateClientService
         });
         throw new CustomException(PHONE_NUMBER_CODE_CONFIRMATION_INCORRECT);
       }
+
+      payload.confirm = true;
 
       await this.cacheProvider.set({
         key: keyGetPhoneData,

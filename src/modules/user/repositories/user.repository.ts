@@ -13,6 +13,7 @@ import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
+import { UpdatePasswordByEmailParamsDto } from '../dto/user.dto';
 
 @Injectable()
 export class UserRepository implements UserRepositoryInterface {
@@ -26,9 +27,20 @@ export class UserRepository implements UserRepositoryInterface {
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
-  async findByPhoneActiveUserActive(
+  async updatePasswordByEmailUserActive(
+    data: UpdatePasswordByEmailParamsDto,
+  ): Promise<void> {
+    await this.userRepository.update(
+      { email: data.email, active: true },
+      { password_hash: data.passwordHash },
+    );
+  }
+  async inactiveUserByEmail(emailParam: string): Promise<void> {
+    await this.userRepository.update({ email: emailParam }, { active: false });
+  }
+  async findUserByPhoneActiveUserActive(
     phoneParams: UserFindByPhoneParamsDto,
-  ): Promise<UserPhone[] | null> {
+  ): Promise<User | null> {
     const phone =
       await this.phoneRepository.findByCountryCodeDDDNumberUserActive(
         phoneParams,
@@ -38,14 +50,22 @@ export class UserRepository implements UserRepositoryInterface {
       return null;
     }
 
-    return this.userPhoneRepository.find({
+    const [usersPhones] = await this.userPhoneRepository.find({
       where: {
         phoneId: phone.id,
+        active: true,
+        confirm: true,
         user: {
           active: true,
         },
       },
     });
+
+    if (!usersPhones.user) {
+      return null;
+    }
+
+    return usersPhones.user;
   }
   async findByIdActive(idParam: string): Promise<User | null> {
     return this.userRepository.findOne({

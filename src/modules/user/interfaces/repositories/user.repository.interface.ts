@@ -1,6 +1,7 @@
 import { User } from '@modules/user/entities/user.entity';
 import { UserFindByPhoneParamsDto } from '../../dto/user.repository.dto';
 import { UserPhone } from '../../entities/user.phone.entity';
+import { UpdatePasswordByEmailParamsDto } from '../../dto/user.dto';
 
 export const USER_REPOSITORY = 'USER_REPOSITORY';
 
@@ -13,7 +14,11 @@ export interface UserRepositoryInterface {
   ): Promise<UserPhone[] | null>;
   findByEmailActive(emailParam: string): Promise<User | null>;
   findByIdActive(id: string): Promise<User | null>;
-  findByPhoneActiveUserActive(
+  findUserByPhoneActiveUserActive(
     phoneParams: UserFindByPhoneParamsDto,
-  ): Promise<UserPhone[] | null>;
+  ): Promise<User | null>;
+  inactiveUserByEmail(emailParam: string): Promise<void>;
+  updatePasswordByEmailUserActive(
+    data: UpdatePasswordByEmailParamsDto,
+  ): Promise<void>;
 }

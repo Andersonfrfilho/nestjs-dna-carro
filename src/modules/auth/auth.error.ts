@@ -11,3 +11,20 @@ export const INVALID_PASSWORD = {
   message: 'INVALID_PASSWORD',
   statusCode: HttpStatusCode.Forbidden,
 };
+
+export const MAX_ATTEMPT_TRY_FORGOT_PASSWORD_VERIFY_PHONE_CODE = {
+  code: 1034,
+  message: 'MAX_ATTEMPT_TRY_FORGOT_PASSWORD_VERIFY_PHONE_CODE',
+  statusCode: HttpStatusCode.Forbidden,
+};
+export const FORGOT_PASSWORD_PHONE_VERIFY_CODE_INCORRECT = {
+  code: 1036,
+  message: 'FORGOT_PASSWORD_PHONE_VERIFY_CODE_INCORRECT',
+  statusCode: HttpStatusCode.Forbidden,
+};
+
+export const PASSWORD_CONFIRMATION_NOT_IDENTICAL = {
+  code: 1039,
+  message: 'PASSWORD_CONFIRMATION_NOT_IDENTICAL',
+  statusCode: HttpStatusCode.Forbidden,
+};

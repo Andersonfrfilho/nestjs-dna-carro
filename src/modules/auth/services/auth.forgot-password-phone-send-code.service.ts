@@ -11,26 +11,17 @@ import {
 import { CustomException } from '@src/error/custom.exception';
 import { USER_NOT_FOUND } from '../auth.error';
 import {
-  HASH_PROVIDER,
-  HashProviderInterface,
-} from '@src/providers/hash/hash.provider.interface';
-import {
   TOKEN_PROVIDER,
   TokenProviderInterface,
 } from '@src/providers/token/token.provider.interface';
-import config, {
-  ENVIRONMENT_TEST_CONFIG,
-  configEnvironment,
-} from '@src/config';
-import * as moment from 'moment';
-import { separatedCharacterNumber } from '@src/utils/separated-character-number';
-import { AuthForgotPasswordPhoneServiceInterface } from '../interfaces/auth.forgot-password-phone.interface';
+import { ENVIRONMENT_TEST_CONFIG, configEnvironment } from '@src/config';
+
+import { AuthForgotPasswordPhoneSendCodeServiceInterface } from '../interfaces/auth.forgot-password-phone-send-code.interface';
 import {
-  AuthForgotPasswordPhoneServiceParamsDto,
-  AuthForgotPasswordPhoneServiceResponse,
-  AuthTokenPayloadDto,
-  PhoneSendCodeAuthForgotPasswordPhoneTokenPayload,
-} from '../dtos/auth.forgot-password-phone.dto';
+  AuthForgotPasswordPhoneSendCodeServiceParamsDto,
+  AuthForgotPasswordPhoneSendVerifyTokenCache,
+  PhoneSendCodeAuthForgotPasswordPhoneSendCodeTokenPayload,
+} from '../dtos/auth.forgot-password-phone-send-code.dto';
 import { randomInt } from 'crypto';
 import {
   AUTH_CACHE_KEYS,
@@ -49,8 +40,8 @@ import {
 } from '@src/providers/sms/sms.provider.interface';
 
 @Injectable()
-export class AuthForgotPasswordPhoneService
-  implements AuthForgotPasswordPhoneServiceInterface
+export class AuthForgotPasswordPhoneSendCodeService
+  implements AuthForgotPasswordPhoneSendCodeServiceInterface
 {
   constructor(
     @Inject(LOGGER_PROVIDER) private loggerProvider: LoggerProviderInterface,
@@ -64,20 +55,17 @@ export class AuthForgotPasswordPhoneService
     private smsProvider: SmsProviderInterface,
   ) {}
   async execute(
-    params: AuthForgotPasswordPhoneServiceParamsDto,
+    params: AuthForgotPasswordPhoneSendCodeServiceParamsDto,
   ): Promise<void> {
     try {
       const { countryCode, ddd, number } = params;
+      const user = await this.userRepository.findUserByPhoneActiveUserActive({
+        countryCode,
+        ddd,
+        number,
+      });
 
-      const usersPhones = await this.userRepository.findByPhoneActiveUserActive(
-        {
-          countryCode,
-          ddd,
-          number,
-        },
-      );
-
-      if (!usersPhones) {
+      if (!user) {
         throw new CustomException(USER_NOT_FOUND);
       }
 
@@ -90,32 +78,32 @@ export class AuthForgotPasswordPhoneService
         ? randomInt(1000, 9999).toString()
         : number.slice(-GET_LAST_FOUR_DIGIT_NUMBER);
 
-      const [userPhone] = usersPhones;
-
-      if (!userPhone.user?.email) {
+      if (!user?.email) {
         throw new CustomException(EMAIL_INFO_NOT_FOUND);
       }
 
       const token =
-        await this.tokenProvider.assign<PhoneSendCodeAuthForgotPasswordPhoneTokenPayload>(
+        await this.tokenProvider.assign<PhoneSendCodeAuthForgotPasswordPhoneSendCodeTokenPayload>(
           {
             expiresIn: AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE,
             payloadParams: {
-              email: userPhone.user.email,
+              email: user.email,
               code,
             },
           },
         );
 
       const key = AUTH_CACHE_KEYS.PHONE_SEND_FORGOT_PASSWORD_PHONE_CODE(
-        userPhone.user.email,
+        user.email,
       );
 
-      await this.cacheProvider.set({
-        key,
-        payload: { token },
-        ttl: AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE_TTL,
-      });
+      await this.cacheProvider.set<AuthForgotPasswordPhoneSendVerifyTokenCache>(
+        {
+          key,
+          payload: { token, attempt: 0 },
+          ttl: AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE_TTL,
+        },
+      );
 
       const to = `${countryCode}${ddd}${number}`;
 
@@ -127,7 +115,7 @@ export class AuthForgotPasswordPhoneService
       }
     } catch (error) {
       this.loggerProvider.error(
-        'AuthForgotPasswordPhoneService - execute - error',
+        'AuthForgotPasswordPhoneSendCodeService - execute - error',
         {
           error,
         },

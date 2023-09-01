@@ -15,11 +15,21 @@ import {
   AUTH_RENEW_REFRESH_TOKEN_SERVICE,
   AuthRenewRefreshTokenServiceInterface,
 } from './interfaces/auth.renew-refresh-token.interface';
-import { AuthForgotPasswordPhoneControllerParamsDto } from './dtos/auth.forgot-password-phone.dto';
+import { AuthForgotPasswordPhoneSendCodeControllerParamsDto } from './dtos/auth.forgot-password-phone-send-code.dto';
 import {
-  AUTH_FORGOT_PASSWORD_PHONE_SERVICE,
-  AuthForgotPasswordPhoneServiceInterface,
-} from './interfaces/auth.forgot-password-phone.interface';
+  AUTH_FORGOT_PASSWORD_PHONE_SEND_CODE_SERVICE,
+  AuthForgotPasswordPhoneSendCodeServiceInterface,
+} from './interfaces/auth.forgot-password-phone-send-code.interface';
+import {
+  AuthForgotPasswordPhoneResetServiceInterface,
+  AUTH_FORGOT_PASSWORD_PHONE_RESET_SERVICE,
+} from './interfaces/auth.forgot-password-phone-reset.interface';
+import {
+  AUTH_FORGOT_PASSWORD_PHONE_VERIFY_CODE_SERVICE,
+  AuthForgotPasswordPhoneVerifyCodeServiceInterface,
+} from './interfaces/auth.forgot-password-phone-verify-code.interface';
+import { AuthForgotPasswordPhoneVerifyCodeControllerParamsDto } from './dtos/auth.forgot-password-phone-verify-code.dto';
+import { AuthForgotPasswordPhoneResetControllerParamsDto } from './dtos/auth.forgot-password-phone-reset.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -28,8 +38,12 @@ export class AuthController {
     private authCreateSessionService: AuthCreateSessionServiceInterface,
     @Inject(AUTH_RENEW_REFRESH_TOKEN_SERVICE)
     private authRenewRefreshTokenService: AuthRenewRefreshTokenServiceInterface,
-    @Inject(AUTH_FORGOT_PASSWORD_PHONE_SERVICE)
-    private authForgotPasswordPhoneService: AuthForgotPasswordPhoneServiceInterface,
+    @Inject(AUTH_FORGOT_PASSWORD_PHONE_SEND_CODE_SERVICE)
+    private authForgotPasswordPhoneSendCodeService: AuthForgotPasswordPhoneSendCodeServiceInterface,
+    @Inject(AUTH_FORGOT_PASSWORD_PHONE_RESET_SERVICE)
+    private authForgotPasswordPhoneResetService: AuthForgotPasswordPhoneResetServiceInterface,
+    @Inject(AUTH_FORGOT_PASSWORD_PHONE_VERIFY_CODE_SERVICE)
+    private authForgotPasswordPhoneVerifyCodeService: AuthForgotPasswordPhoneVerifyCodeServiceInterface,
   ) {}
   @Post('/session')
   async sessionCreate(
@@ -48,13 +62,33 @@ export class AuthController {
     );
   }
 
-  @Post('/session/forgot-password/phone')
-  async authForgotPasswordPhone(
+  @Post('/forgot-password/phone/send/code')
+  async authForgotPasswordPhoneSendCode(
     @Body()
-    authForgotPasswordPhoneParams: AuthForgotPasswordPhoneControllerParamsDto,
+    authForgotPasswordPhoneSendCodeServiceParams: AuthForgotPasswordPhoneSendCodeControllerParamsDto,
   ): Promise<void> {
-    await this.authForgotPasswordPhoneService.execute(
-      authForgotPasswordPhoneParams,
+    await this.authForgotPasswordPhoneSendCodeService.execute(
+      authForgotPasswordPhoneSendCodeServiceParams,
+    );
+  }
+
+  @Post('/forgot-password/phone/verify/code')
+  async authForgotPasswordPhoneVerifyCode(
+    @Body()
+    authForgotPasswordPhoneVerifyCodeParams: AuthForgotPasswordPhoneVerifyCodeControllerParamsDto,
+  ): Promise<void> {
+    await this.authForgotPasswordPhoneVerifyCodeService.execute(
+      authForgotPasswordPhoneVerifyCodeParams,
+    );
+  }
+
+  @Post('/forgot-password/phone/reset/code')
+  async authForgotPasswordPhoneResetCode(
+    @Body()
+    authForgotPasswordPhoneResetControllerParams: AuthForgotPasswordPhoneResetControllerParamsDto,
+  ): Promise<void> {
+    await this.authForgotPasswordPhoneResetService.execute(
+      authForgotPasswordPhoneResetControllerParams,
     );
   }
 }
