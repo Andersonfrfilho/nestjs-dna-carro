@@ -7,12 +7,13 @@ interface Obfuscated {
 }
 const dataObfuscated: Obfuscated[] = [
   {
-    keys: ['chave8', 'chave4', 'chave5'],
-    obfuscateWith: (value: ObfuscateWithParamsDto) => `***${value}`,
+    keys: ['base64', 'token', 'refreshToken'],
+    obfuscateWith: () => `***`,
   },
   {
-    keys: ['base64'],
-    obfuscateWith: () => `***`,
+    keys: ['number'],
+    obfuscateWith: (value) =>
+      String(value).substring(0, 2) + `***` + String(value).slice(-4),
   },
 ];
 

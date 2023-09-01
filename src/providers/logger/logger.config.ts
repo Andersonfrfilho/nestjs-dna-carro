@@ -52,7 +52,9 @@ function formatLogError(param: any): string {
   const phraseDefault = `[${param.level}] [${param.timestamp}] [${requestId}]: ${param.message}`;
   if (typeof param.stack === 'object') {
     const stringParam = JSON.stringify(param?.stack);
-    return phraseDefault + ' - ' + stringParam;
+    const exception =
+      (' - exception - ' && param?.stack?.[0]?.[0]?.exception) ?? '';
+    return phraseDefault + ' - ' + stringParam + exception;
   }
   return phraseDefault;
 }
