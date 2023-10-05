@@ -15,13 +15,13 @@ export const AUTH_FORGOT_PASSWORD_PHONE_CODE_SEND_SMS_MESSAGE = (
   `Use o código para redefinir sua senha DnA-Carro\nseu código de reset de senha é: ${code}`;
 
 export const CACHE_TOKEN_CONFIRMATION_PHONE_RESET_PASSWORD_NOT_FOUND = {
-  code: 1032,
+  code: 1012,
   message: 'CACHE_TOKEN_CONFIRMATION_PHONE_RESET_PASSWORD_NOT_FOUND',
   statusCode: HttpStatusCode.BadRequest,
 };
 
 export const CACHE_TOKEN_VALID_PHONE_RESET_PASSWORD = {
-  code: 1038,
+  code: 1013,
   message: 'CACHE_TOKEN_VALID_PHONE_RESET_PASSWORD',
   statusCode: HttpStatusCode.BadRequest,
 };

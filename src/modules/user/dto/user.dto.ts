@@ -1,5 +1,4 @@
 import { GENDER } from '@src/commons/enum.common';
-import { isValidCPF } from '@src/utils/is-valid-cpf';
 import {
   IsEmail,
   IsEnum,
@@ -10,7 +9,6 @@ import {
   IsUUID,
   MaxLength,
   MinLength,
-  ValidateIf,
 } from 'class-validator';
 
 export class UserRelationshipDto {
@@ -29,11 +27,11 @@ export class UserDto {
   @IsString({ message: 'last name need format in string valid' })
   lastName: string;
 
-  @ValidateIf((value) => isValidCPF(value), {
-    message: 'Cpf property is invalid try other value',
-  })
-  @IsString({ message: 'cpf need format in string valid' })
-  cpf: string;
+  @IsString({ message: 'document need format in string valid' })
+  document: string;
+
+  @IsString({ message: 'documentType need format in string valid' })
+  documentType: string;
 
   @IsString({ message: 'password need format in string valid' })
   password: string;

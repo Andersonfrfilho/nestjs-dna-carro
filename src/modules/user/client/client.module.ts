@@ -17,6 +17,8 @@ import { ImageModule } from '@src/modules/image/image.module';
 import { StorageModule } from '@src/providers/storage/storage.module';
 import { LoggerModule } from '@src/providers/logger/logger.module';
 import { HashModule } from '@src/providers/hash/hash.module';
+import { ClientGetCacheInfoWithoutFlowByEmailService } from './services/client.get-cache-info-without-flow-by-email.service';
+import { CLIENT_GET_CACHE_INFO_WITHOUT_FLOW_SERVICE } from './interfaces/client.get-cache-info-without-flow-by-email.interface';
 
 @Module({
   imports: [
@@ -39,6 +41,10 @@ import { HashModule } from '@src/providers/hash/hash.module';
     {
       provide: CLIENT_CREATE_CACHE_SERVICE,
       useClass: ClientCreateCacheService,
+    },
+    {
+      provide: CLIENT_GET_CACHE_INFO_WITHOUT_FLOW_SERVICE,
+      useClass: ClientGetCacheInfoWithoutFlowByEmailService,
     },
   ],
   controllers: [ClientController],

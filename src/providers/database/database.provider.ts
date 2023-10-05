@@ -1,4 +1,4 @@
-import databaseSource from './database.source';
+import databaseSource from './database.local.source';
 
 export const databaseProviders = [
   {

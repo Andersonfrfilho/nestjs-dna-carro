@@ -25,9 +25,15 @@ export class UsersTable1690679684616 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'cpf',
+            name: 'document',
             type: 'varchar',
-            isUnique: true,
+            isUnique: false,
+            isNullable: false,
+          },
+          {
+            name: 'document_type',
+            type: 'varchar',
+            isUnique: false,
             isNullable: false,
           },
           {
@@ -76,7 +82,9 @@ export class UsersTable1690679684616 implements MigrationInterface {
             isNullable: true,
           },
         ],
-        indices: [{ columnNames: ['cpf', 'email'] }],
+        indices: [
+          { columnNames: ['document', 'document_type'], isUnique: true },
+        ],
       }),
     );
   }

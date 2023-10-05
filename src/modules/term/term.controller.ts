@@ -13,7 +13,7 @@ export class TermController {
     @Inject(TERM_CREATE_SERVICE)
     private termCreateService: TermCreateServiceInterface,
   ) {}
-  @Post()
+  @Post('/')
   async create(
     @Body() createTerm: TermCreateControllerParamsDto,
   ): Promise<Term> {

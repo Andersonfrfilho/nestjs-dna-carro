@@ -23,19 +23,19 @@ export class UserPhone {
   @Column({ name: 'phone_id' })
   phoneId: string;
 
+  @ManyToOne(() => Phone, (phone) => phone.userPhone)
+  @JoinColumn({ name: 'phone_id', referencedColumnName: 'id' })
+  phone?: Phone;
+
+  @ManyToOne(() => User, (user) => user.userPhone)
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user?: User;
+
   @Column()
   active: boolean;
 
   @Column()
   confirm: boolean;
-
-  @ManyToOne(() => User, (user) => user.usersPhones, { eager: true })
-  @JoinColumn({ name: 'user_id' })
-  user?: User;
-
-  @ManyToOne(() => Phone, (phone) => phone.usersPhones, { eager: true })
-  @JoinColumn({ name: 'phone_id' })
-  phone?: Phone;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

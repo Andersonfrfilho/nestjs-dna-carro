@@ -6,8 +6,9 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
-  JoinTable,
+  // JoinTable,
 } from 'typeorm';
+import { Phone } from '@src/modules/phone/phone.entity';
 import { UserPhone } from './user.phone.entity';
 
 @Entity('users')
@@ -22,7 +23,10 @@ export class User {
   lastName: string;
 
   @Column()
-  cpf: string;
+  document: string;
+
+  @Column({ name: 'document_type' })
+  documentType: string;
 
   @Column()
   email: string;
@@ -43,8 +47,7 @@ export class User {
   active: boolean;
 
   @OneToMany(() => UserPhone, (userPhone) => userPhone.user)
-  @JoinTable()
-  public usersPhones: UserPhone[];
+  userPhone?: UserPhone[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

@@ -1,3 +1,4 @@
+import { Match } from '@src/commons/match.decorator';
 import { isValidPhoneNumber } from '@src/utils/is-valid-phone-number';
 import { IsString, ValidateIf } from 'class-validator';
 
@@ -6,6 +7,7 @@ export class AuthForgotPasswordPhoneResetDto {
   password: string;
 
   @IsString()
+  @Match('password')
   confirmPassword: string;
 
   @IsString()

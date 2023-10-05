@@ -56,7 +56,7 @@ import {
 import { TypesUsers } from '@src/modules/types-users/types-users.constant';
 import { ClientCreateServiceInterface } from '../interfaces/client.create.interface';
 import { NameCacheKeyFlow, USER_CLIENT_CACHE_KEYS } from '../client.constant';
-import databaseSource from '@src/providers/database/database.source';
+import databaseSource from '@src/providers/database/database.local.source';
 import { User } from '@src/modules/user/entities/user.entity';
 import { EMAIL_INFO_NOT_FOUND, USER_NOT_FOUND } from '../client.errors';
 import { ClientCreateServiceParamsDto } from '../dto/client.create.dto';
@@ -77,11 +77,7 @@ import {
 import { Phone } from '@src/modules/phone/phone.entity';
 import { Address } from '@src/modules/address/address.entity';
 import { COUNTRY_ADDRESS_CODE } from '@src/modules/address/address.constante';
-import { UserPhone } from '../../entities/user.phone.entity';
-import { UserAddress } from '../../entities/user.address.entity';
-import { UserImageProfile } from '../../entities/user.image.profile.entity';
-import { UserTerm } from '../../entities/user.term.entity';
-import { UserTypesUser } from '../../entities/user.types.user.entity';
+
 import { Image } from '@src/modules/image/image.entity';
 
 @Injectable()

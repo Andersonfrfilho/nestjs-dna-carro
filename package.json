@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create ./src/providers/database/migrations/$npm_config_name",
-    "migration:run": "typeorm-ts-node-commonjs migration:run -d ./src/providers/database/database.source.ts",
+    "migration:run:local": "typeorm-ts-node-commonjs migration:run -d ./src/providers/database/database.local.source.ts",
+    "migration:run:container": "typeorm-ts-node-commonjs migration:run -d ./src/providers/database/database.container.source.ts",
     "migration:revert": "typeorm-ts-node-commonjs migration:revert -d ./src/providers/database/database.source.ts"
   },
   "dependencies": {

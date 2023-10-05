@@ -6,8 +6,8 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
-  JoinTable,
 } from 'typeorm';
+import { User } from '../user/entities/user.entity';
 import { UserPhone } from '../user/entities/user.phone.entity';
 
 @Entity('phones')
@@ -28,8 +28,7 @@ export class Phone {
   active: boolean;
 
   @OneToMany(() => UserPhone, (userPhone) => userPhone.phone)
-  @JoinTable()
-  public usersPhones?: UserPhone[];
+  userPhone?: UserPhone[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

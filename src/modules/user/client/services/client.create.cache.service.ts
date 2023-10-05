@@ -63,7 +63,7 @@ export class ClientCreateCacheService
       await this.cacheProvider.set({
         key,
         payload: { [typeKey]: data },
-        ttl: USER_CLIENT_CACHE_TTL.CLIENT_CREATE_SERVICE,
+        ttl: USER_CLIENT_CACHE_TTL.CREATE_SERVICE,
       });
     } catch (error) {
       this.loggerProvider.error('ClientCreateCacheService - execute - error', {
