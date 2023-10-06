@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { UserTerm } from '../user/entities/user.term.entity';
 
 @Entity('terms')
 export class Term {
@@ -20,6 +22,9 @@ export class Term {
 
   @Column()
   active: boolean;
+
+  @OneToMany(() => UserTerm, (userTerm) => userTerm.term)
+  userTerms?: UserTerm[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

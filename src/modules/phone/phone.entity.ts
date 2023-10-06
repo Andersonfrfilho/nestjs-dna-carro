@@ -28,7 +28,7 @@ export class Phone {
   active: boolean;
 
   @OneToMany(() => UserPhone, (userPhone) => userPhone.phone)
-  userPhone?: UserPhone[];
+  userPhones?: UserPhone[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

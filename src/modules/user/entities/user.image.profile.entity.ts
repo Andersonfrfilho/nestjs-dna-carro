@@ -1,3 +1,4 @@
+import { Image } from '@src/modules/image/image.entity';
 import {
   Entity,
   Column,
@@ -5,7 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity('users_profiles_images')
 export class UserImageProfile {
@@ -17,6 +21,14 @@ export class UserImageProfile {
 
   @Column({ name: 'image_id' })
   userImageProfileId: string;
+
+  @ManyToOne(() => Image, (image) => image.userImagesProfiles)
+  @JoinColumn({ name: 'image_id', referencedColumnName: 'id' })
+  imageProfile?: Image;
+
+  @ManyToOne(() => User, (user) => user.userImageProfiles)
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user?: User;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

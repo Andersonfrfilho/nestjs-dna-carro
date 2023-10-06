@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
-  JoinTable,
   JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
@@ -23,11 +22,11 @@ export class UserPhone {
   @Column({ name: 'phone_id' })
   phoneId: string;
 
-  @ManyToOne(() => Phone, (phone) => phone.userPhone)
+  @ManyToOne(() => Phone, (phone) => phone.userPhones)
   @JoinColumn({ name: 'phone_id', referencedColumnName: 'id' })
   phone?: Phone;
 
-  @ManyToOne(() => User, (user) => user.userPhone)
+  @ManyToOne(() => User, (user) => user.userPhones)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user?: User;
 

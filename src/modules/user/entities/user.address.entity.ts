@@ -1,3 +1,4 @@
+import { Address } from '@src/modules/address/address.entity';
 import {
   Entity,
   Column,
@@ -5,7 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity('users_addresses')
 export class UserAddress {
@@ -20,6 +24,14 @@ export class UserAddress {
 
   @Column()
   active: boolean;
+
+  @ManyToOne(() => Address, (address) => address.userAddresses)
+  @JoinColumn({ name: 'address_id', referencedColumnName: 'id' })
+  address?: Address;
+
+  @ManyToOne(() => User, (user) => user.userAddresses)
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user?: User;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

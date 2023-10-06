@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { UserImageProfile } from '../user/entities/user.image.profile.entity';
 
 @Entity('images')
 export class Image {
@@ -17,6 +19,12 @@ export class Image {
 
   @Column()
   url: string;
+
+  @OneToMany(
+    () => UserImageProfile,
+    (userImageProfile) => userImageProfile.imageProfile,
+  )
+  userImagesProfiles?: UserImageProfile[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
