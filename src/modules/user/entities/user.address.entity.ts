@@ -1,4 +1,3 @@
-import { Address } from '@src/modules/address/address.entity';
 import {
   Entity,
   Column,
@@ -10,6 +9,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { Address } from '../../../modules/address/address.entity';
 
 @Entity('users_addresses')
 export class UserAddress {

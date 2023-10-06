@@ -1,4 +1,4 @@
-import { TypesUser } from '@src/modules/types-users/types-users.entity';
+import { TypesUser } from '../../../modules/types-users/types-users.entity';
 import {
   Entity,
   Column,

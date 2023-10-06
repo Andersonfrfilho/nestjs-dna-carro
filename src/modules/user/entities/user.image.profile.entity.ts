@@ -1,4 +1,4 @@
-import { Image } from '@src/modules/image/image.entity';
+import { Image } from '../../../modules/image/image.entity';
 import {
   Entity,
   Column,

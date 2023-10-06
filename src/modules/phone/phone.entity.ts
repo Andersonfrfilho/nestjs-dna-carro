@@ -7,7 +7,6 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from 'typeorm';
-import { User } from '../user/entities/user.entity';
 import { UserPhone } from '../user/entities/user.phone.entity';
 
 @Entity('phones')

@@ -1,4 +1,4 @@
-import { Term } from '@src/modules/term/term.entity';
+import { Term } from '../../../modules/term/term.entity';
 import {
   Entity,
   Column,
