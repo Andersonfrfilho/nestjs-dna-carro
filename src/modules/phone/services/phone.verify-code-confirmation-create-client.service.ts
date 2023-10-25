@@ -26,6 +26,7 @@ import {
   EMAIL_TOKEN_CONFIRMATION_INCORRECT,
   PHONE_NUMBER_CACHE_CONFLICT_INFO,
   PHONE_NUMBER_CODE_CONFIRMATION_INCORRECT,
+  PHONE_TOKEN_CONFIRMATION_INCORRECT,
 } from '../phone.error';
 import { PHONE_CACHE_KEYS } from '../phone.constant';
 import {
@@ -50,11 +51,11 @@ export class PhoneVerifyCodeConfirmationCreateClientService
     countryCode,
     ddd,
     number,
-    email,
   }: PhoneVerifyCodeConfirmationCreateClientServiceParamsDto): Promise<void> {
     try {
+      const phoneNumber = `${countryCode}${ddd}${number}`;
       const keyGetPhoneData = USER_CLIENT_CACHE_KEYS.CLIENT_CREATE_SERVICE_KEY({
-        email: email,
+        phone: phoneNumber,
         key: NameCacheKeyFlow.phone,
       });
 
@@ -84,7 +85,7 @@ export class PhoneVerifyCodeConfirmationCreateClientService
       }
 
       const keyGetTokenData = PHONE_CACHE_KEYS.PHONE_SEND_VERIFY_CODE({
-        email,
+        phone: phoneNumber,
       });
 
       const cacheTokenData =
@@ -102,8 +103,8 @@ export class PhoneVerifyCodeConfirmationCreateClientService
           { token },
         );
 
-      if (codeToken.email !== email) {
-        throw new CustomException(EMAIL_TOKEN_CONFIRMATION_INCORRECT);
+      if (codeToken.phone !== phoneNumber) {
+        throw new CustomException(PHONE_TOKEN_CONFIRMATION_INCORRECT);
       }
 
       const payload = {

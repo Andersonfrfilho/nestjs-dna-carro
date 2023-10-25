@@ -7,7 +7,7 @@ import { CustomException } from '@src/error/custom.exception';
 
 import { NameCacheKeyFlow, USER_CLIENT_CACHE_KEYS } from '../client.constant';
 import {
-  EMAIL_INFO_NOT_FOUND,
+  PHONE_INFO_NOT_FOUND,
   USER_CLIENT_CACHE_INFO_NOT_FOUND,
 } from '../client.errors';
 
@@ -15,16 +15,16 @@ import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
-import { ClientGetCacheInfoWithoutFlowByEmailServiceInterface } from '../interfaces/client.get-cache-info-without-flow-by-email.interface';
+import { ClientGetCacheInfoWithoutFlowByPhoneServiceInterface } from '../interfaces/client.get-cache-info-without-flow-by-phone.interface';
 import { ClientCacheCreateServiceParamsDto } from '../dto/client.create.cache.dto';
 import {
-  ClientGetCacheInfoWithoutFlowByEmailDtoServiceParamsDto,
-  ClientGetCacheInfoWithoutFlowByEmailServiceResponse,
-} from '../dto/client.get-cache-info-without-flow-by-email.dto';
+  ClientGetCacheInfoWithoutFlowByPhoneDtoServiceParamsDto,
+  ClientGetCacheInfoWithoutFlowByPhoneServiceResponse,
+} from '../dto/client.get-cache-info-without-flow-by-phone.dto';
 
 @Injectable()
-export class ClientGetCacheInfoWithoutFlowByEmailService
-  implements ClientGetCacheInfoWithoutFlowByEmailServiceInterface
+export class ClientGetCacheInfoWithoutFlowByPhoneService
+  implements ClientGetCacheInfoWithoutFlowByPhoneServiceInterface
 {
   constructor(
     @Inject(CACHE_PROVIDER)
@@ -33,15 +33,15 @@ export class ClientGetCacheInfoWithoutFlowByEmailService
     private loggerProvider: LoggerProviderInterface,
   ) {}
   async execute(
-    params: ClientGetCacheInfoWithoutFlowByEmailDtoServiceParamsDto,
-  ): Promise<ClientGetCacheInfoWithoutFlowByEmailServiceResponse> {
+    params: ClientGetCacheInfoWithoutFlowByPhoneDtoServiceParamsDto,
+  ): Promise<ClientGetCacheInfoWithoutFlowByPhoneServiceResponse> {
     try {
-      if (!params.email) {
-        throw new CustomException(EMAIL_INFO_NOT_FOUND);
+      if (!params.phone) {
+        throw new CustomException(PHONE_INFO_NOT_FOUND);
       }
 
       const key = USER_CLIENT_CACHE_KEYS.CLIENT_CREATE_SERVICE_ALL({
-        phone: params.email,
+        phone: params.phone,
       });
 
       const userInfoCache =
@@ -63,7 +63,7 @@ export class ClientGetCacheInfoWithoutFlowByEmailService
       };
     } catch (error) {
       this.loggerProvider.error(
-        'ClientGetCacheInfoWithoutFlowByEmailService - execute - error',
+        'ClientGetCacheInfoWithoutFlowByPhoneService - execute - error',
         {
           error: error,
         },

@@ -25,11 +25,16 @@ class ImageBase64CreateCacheDto {
   @IsString()
   base64: string;
 }
+class ClientCreateUserInfo extends UserDto {
+  @ValidateNested()
+  @IsOptional()
+  phone: PhoneDto;
+}
 
 export class ClientCacheCreateDto {
   @ValidateNested()
   @IsOptional()
-  user: UserDto;
+  user: ClientCreateUserInfo;
 
   @IsOptional()
   @ValidateNested()

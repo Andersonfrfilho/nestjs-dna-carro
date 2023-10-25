@@ -7,7 +7,7 @@ import {
 import { ClientCreateCacheServiceInterface } from '../interfaces/client.create.cache.interface';
 import { ClientCacheCreateServiceParamsDto } from '../dto/client.create.cache.dto';
 import { CustomException } from '@src/error/custom.exception';
-import { EMAIL_INFO_NOT_FOUND, KEY_PARAM_INVALID } from '../client.errors';
+import { KEY_PARAM_INVALID, PHONE_INFO_NOT_FOUND } from '../client.errors';
 import {
   USER_REPOSITORY,
   UserRepositoryInterface,
@@ -37,19 +37,21 @@ export class ClientCreateCacheService
   ) {}
   async execute(params: ClientCacheCreateServiceParamsDto): Promise<void> {
     try {
-      const email = params?.user?.email;
-      if (!email) {
-        throw new CustomException(EMAIL_INFO_NOT_FOUND);
+      const phone = params?.phone;
+      if (!phone) {
+        throw new CustomException(PHONE_INFO_NOT_FOUND);
       }
 
-      const user = await this.userRepository.findByEmail(email);
+      const user = await this.userRepository.findByPhoneActiveUser(phone);
 
       if (user) {
         throw new CustomException(EMAIL_ALREADY_EXIST);
       }
 
+      const keyPhone = `${phone.countryCode}${phone.ddd}${phone.number}`;
+
       const key = USER_CLIENT_CACHE_KEYS.CLIENT_CREATE_SERVICE_KEY({
-        email: params.user.email,
+        phone: keyPhone,
         key: params.key,
       });
 

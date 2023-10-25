@@ -13,7 +13,10 @@ import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
-import { UpdatePasswordByEmailParamsDto } from '../dto/user.dto';
+import {
+  FindByPhoneActiveUserParamsDto,
+  UpdatePasswordByEmailParamsDto,
+} from '../dto/user.dto';
 
 @Injectable()
 export class UserRepository implements UserRepositoryInterface {
@@ -27,6 +30,23 @@ export class UserRepository implements UserRepositoryInterface {
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
+  findByPhoneActiveUser(
+    phone: FindByPhoneActiveUserParamsDto,
+  ): Promise<User | null> {
+    const { countryCode, ddd, number } = phone;
+    return this.userRepository.findOne({
+      where: {
+        active: true,
+        userPhones: {
+          phone: {
+            ddd,
+            number,
+            countryCode,
+          },
+        },
+      },
+    });
+  }
   async updatePasswordByEmailUserActive(
     data: UpdatePasswordByEmailParamsDto,
   ): Promise<void> {

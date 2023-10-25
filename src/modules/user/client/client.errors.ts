@@ -6,6 +6,12 @@ export const EMAIL_INFO_NOT_FOUND = {
   statusCode: HttpStatusCode.NotFound,
 };
 
+export const PHONE_INFO_NOT_FOUND = {
+  code: 1029,
+  message: 'PHONE_INFO_NOT_FOUND',
+  statusCode: HttpStatusCode.NotFound,
+};
+
 export const KEY_PARAM_INVALID = {
   code: 1027,
   message: 'KEY_PARAM_INVALID',

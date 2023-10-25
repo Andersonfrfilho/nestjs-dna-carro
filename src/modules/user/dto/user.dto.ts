@@ -54,3 +54,12 @@ export interface UpdatePasswordByEmailParamsDto {
   email: string;
   passwordHash: string;
 }
+
+export class FindByPhoneActiveUserParamsDto {
+  @IsString({ message: 'country code need format in string valid' })
+  countryCode: string;
+  @IsString({ message: 'ddd need format in string valid' })
+  ddd: string;
+  @IsString({ message: 'number need format in string valid' })
+  number: string;
+}

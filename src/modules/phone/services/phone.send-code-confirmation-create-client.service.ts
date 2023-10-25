@@ -58,7 +58,7 @@ export class PhoneSendCodeConfirmationCreateClientService
   }: PhoneSendCodeConfirmationCreateClientParamsDto): Promise<void> {
     try {
       const keyGetData = USER_CLIENT_CACHE_KEYS.CLIENT_CREATE_SERVICE_KEY({
-        email: email,
+        phone: email,
         key: NameCacheKeyFlow.phone,
       });
 
@@ -85,7 +85,7 @@ export class PhoneSendCodeConfirmationCreateClientService
       const to = `${countryCode}${ddd}${number}`;
 
       const key = USER_CLIENT_CACHE_KEYS.PHONE_SEND_VERIFY_CODE({
-        email,
+        phone: to,
       });
 
       const isSendMessageAble =

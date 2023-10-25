@@ -14,9 +14,17 @@ import {
   ClientGetCacheInfoWithoutFlowByEmailDtoControllerParamsDto,
 } from './dto/client.get-cache-info-without-flow-by-email.dto';
 import {
-  CLIENT_GET_CACHE_INFO_WITHOUT_FLOW_SERVICE,
+  CLIENT_GET_CACHE_INFO_WITHOUT_FLOW_BY_EMAIL_SERVICE,
   ClientGetCacheInfoWithoutFlowByEmailServiceInterface,
 } from './interfaces/client.get-cache-info-without-flow-by-email.interface';
+import {
+  ClientGetCacheInfoWithoutFlowByPhoneControllerResponse,
+  ClientGetCacheInfoWithoutFlowByPhoneDtoControllerParamsDto,
+} from './dto/client.get-cache-info-without-flow-by-phone.dto';
+import {
+  CLIENT_GET_CACHE_INFO_WITHOUT_FLOW_BY_PHONE_SERVICE,
+  ClientGetCacheInfoWithoutFlowByPhoneServiceInterface,
+} from './interfaces/client.get-cache-info-without-flow-by-phone.interface';
 
 export class CacheCreatePathParamDto {
   @IsEnum(NameCacheKeyFlow)
@@ -30,8 +38,10 @@ export class ClientController {
     private clientCreateCacheService: ClientCreateCacheServiceInterface,
     @Inject(CLIENT_CREATE_SERVICE)
     private clientCreateService: ClientCreateServiceInterface,
-    @Inject(CLIENT_GET_CACHE_INFO_WITHOUT_FLOW_SERVICE)
+    @Inject(CLIENT_GET_CACHE_INFO_WITHOUT_FLOW_BY_EMAIL_SERVICE)
     private clientGetCacheInfoWithoutFlowByEmailService: ClientGetCacheInfoWithoutFlowByEmailServiceInterface,
+    @Inject(CLIENT_GET_CACHE_INFO_WITHOUT_FLOW_BY_PHONE_SERVICE)
+    private clientGetCacheInfoWithoutFlowByPhoneService: ClientGetCacheInfoWithoutFlowByPhoneServiceInterface,
   ) {}
   @Post('/cache/:key')
   async cacheCreate(
@@ -44,11 +54,20 @@ export class ClientController {
     });
   }
 
-  @Get('/cache/:email/without/flow')
-  async getCacheInfoWithoutFlow(
+  @Get('/cache/emails/:email/without/flow')
+  async getCacheInfoWithoutByEmailFlow(
     @Param() path: ClientGetCacheInfoWithoutFlowByEmailDtoControllerParamsDto,
   ): Promise<ClientGetCacheInfoWithoutFlowByEmailControllerResponse> {
     return this.clientGetCacheInfoWithoutFlowByEmailService.execute({
+      ...path,
+    });
+  }
+
+  @Get('/cache/phones/:phone/without/flow')
+  async getCacheInfoWithoutByPhoneFlow(
+    @Param() path: ClientGetCacheInfoWithoutFlowByPhoneDtoControllerParamsDto,
+  ): Promise<ClientGetCacheInfoWithoutFlowByPhoneControllerResponse> {
+    return this.clientGetCacheInfoWithoutFlowByPhoneService.execute({
       ...path,
     });
   }

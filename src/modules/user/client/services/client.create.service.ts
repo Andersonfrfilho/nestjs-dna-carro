@@ -126,7 +126,7 @@ export class ClientCreateService implements ClientCreateServiceInterface {
       }
 
       const key = USER_CLIENT_CACHE_KEYS.CLIENT_CREATE_SERVICE_ALL({
-        email: params.email,
+        phone: params.email,
       });
 
       const userCache =
