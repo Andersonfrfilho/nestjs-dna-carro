@@ -9,6 +9,10 @@ import {
 } from 'typeorm';
 import { UserTerm } from '../user/entities/user.term.entity';
 
+interface Description {
+  text: string;
+}
+
 @Entity('terms')
 export class Term {
   @PrimaryGeneratedColumn('increment')
@@ -18,7 +22,7 @@ export class Term {
   version: string;
 
   @Column('jsonb', { nullable: false, default: {} })
-  description: string;
+  description: any & Description;
 
   @Column()
   active: boolean;

@@ -28,7 +28,7 @@ import {
 
 export class CacheCreatePathParamDto {
   @IsEnum(NameCacheKeyFlow)
-  key: NameCacheKeyFlow;
+  key: Exclude<NameCacheKeyFlow, NameCacheKeyFlow.phoneConfirmation>;
 }
 
 @Controller('user/client')

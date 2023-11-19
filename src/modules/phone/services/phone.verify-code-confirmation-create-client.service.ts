@@ -18,7 +18,7 @@ import {
   CACHE_PROVIDER,
   CacheProviderInterface,
 } from '@src/providers/cache/cache.provider.interface';
-import { PhoneCacheCreateDto } from '../dto/phone.dto';
+import { PhoneAttribute } from '../dto/phone.dto';
 import { CustomException } from '@src/error/custom.exception';
 import {
   CACHE_DATA_CONFIRMATION_PHONE_NOT_FOUND,
@@ -59,7 +59,7 @@ export class PhoneVerifyCodeConfirmationCreateClientService
         key: NameCacheKeyFlow.phone,
       });
 
-      const cachePhoneData = await this.cacheProvider.get<PhoneCacheCreateDto>(
+      const cachePhoneData = await this.cacheProvider.get<PhoneAttribute>(
         keyGetPhoneData,
       );
 
@@ -68,13 +68,11 @@ export class PhoneVerifyCodeConfirmationCreateClientService
       }
 
       const {
-        phone: {
-          countryCode: countryCodeCache,
-          ddd: dddCache,
-          number: numberCache,
-          numberAttempts,
-        },
-      } = cachePhoneData;
+        countryCode: countryCodeCache,
+        ddd: dddCache,
+        number: numberCache,
+        numberAttempts,
+      } = cachePhoneData.phone;
 
       if (
         countryCode !== countryCodeCache &&
@@ -84,7 +82,7 @@ export class PhoneVerifyCodeConfirmationCreateClientService
         throw new CustomException(PHONE_NUMBER_CACHE_CONFLICT_INFO);
       }
 
-      const keyGetTokenData = PHONE_CACHE_KEYS.PHONE_SEND_VERIFY_CODE({
+      const keyGetTokenData = USER_CLIENT_CACHE_KEYS.PHONE_SEND_VERIFY_CODE({
         phone: phoneNumber,
       });
 
@@ -92,7 +90,6 @@ export class PhoneVerifyCodeConfirmationCreateClientService
         await this.cacheProvider.get<PhoneVerifyCodeConfirmationGetTokenCacheDto>(
           keyGetTokenData,
         );
-
       if (!cacheTokenData) {
         throw new CustomException(CACHE_TOKEN_CONFIRMATION_PHONE_NOT_FOUND);
       }
@@ -112,14 +109,14 @@ export class PhoneVerifyCodeConfirmationCreateClientService
         ddd,
         number,
         confirm: false,
-        numberAttempts: numberAttempts + 1,
+        numberAttempts: String((numberAttempts && numberAttempts + 1) || 1),
       };
 
       if (codeToken.code !== code) {
         await this.cacheProvider.set({
           key: keyGetPhoneData,
-          payload: { [NameCacheKeyFlow.phone]: payload },
-          ttl: USER_CLIENT_CACHE_TTL.CLIENT_CREATE_SERVICE,
+          payload: { phone: payload },
+          ttl: USER_CLIENT_CACHE_TTL.CREATE_SERVICE,
         });
         throw new CustomException(PHONE_NUMBER_CODE_CONFIRMATION_INCORRECT);
       }
@@ -128,8 +125,8 @@ export class PhoneVerifyCodeConfirmationCreateClientService
 
       await this.cacheProvider.set({
         key: keyGetPhoneData,
-        payload: { [NameCacheKeyFlow.phone]: payload },
-        ttl: USER_CLIENT_CACHE_TTL.CLIENT_CREATE_SERVICE,
+        payload: { phone: payload },
+        ttl: USER_CLIENT_CACHE_TTL.CREATE_SERVICE,
       });
 
       await this.cacheProvider.delete(keyGetTokenData);

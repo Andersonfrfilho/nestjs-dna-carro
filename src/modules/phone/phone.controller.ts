@@ -1,5 +1,8 @@
 import { Body, Controller, Inject, Post } from '@nestjs/common';
-import { PhoneSendCodeConfirmationCreateClientControllerParamsDto } from './dto/phone.send-code-confirmation-create-client.dto';
+import {
+  PhoneSendCodeConfirmationCreateClientControllerParamsDto,
+  PhoneSendCodeConfirmationCreateClientControllerResponseDto,
+} from './dto/phone.send-code-confirmation-create-client.dto';
 import {
   PHONE_SEND_CODE_CONFIRMATION_CREATE_CLIENT_SERVICE,
   PhoneSendCodeConfirmationCreateClientServiceInterface,
@@ -16,14 +19,14 @@ export class PhoneController {
     @Inject(PHONE_SEND_CODE_CONFIRMATION_CREATE_CLIENT_SERVICE)
     private phoneSendCodeConfirmationCreateClient: PhoneSendCodeConfirmationCreateClientServiceInterface,
     @Inject(PHONE_VERIFY_CODE_CONFIRMATION_CREATE_CLIENT_SERVICE)
-    private PhoneVerifyCodeConfirmationCreateClientService: PhoneVerifyCodeConfirmationCreateClientServiceInterface,
+    private phoneVerifyCodeConfirmationCreateClientService: PhoneVerifyCodeConfirmationCreateClientServiceInterface,
   ) {}
   @Post('/send/code/confirmation/create/client')
   async sendCodeConfirmationCreateClient(
     @Body()
     sendPhoneConfirmationsDto: PhoneSendCodeConfirmationCreateClientControllerParamsDto,
-  ): Promise<void> {
-    await this.phoneSendCodeConfirmationCreateClient.execute(
+  ): Promise<PhoneSendCodeConfirmationCreateClientControllerResponseDto> {
+    return this.phoneSendCodeConfirmationCreateClient.execute(
       sendPhoneConfirmationsDto,
     );
   }
@@ -33,7 +36,7 @@ export class PhoneController {
     @Body()
     verifyPhoneConfirmationsDto: PhoneVerifyCodeConfirmationCreateClientControllerParamsDto,
   ): Promise<void> {
-    await this.PhoneVerifyCodeConfirmationCreateClientService.execute(
+    await this.phoneVerifyCodeConfirmationCreateClientService.execute(
       verifyPhoneConfirmationsDto,
     );
   }

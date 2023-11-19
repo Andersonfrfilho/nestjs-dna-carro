@@ -44,7 +44,7 @@ export class CacheProvider implements CacheProviderInterface {
   async getAll<T>(key: string): Promise<T | undefined> {
     try {
       const keys = await this.cacheService.store.keys(key);
-
+      console.log(keys);
       const valuesPromise = await this.cacheService.store.mget(...keys);
       const formattedObject = valuesPromise.reduce(
         (accumulator: any, element: string) => {

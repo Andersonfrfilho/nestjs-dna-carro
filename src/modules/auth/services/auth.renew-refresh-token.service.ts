@@ -68,7 +68,7 @@ export class AuthRenewRefreshTokenService
       const [symbolExpireIn, numberExpireIn] = separatedCharacterNumber(
         config.token.expireIn,
       );
-      console.log(symbolExpireIn, numberExpireIn);
+
       const expireInUnix = moment(date)
         .add(numberExpireIn, symbolExpireIn as any)
         .unix();

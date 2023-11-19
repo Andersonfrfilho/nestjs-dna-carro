@@ -17,9 +17,17 @@ export class PhoneDto {
   number: string;
 }
 export class PhoneNumberAttemptsDto {
-  numberAttempts: number;
+  numberAttempts?: number;
 }
 
-export class PhoneCacheCreateDto extends PhoneDto {
-  phone: PhoneDto & PhoneNumberAttemptsDto;
+export class PhoneCacheConfirmation {
+  confirm?: string;
+}
+
+export interface PhoneCacheCreateDto
+  extends PhoneDto,
+    PhoneNumberAttemptsDto,
+    PhoneCacheConfirmation {}
+export interface PhoneAttribute {
+  phone: PhoneCacheCreateDto;
 }

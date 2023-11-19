@@ -5,7 +5,11 @@ import {
 } from '@src/providers/cache/cache.provider.interface';
 import { CustomException } from '@src/error/custom.exception';
 
-import { NameCacheKeyFlow, USER_CLIENT_CACHE_KEYS } from '../client.constant';
+import {
+  NameCacheKeyFlow,
+  NameCacheKeyFlowPhoneConfirmation,
+  USER_CLIENT_CACHE_KEYS,
+} from '../client.constant';
 import {
   PHONE_INFO_NOT_FOUND,
   USER_CLIENT_CACHE_INFO_NOT_FOUND,
@@ -50,14 +54,25 @@ export class ClientGetCacheInfoWithoutFlowByPhoneService
       if (!userInfoCache) {
         throw new CustomException(USER_CLIENT_CACHE_INFO_NOT_FOUND);
       }
-
       const keysFlow = Object.keys(NameCacheKeyFlow);
       const keysInfoCache = Object.keys(userInfoCache);
 
       const keysWithoutInfoCache = keysFlow.filter(
-        (keyFlow) => !keysInfoCache.includes(keyFlow),
+        (keyFlow) =>
+          !keysInfoCache.includes(keyFlow) &&
+          keyFlow !== NameCacheKeyFlowPhoneConfirmation,
+      );
+      const phoneInfoCache = keysInfoCache.find(
+        (keyFlow) => keyFlow === NameCacheKeyFlow.phone,
       );
 
+      if (phoneInfoCache) {
+        const phoneInfoCacheValue = userInfoCache[NameCacheKeyFlow.phone];
+
+        if (!phoneInfoCacheValue?.confirm) {
+          keysWithoutInfoCache.push(NameCacheKeyFlow.phoneConfirmation);
+        }
+      }
       return {
         missingCacheInfo: keysWithoutInfoCache,
       };
