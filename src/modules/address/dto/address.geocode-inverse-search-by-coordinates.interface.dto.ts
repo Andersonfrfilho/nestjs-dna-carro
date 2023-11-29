@@ -33,13 +33,13 @@ export class AddressComponent {
 }
 
 export class AddressGeocodeInverseSearchByCoordinatesResultDto {
-  components: AddressComponent[];
+  components: AddressComponent;
 
   @IsString()
   formatted_address: string;
 
   @IsString()
-  place_id: string;
+  placeId: string;
 
   @IsString()
   latitude: string;

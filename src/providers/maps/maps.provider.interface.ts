@@ -11,5 +11,5 @@ export interface MapsProviderInterface {
   ): Promise<string>;
   geocodeInverseSearchByCoordinates(
     data: GeocodeInverseSearchByCoordinatesParamsDto,
-  ): Promise<GeocodeInverseSearchByCoordinatesResult[]>;
+  ): Promise<GeocodeInverseSearchByCoordinatesResult>;
 }

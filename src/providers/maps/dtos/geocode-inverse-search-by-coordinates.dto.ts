@@ -7,7 +7,7 @@ interface ComponentAddress {
   number: string;
 }
 export type GeocodeInverseSearchByCoordinatesResult = {
-  components: ComponentAddress[];
+  components: ComponentAddress;
   formatted_address: string;
   place_id: string;
   latitude: string;

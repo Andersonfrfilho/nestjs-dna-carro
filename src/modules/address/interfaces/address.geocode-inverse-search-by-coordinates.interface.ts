@@ -10,9 +10,9 @@ interface ComponentAddress {
   state: string;
 }
 export type GeocodeInverseSearchByCoordinatesResult = {
-  components: ComponentAddress[];
+  components: ComponentAddress;
   formatted_address: string;
-  place_id: string;
+  placeId: string;
   latitude: string;
   longitude: string;
 };

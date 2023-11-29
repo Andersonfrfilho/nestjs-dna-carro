@@ -10,9 +10,15 @@ import { AddressFindGeocodingService } from './services/address.find-geocoding.s
 import { LoggerModule } from '@src/providers/logger/logger.module';
 import { ADDRESS_GEOCODE_INVERSE_SEARCH_BY_COORDINATES_SERVICE } from './interfaces/address.geocode-inverse-search-by-coordinates.interface';
 import { AddressGeocodeInverseSearchByCoordinatesService } from './services/address.geocode-inverse-search-by-coordinates.service';
+import { AddressesModule } from '@src/providers/addresses/addresses.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Address]), MapsModule, LoggerModule],
+  imports: [
+    TypeOrmModule.forFeature([Address]),
+    MapsModule,
+    LoggerModule,
+    AddressesModule,
+  ],
   providers: [
     {
       provide: ADDRESS_REPOSITORY,

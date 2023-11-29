@@ -71,3 +71,9 @@ export const EMAIL_NOT_FOUND = {
   message: 'EMAIL_NOT_FOUND',
   statusCode: HttpStatusCode.NotFound,
 };
+
+export const CEP_API_ERROR = {
+  code: 1011,
+  message: 'CEP_API_ERROR',
+  statusCode: HttpStatusCode.BadRequest,
+};

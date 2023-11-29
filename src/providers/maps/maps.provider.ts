@@ -41,7 +41,7 @@ export class MapsProvider implements MapsProviderInterface {
 
   async geocodeInverseSearchByCoordinates(
     data: GeocodeInverseSearchByCoordinatesParamsDto,
-  ): Promise<GeocodeInverseSearchByCoordinatesResult[]> {
+  ): Promise<GeocodeInverseSearchByCoordinatesResult> {
     const apiKey = `key=${this.apiKey}`;
     const language = `language=${GOOGLE_LANGUAGE_ACCEPT.BRAZIL}`;
     const locationType = `location_type=${GOOGLE_LOCATION_TYPE.ROOFTOP}`;
@@ -55,7 +55,7 @@ export class MapsProvider implements MapsProviderInterface {
       const { data } = await firstValueFrom(
         this.httpInterceptorProvider.get<GoogleGeocodeResponse>(urlEncoded),
       );
-      console.log(data);
+
       if (data.status === GOOGLE_GEOCODING_STATUS.ZERO_RESULTS) {
         this.loggerProvider.warn(
           'MapsProvider - geocodeInverseSearchByCoordinates - Address not found',
@@ -64,7 +64,7 @@ export class MapsProvider implements MapsProviderInterface {
             longitude: data.results[0].geometry.location.lng,
           },
         );
-        return [] as GeocodeInverseSearchByCoordinatesResult[];
+        return {} as GeocodeInverseSearchByCoordinatesResult;
       }
       const addresses = data.results.map((address) => {
         const addressComponents = address.address_components
@@ -75,28 +75,42 @@ export class MapsProvider implements MapsProviderInterface {
             )
               ? addressComponent.long_name
               : '';
+
             const number = addressComponent.types.includes('street_number')
               ? addressComponent.long_name
               : '';
 
-            const neighborhood = addressComponent.types.includes(
-              GOOGLE_RESULT_TYPES.NEIGHBORHOOD,
+            const neighborhood = addressComponent.types.some(
+              (type) =>
+                type === GOOGLE_RESULT_TYPES.NEIGHBORHOOD ||
+                type === 'sublocality' ||
+                type === 'sublocality_level_1',
             )
               ? addressComponent.long_name
               : '';
+
             const postalCode = addressComponent.types.includes(
               GOOGLE_RESULT_TYPES.POSTAL_CODE,
             )
               ? addressComponent.long_name
               : '';
-            const city = addressComponent.types.includes('locality')
+
+            const city = addressComponent.types.some(
+              (type) =>
+                type === 'locality' || type === 'administrative_area_level_2',
+            )
               ? addressComponent.long_name
               : '';
+
             const state = addressComponent.types.includes(
               'administrative_area_level_1',
             )
               ? addressComponent.long_name
               : '';
+            const country = addressComponent.types.includes('country')
+              ? addressComponent.long_name
+              : '';
+
             const componentObject = {};
             Object.assign(componentObject, street && { street });
             Object.assign(componentObject, number && { number });
@@ -104,6 +118,8 @@ export class MapsProvider implements MapsProviderInterface {
             Object.assign(componentObject, postalCode && { postalCode });
             Object.assign(componentObject, city && { city });
             Object.assign(componentObject, state && { state });
+            Object.assign(componentObject, country && { country });
+
             return componentObject;
           })
           .filter((addressComponent) => Object.keys(addressComponent).length)
@@ -114,7 +130,7 @@ export class MapsProvider implements MapsProviderInterface {
             };
             return prev;
           }, {});
-
+        console.log(addressComponents);
         return {
           components: addressComponents,
           formattedAddress: address.formatted_address || '',
