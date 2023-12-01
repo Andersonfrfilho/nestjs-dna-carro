@@ -13,6 +13,7 @@ import { LOGGER_PROVIDER } from './providers/logger/logger.provider.interface';
 import { AllExceptionsFilter } from './error/exception.filter';
 
 import { validationFactoryError } from './error/error.validation.factory';
+import config from '@config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -30,7 +31,7 @@ async function bootstrap() {
     .useGlobalFilters(new AllExceptionsFilter(app.get(LOGGER_PROVIDER)));
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('doc', app, document);
-
+  console.log(JSON.stringify(config));
   await app.listen(configEnvs.api.port, '0.0.0.0');
 }
 bootstrap();

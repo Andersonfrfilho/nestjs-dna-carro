@@ -58,7 +58,7 @@ import { ClientCreateServiceInterface } from '../interfaces/client.create.interf
 import { NameCacheKeyFlow, USER_CLIENT_CACHE_KEYS } from '../client.constant';
 import databaseSource from '@src/providers/database/database.local.source';
 import { User } from '@src/modules/user/entities/user.entity';
-import { EMAIL_INFO_NOT_FOUND, USER_NOT_FOUND } from '../client.errors';
+import { PHONE_INFO_NOT_FOUND, USER_NOT_FOUND } from '../client.errors';
 import { ClientCreateServiceParamsDto } from '../dto/client.create.dto';
 import { ClientCacheCreateServiceParamsDto } from '../dto/client.create.cache.dto';
 import {
@@ -121,12 +121,12 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     let imageProfileUrl: string | undefined;
     const queryRunner = databaseSource.createQueryRunner();
     try {
-      if (!params.email) {
-        throw new CustomException(EMAIL_INFO_NOT_FOUND);
+      if (!params.phone) {
+        throw new CustomException(PHONE_INFO_NOT_FOUND);
       }
-
+      const keyPhone = `${params.phone.countryCode}${params.phone.ddd}${params.phone.number}`;
       const key = USER_CLIENT_CACHE_KEYS.CLIENT_CREATE_SERVICE_ALL({
-        phone: params.email,
+        phone: keyPhone,
       });
 
       const userCache =
@@ -258,7 +258,9 @@ export class ClientCreateService implements ClientCreateServiceInterface {
 
       throw error;
     }
-    const userFound = await this.userRepository.findByEmail(params.email);
+    const userFound = await this.userRepository.findByPhoneActiveUser(
+      params.phone,
+    );
 
     if (!userFound) {
       throw new CustomException(USER_NOT_FOUND);

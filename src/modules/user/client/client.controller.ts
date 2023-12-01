@@ -73,7 +73,9 @@ export class ClientController {
   }
 
   @Post('/')
-  async create(@Body() create: ClientCreateControllerParamsDto): Promise<void> {
-    await this.clientCreateService.execute({ email: create.email });
+  async create(
+    @Body() createUserParams: ClientCreateControllerParamsDto,
+  ): Promise<void> {
+    await this.clientCreateService.execute(createUserParams);
   }
 }

@@ -72,6 +72,7 @@ const configs: Configs = {
 export const configEnvironment: EnvironmentConfig =
   (process.env.ENVIRONMENT as EnvironmentConfig) || EnvironmentConfig.dev;
 
+console.log('configEnvironment', configEnvironment);
 const config: Config = configs[configEnvironment];
 
 export default config;
