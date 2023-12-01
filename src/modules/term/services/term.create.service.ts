@@ -27,6 +27,12 @@ export class TermCreateService implements TermCreateServiceInterface {
       throw new CustomException(TERM_VERSION_ALREADY_EXIST);
     }
 
-    return this.termRepository.save({ version, description, active });
+    return this.termRepository.save({
+      version,
+      description: {
+        text: description,
+      },
+      active,
+    });
   }
 }

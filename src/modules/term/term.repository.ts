@@ -16,6 +16,14 @@ export class TermRepository implements TermRepositoryInterface {
   async findById(id: number): Promise<Term | null> {
     return this.termRepository.findOne({ where: { id } });
   }
+  async findLatest(): Promise<Term> {
+    const [last] = await this.termRepository.find({
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+    return last;
+  }
   async save(props: Partial<Term>): Promise<Term> {
     return this.termRepository.save(props);
   }

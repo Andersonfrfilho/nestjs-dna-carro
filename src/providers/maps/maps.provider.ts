@@ -20,6 +20,10 @@ import {
   HttpInterceptorProviderInterface,
 } from '../http/http.interceptor.interface';
 import { GoogleGeocodeResponse } from './maps.dto';
+import {
+  GeocodeInverseSearchByCoordinatesParamsDto,
+  GeocodeInverseSearchByCoordinatesResult,
+} from './dtos/geocode-inverse-search-by-coordinates.dto';
 
 @Injectable()
 export class MapsProvider implements MapsProviderInterface {
@@ -34,6 +38,121 @@ export class MapsProvider implements MapsProviderInterface {
     this.apiKey = config.maps.apiKey;
     this.baseURL = 'https://maps.googleapis.com/maps/api';
   }
+
+  async geocodeInverseSearchByCoordinates(
+    data: GeocodeInverseSearchByCoordinatesParamsDto,
+  ): Promise<GeocodeInverseSearchByCoordinatesResult> {
+    const apiKey = `key=${this.apiKey}`;
+    const language = `language=${GOOGLE_LANGUAGE_ACCEPT.BRAZIL}`;
+    const locationType = `location_type=${GOOGLE_LOCATION_TYPE.ROOFTOP}`;
+    const resultType = `result_type=${GOOGLE_RESULT_TYPES.STREET_ADDRESS}`;
+    const latLng = `latlng=${data.latitude},${data.longitude}`;
+    const pathParams = `${apiKey}&${latLng}&${language}&${locationType}&${resultType}`;
+    const urlEncoded = new URL(
+      `${this.baseURL}/geocode/json?${pathParams}`,
+    ).toString();
+    try {
+      const { data } = await firstValueFrom(
+        this.httpInterceptorProvider.get<GoogleGeocodeResponse>(urlEncoded),
+      );
+
+      if (data.status === GOOGLE_GEOCODING_STATUS.ZERO_RESULTS) {
+        this.loggerProvider.warn(
+          'MapsProvider - geocodeInverseSearchByCoordinates - Address not found',
+          {
+            latitude: data.results[0].geometry.location.lat,
+            longitude: data.results[0].geometry.location.lng,
+          },
+        );
+        return {} as GeocodeInverseSearchByCoordinatesResult;
+      }
+      const addresses = data.results.map((address) => {
+        const addressComponents = address.address_components
+          .map((addressComponent) => {
+            const street = addressComponent.types.some(
+              (type) =>
+                type === GOOGLE_RESULT_TYPES.STREET_ADDRESS || type === 'route',
+            )
+              ? addressComponent.long_name
+              : '';
+
+            const number = addressComponent.types.includes('street_number')
+              ? addressComponent.long_name
+              : '';
+
+            const neighborhood = addressComponent.types.some(
+              (type) =>
+                type === GOOGLE_RESULT_TYPES.NEIGHBORHOOD ||
+                type === 'sublocality' ||
+                type === 'sublocality_level_1',
+            )
+              ? addressComponent.long_name
+              : '';
+
+            const postalCode = addressComponent.types.includes(
+              GOOGLE_RESULT_TYPES.POSTAL_CODE,
+            )
+              ? addressComponent.long_name
+              : '';
+
+            const city = addressComponent.types.some(
+              (type) =>
+                type === 'locality' || type === 'administrative_area_level_2',
+            )
+              ? addressComponent.long_name
+              : '';
+
+            const state = addressComponent.types.includes(
+              'administrative_area_level_1',
+            )
+              ? addressComponent.long_name
+              : '';
+            const country = addressComponent.types.includes('country')
+              ? addressComponent.long_name
+              : '';
+
+            const componentObject = {};
+            Object.assign(componentObject, street && { street });
+            Object.assign(componentObject, number && { number });
+            Object.assign(componentObject, neighborhood && { neighborhood });
+            Object.assign(componentObject, postalCode && { postalCode });
+            Object.assign(componentObject, city && { city });
+            Object.assign(componentObject, state && { state });
+            Object.assign(componentObject, country && { country });
+
+            return componentObject;
+          })
+          .filter((addressComponent) => Object.keys(addressComponent).length)
+          .reduce((prev, curr) => {
+            prev = {
+              ...prev,
+              ...curr,
+            };
+            return prev;
+          }, {});
+        console.log(addressComponents);
+        return {
+          components: addressComponents,
+          formattedAddress: address.formatted_address || '',
+          placeId: address.place_id || '',
+          latitude: String(address.geometry.location.lat || ''),
+          longitude: String(address.geometry.location.lng || ''),
+        };
+      });
+      return addresses[0] as any;
+    } catch (error) {
+      this.loggerProvider.error(
+        'MapsProvider - geocodeInverseSearchByCoordinates',
+        {
+          response: error?.response?.data,
+          requestPath: error?.request?.path,
+          message: error?.message,
+        },
+      );
+      throw new CustomException(GOOGLE_API_GEOCODING_ERROR);
+    }
+  }
+
   async geocodeSearchByAddress({
     address,
     city,

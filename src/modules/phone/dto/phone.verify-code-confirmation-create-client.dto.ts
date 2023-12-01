@@ -1,4 +1,4 @@
-import { IsEmail, IsString, Length } from 'class-validator';
+import { IsString, Length } from 'class-validator';
 import { PhoneDto } from './phone.dto';
 
 export class PhoneVerifyCodeConfirmationCreateClientDto extends PhoneDto {
@@ -6,8 +6,8 @@ export class PhoneVerifyCodeConfirmationCreateClientDto extends PhoneDto {
   @Length(4)
   code: string;
 
-  @IsEmail()
-  email: string;
+  @IsString()
+  phone: string;
 }
 
 export type PhoneVerifyCodeConfirmationCreateClientServiceParamsDto =
@@ -21,7 +21,7 @@ export type PhoneVerifyCodeConfirmationGetTokenCacheDto = {
 };
 
 export type PhoneVerifyCodeConfirmationGetTokenPayloadCacheDto = {
-  email: string;
+  phone: string;
   code: string;
   iat: number;
   exp: number;

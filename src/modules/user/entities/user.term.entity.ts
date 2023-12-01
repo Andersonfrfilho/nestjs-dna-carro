@@ -1,3 +1,4 @@
+import { Term } from '../../../modules/term/term.entity';
 import {
   Entity,
   Column,
@@ -5,7 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity('users_terms')
 export class UserTerm {
@@ -25,6 +29,14 @@ export class UserTerm {
 
   @Column('jsonb', { nullable: false, default: {} })
   details: string;
+
+  @ManyToOne(() => Term, (term) => term.userTerms)
+  @JoinColumn({ name: 'term_id', referencedColumnName: 'id' })
+  term?: Term;
+
+  @ManyToOne(() => User, (user) => user.userTerms)
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user?: User;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

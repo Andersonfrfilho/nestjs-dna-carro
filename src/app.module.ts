@@ -6,6 +6,7 @@ import { CacheClientModule } from './providers/cache/cache.module';
 import { ConfigEnvsModule } from './config/config.module';
 import { LoggerModule } from './providers/logger/logger.module';
 import { ClientModule } from './modules/user/client/client.module';
+import { AddressModule } from './modules/address/address.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ClientModule } from './modules/user/client/client.module';
     ClientModule,
     AuthModule,
     LoggerModule,
+    AddressModule,
   ],
 })
 export class AppModule {}

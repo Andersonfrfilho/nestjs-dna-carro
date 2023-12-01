@@ -8,4 +8,7 @@ export interface PhoneRepositoryInterface {
   findByCountryCodeDDDNumberUser(
     props: PhoneRepositoryParamsDto,
   ): Promise<Phone | null>;
+  findByCountryCodeDDDNumberUserActive(
+    props: PhoneRepositoryParamsDto,
+  ): Promise<Phone | null>;
 }

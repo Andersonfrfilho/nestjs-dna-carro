@@ -1,7 +1,7 @@
 import { Address } from '@src/modules/address/address.entity';
 import { AddressDto } from '@src/modules/address/dto/address.dto';
 import { Image } from '@src/modules/image/image.entity';
-import { PhoneDto } from '@src/modules/phone/dto/phone.dto';
+import { PhoneCacheCreateDto } from '@src/modules/phone/dto/phone.dto';
 import { Phone } from '@src/modules/phone/phone.entity';
 import { TermDto } from '@src/modules/term/dto/term.dto';
 import { Term } from '@src/modules/term/term.entity';
@@ -25,11 +25,16 @@ class ImageBase64CreateCacheDto {
   @IsString()
   base64: string;
 }
+class ClientCreateUserInfo extends UserDto {
+  @ValidateNested()
+  @IsOptional()
+  phone: PhoneCacheCreateDto;
+}
 
 export class ClientCacheCreateDto {
   @ValidateNested()
   @IsOptional()
-  user: UserDto;
+  user: ClientCreateUserInfo;
 
   @IsOptional()
   @ValidateNested()
@@ -37,7 +42,7 @@ export class ClientCacheCreateDto {
 
   @IsOptional()
   @ValidateNested()
-  phone: PhoneDto;
+  phone: PhoneCacheCreateDto;
 
   @IsOptional()
   @ValidateNested()
@@ -60,5 +65,5 @@ export class ClientCacheCreateControllerParamsDto extends ClientCacheCreateDto {
 
 export class ClientCacheCreateServiceParamsDto extends ClientCacheCreateDto {
   @IsString({ message: 'key to cache need format string' })
-  key: NameCacheKeyFlow;
+  key: Exclude<NameCacheKeyFlow, NameCacheKeyFlow.phoneConfirmation>;
 }

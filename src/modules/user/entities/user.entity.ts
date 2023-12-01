@@ -6,9 +6,13 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
-  JoinTable,
+  // JoinTable,
 } from 'typeorm';
 import { UserPhone } from './user.phone.entity';
+import { UserAddress } from './user.address.entity';
+import { UserImageProfile } from './user.image.profile.entity';
+import { UserTerm } from './user.term.entity';
+import { UserTypesUser } from './user.types.user.entity';
 
 @Entity('users')
 export class User {
@@ -22,7 +26,10 @@ export class User {
   lastName: string;
 
   @Column()
-  cpf: string;
+  document: string;
+
+  @Column({ name: 'document_type' })
+  documentType: string;
 
   @Column()
   email: string;
@@ -43,8 +50,22 @@ export class User {
   active: boolean;
 
   @OneToMany(() => UserPhone, (userPhone) => userPhone.user)
-  @JoinTable()
-  public usersPhones: UserPhone[];
+  userPhones?: UserPhone[];
+
+  @OneToMany(() => UserAddress, (userAddress) => userAddress.user)
+  userAddresses?: UserAddress[];
+
+  @OneToMany(
+    () => UserImageProfile,
+    (userImageProfile) => userImageProfile.user,
+  )
+  userImageProfiles?: UserImageProfile[];
+
+  @OneToMany(() => UserTerm, (userTerms) => userTerms.user)
+  userTerms?: UserTerm[];
+
+  @OneToMany(() => UserTypesUser, (userTypesUser) => userTypesUser.user)
+  userTypesUsers?: UserTypesUser[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

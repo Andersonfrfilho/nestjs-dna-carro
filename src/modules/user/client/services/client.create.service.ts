@@ -56,9 +56,9 @@ import {
 import { TypesUsers } from '@src/modules/types-users/types-users.constant';
 import { ClientCreateServiceInterface } from '../interfaces/client.create.interface';
 import { NameCacheKeyFlow, USER_CLIENT_CACHE_KEYS } from '../client.constant';
-import databaseSource from '@src/providers/database/database.source';
+import databaseSource from '@src/providers/database/database.local.source';
 import { User } from '@src/modules/user/entities/user.entity';
-import { EMAIL_INFO_NOT_FOUND, USER_NOT_FOUND } from '../client.errors';
+import { PHONE_INFO_NOT_FOUND, USER_NOT_FOUND } from '../client.errors';
 import { ClientCreateServiceParamsDto } from '../dto/client.create.dto';
 import { ClientCacheCreateServiceParamsDto } from '../dto/client.create.cache.dto';
 import {
@@ -77,11 +77,7 @@ import {
 import { Phone } from '@src/modules/phone/phone.entity';
 import { Address } from '@src/modules/address/address.entity';
 import { COUNTRY_ADDRESS_CODE } from '@src/modules/address/address.constante';
-import { UserPhone } from '../../entities/user.phone.entity';
-import { UserAddress } from '../../entities/user.address.entity';
-import { UserImageProfile } from '../../entities/user.image.profile.entity';
-import { UserTerm } from '../../entities/user.term.entity';
-import { UserTypesUser } from '../../entities/user.types.user.entity';
+
 import { Image } from '@src/modules/image/image.entity';
 
 @Injectable()
@@ -125,12 +121,12 @@ export class ClientCreateService implements ClientCreateServiceInterface {
     let imageProfileUrl: string | undefined;
     const queryRunner = databaseSource.createQueryRunner();
     try {
-      if (!params.email) {
-        throw new CustomException(EMAIL_INFO_NOT_FOUND);
+      if (!params.phone) {
+        throw new CustomException(PHONE_INFO_NOT_FOUND);
       }
-
+      const keyPhone = `${params.phone.countryCode}${params.phone.ddd}${params.phone.number}`;
       const key = USER_CLIENT_CACHE_KEYS.CLIENT_CREATE_SERVICE_ALL({
-        email: params.email,
+        phone: keyPhone,
       });
 
       const userCache =
@@ -195,9 +191,13 @@ export class ClientCreateService implements ClientCreateServiceInterface {
       const user = await queryRunner.manager.save(User, {
         ...userCache.user,
         password_hash: password,
+        active: true,
       });
 
-      const phone = await queryRunner.manager.save(Phone, userCache.phone);
+      const phone = await queryRunner.manager.save(Phone, {
+        ...userCache.phone,
+        active: true,
+      });
 
       const address = await queryRunner.manager.save(Address, {
         ...userCache.address,
@@ -258,7 +258,9 @@ export class ClientCreateService implements ClientCreateServiceInterface {
 
       throw error;
     }
-    const userFound = await this.userRepository.findByEmail(params.email);
+    const userFound = await this.userRepository.findByPhoneActiveUser(
+      params.phone,
+    );
 
     if (!userFound) {
       throw new CustomException(USER_NOT_FOUND);

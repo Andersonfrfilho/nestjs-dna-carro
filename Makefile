@@ -7,7 +7,7 @@ database:
 .PHONY: database
 
 migrations:
-	docker exec -d dna-carro-api sh -c "npm install && npm run migration:run"
+	docker exec -it dna-carro-api sh -c "npm install && npm run migration:run:container"
 .PHONY: migrations
 
 cache:

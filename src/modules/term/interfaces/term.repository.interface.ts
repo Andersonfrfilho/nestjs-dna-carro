@@ -6,4 +6,5 @@ export interface TermRepositoryInterface {
   save(props: Partial<Term>): Promise<Term>;
   findById(id: number): Promise<Term | null>;
   findByVersion(version: string): Promise<Term | null>;
+  findLatest(): Promise<Term>;
 }

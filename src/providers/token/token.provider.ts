@@ -48,10 +48,14 @@ export class TokenProvider implements TokenProviderInterface {
     const { id, email, ...rest } = payloadParams;
     const payload = { sub: id, email: email, ...rest };
     try {
-      const token = await this.jwtService.signAsync(payload, { expiresIn });
+      const token = await this.jwtService.signAsync(payload, {
+        expiresIn,
+        secret: config.token.secret,
+      });
       return token;
     } catch (error) {
-      this.loggerProvider.error('TokenProvider - verify', {
+      console.log(error);
+      this.loggerProvider.error('TokenProvider - assign', {
         error,
       });
       throw new CustomException(TOKEN_ERROR);

@@ -11,6 +11,16 @@ export class PhoneRepository implements PhoneRepositoryInterface {
     @InjectRepository(Phone)
     private phoneRepository: Repository<Phone>,
   ) {}
+  async findByCountryCodeDDDNumberUserActive(
+    props: PhoneRepositoryParamsDto,
+  ): Promise<Phone | null> {
+    return this.phoneRepository.findOne({
+      where: {
+        ...props,
+        active: true,
+      },
+    });
+  }
   async findByCountryCodeDDDNumberUser({
     ddd,
     countryCode,

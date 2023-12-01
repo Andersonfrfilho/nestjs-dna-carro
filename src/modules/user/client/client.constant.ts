@@ -3,13 +3,14 @@ import { CacheTtl } from '@src/providers/cache/cache.interface';
 export enum NameCacheKeyFlow {
   user = 'user',
   phone = 'phone',
+  phoneConfirmation = 'phone:confirmation',
   address = 'address',
   term = 'term',
   image = 'image',
 }
-
+export const NameCacheKeyFlowPhoneConfirmation = 'phoneConfirmation';
 interface ParamsDto {
-  email: string;
+  phone: string;
 }
 interface ClientCreateServiceParamsDto extends ParamsDto {
   key: NameCacheKeyFlow;
@@ -17,13 +18,13 @@ interface ClientCreateServiceParamsDto extends ParamsDto {
 
 export const USER_CLIENT_CACHE_KEYS = {
   CLIENT_CREATE_SERVICE_KEY: ({
-    email,
+    phone,
     key,
-  }: ClientCreateServiceParamsDto): string => `clients:create:${email}:${key}`,
-  CLIENT_CREATE_SERVICE_ALL: ({ email }: ParamsDto): string =>
-    `clients:create:${email}:*`,
-  PHONE_SEND_VERIFY_CODE: ({ email }: ParamsDto): string =>
-    `phone:send:${email}`,
+  }: ClientCreateServiceParamsDto): string => `clients:create:${phone}:${key}`,
+  CLIENT_CREATE_SERVICE_ALL: ({ phone }: ParamsDto): string =>
+    `clients:create:${phone}:*`,
+  PHONE_SEND_VERIFY_CODE: ({ phone }: ParamsDto): string =>
+    `phone:${phone}:send:code:confirmation`,
 };
 
 export const USER_CLIENT_CACHE_TTL: CacheTtl = {

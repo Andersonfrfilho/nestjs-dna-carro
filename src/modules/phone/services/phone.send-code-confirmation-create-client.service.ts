@@ -5,6 +5,7 @@ import {
 } from '@src/providers/cache/cache.provider.interface';
 import {
   PhoneSendCodeConfirmationCreateClientParamsDto,
+  PhoneSendCodeConfirmationCreateClientServiceResponseDto,
   PhoneSendCodeConfirmationCreateClientTokenPayload,
 } from '../dto/phone.send-code-confirmation-create-client.dto';
 import {
@@ -15,7 +16,7 @@ import {
   NameCacheKeyFlow,
   USER_CLIENT_CACHE_KEYS,
 } from '@src/modules/user/client/client.constant';
-import { PhoneCacheCreateDto } from '../dto/phone.dto';
+import { PhoneAttribute, PhoneCacheCreateDto } from '../dto/phone.dto';
 import {
   TOKEN_PROVIDER,
   TokenProviderInterface,
@@ -29,6 +30,7 @@ import { PHONE_SEND_CODE_CONFIRMATION_SMS_MESSAGE } from '@src/providers/sms/sms
 import { randomInt } from 'crypto';
 import {
   EXPIRE_IN_TOKEN_SEND_CODE,
+  EXPIRE_IN_TOKEN_SEND_CODE_MILLISECONDS,
   EXPIRE_IN_TOKEN_SEND_CODE_TTL,
   NUMBER_POSSIBLE_ATTEMPTS_CONFIRMATION_NUMBER,
 } from '../phone.constant';
@@ -38,6 +40,7 @@ import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
+import { convertMillisecondsInMinutes } from '@src/utils/convert-milliseconds-in-minutes';
 
 @Injectable()
 export class PhoneSendCodeConfirmationCreateClientService
@@ -53,16 +56,17 @@ export class PhoneSendCodeConfirmationCreateClientService
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
-  async execute({
-    email,
-  }: PhoneSendCodeConfirmationCreateClientParamsDto): Promise<void> {
+  async execute(
+    phone: PhoneSendCodeConfirmationCreateClientParamsDto,
+  ): Promise<PhoneSendCodeConfirmationCreateClientServiceResponseDto> {
+    const keyPhone = `${phone.countryCode}${phone.ddd}${phone.number}`;
+
     try {
       const keyGetData = USER_CLIENT_CACHE_KEYS.CLIENT_CREATE_SERVICE_KEY({
-        email: email,
+        phone: keyPhone,
         key: NameCacheKeyFlow.phone,
       });
-
-      const cacheData = await this.cacheProvider.get<PhoneCacheCreateDto>(
+      const cacheData = await this.cacheProvider.get<PhoneAttribute>(
         keyGetData,
       );
 
@@ -70,22 +74,21 @@ export class PhoneSendCodeConfirmationCreateClientService
         throw new CustomException(CACHE_DATA_CONFIRMATION_PHONE_NOT_FOUND);
       }
 
-      const {
-        phone: { numberAttempts },
-      } = cacheData;
+      const { numberAttempts } = cacheData.phone;
 
-      if (numberAttempts > NUMBER_POSSIBLE_ATTEMPTS_CONFIRMATION_NUMBER) {
+      if (
+        numberAttempts &&
+        numberAttempts > NUMBER_POSSIBLE_ATTEMPTS_CONFIRMATION_NUMBER
+      ) {
         throw new CustomException(EXCESSIVE_TRY_CODE_PHONE_CONFIRMATION);
       }
 
-      const {
-        phone: { countryCode, ddd, number },
-      } = cacheData;
+      const { countryCode, ddd, number } = cacheData.phone;
 
       const to = `${countryCode}${ddd}${number}`;
 
       const key = USER_CLIENT_CACHE_KEYS.PHONE_SEND_VERIFY_CODE({
-        email,
+        phone: to,
       });
 
       const isSendMessageAble =
@@ -102,7 +105,7 @@ export class PhoneSendCodeConfirmationCreateClientService
           {
             expiresIn: EXPIRE_IN_TOKEN_SEND_CODE,
             payloadParams: {
-              email,
+              phone: keyPhone,
               code,
             },
           },
@@ -120,6 +123,14 @@ export class PhoneSendCodeConfirmationCreateClientService
           to,
         });
       }
+
+      const timeExpiration = convertMillisecondsInMinutes(
+        EXPIRE_IN_TOKEN_SEND_CODE_MILLISECONDS,
+      );
+
+      return {
+        expirationInMilliseconds: timeExpiration,
+      };
     } catch (error) {
       this.loggerProvider.error(
         'PhoneSendCodeConfirmationCreateClientService - execute - error',

@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { UserAddress } from '../user/entities/user.address.entity';
 
 @Entity('addresses')
 export class Address {
@@ -47,6 +49,9 @@ export class Address {
 
   @Column('jsonb', { nullable: false, default: {} })
   details: string;
+
+  @OneToMany(() => UserAddress, (userAddress) => userAddress.address)
+  userAddresses?: UserAddress[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

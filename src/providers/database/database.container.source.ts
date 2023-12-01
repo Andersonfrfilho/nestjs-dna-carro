@@ -4,16 +4,12 @@ import config from '../../config';
 const devEnvironment = !!(
   process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === ''
 );
-const entities = process.env.TYPEORM_INTERNAL
-  ? [`dist/**/*.entity{.ts,.js}`, `src/**/*.entity{.ts,.js}`]
-  : [`dist/**/*.entity{.ts,.js}`];
-const migrations = process.env.TYPEORM_INTERNAL
-  ? [
-      `./dist/providers/database/migrations/*{.js}`,
-      `./src/providers/database/migrations/*{.ts,.js}`,
-    ]
-  : [`./dist/providers/database/migrations/*{.js}`];
+const entities = [`dist/**/*.entity{.ts,.js}`, `src/**/*.entity{.ts,.js}`];
 
+const migrations = [
+  `./dist/providers/database/migrations/*{.js}`,
+  `./src/providers/database/migrations/*{.ts,.js}`,
+];
 export default new DataSource({
   type: 'postgres',
   host: config.database.host || 'localhost',

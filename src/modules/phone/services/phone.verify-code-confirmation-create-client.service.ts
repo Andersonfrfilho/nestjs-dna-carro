@@ -18,7 +18,7 @@ import {
   CACHE_PROVIDER,
   CacheProviderInterface,
 } from '@src/providers/cache/cache.provider.interface';
-import { PhoneCacheCreateDto } from '../dto/phone.dto';
+import { PhoneAttribute } from '../dto/phone.dto';
 import { CustomException } from '@src/error/custom.exception';
 import {
   CACHE_DATA_CONFIRMATION_PHONE_NOT_FOUND,
@@ -26,6 +26,7 @@ import {
   EMAIL_TOKEN_CONFIRMATION_INCORRECT,
   PHONE_NUMBER_CACHE_CONFLICT_INFO,
   PHONE_NUMBER_CODE_CONFIRMATION_INCORRECT,
+  PHONE_TOKEN_CONFIRMATION_INCORRECT,
 } from '../phone.error';
 import { PHONE_CACHE_KEYS } from '../phone.constant';
 import {
@@ -50,15 +51,15 @@ export class PhoneVerifyCodeConfirmationCreateClientService
     countryCode,
     ddd,
     number,
-    email,
   }: PhoneVerifyCodeConfirmationCreateClientServiceParamsDto): Promise<void> {
     try {
+      const phoneNumber = `${countryCode}${ddd}${number}`;
       const keyGetPhoneData = USER_CLIENT_CACHE_KEYS.CLIENT_CREATE_SERVICE_KEY({
-        email: email,
+        phone: phoneNumber,
         key: NameCacheKeyFlow.phone,
       });
 
-      const cachePhoneData = await this.cacheProvider.get<PhoneCacheCreateDto>(
+      const cachePhoneData = await this.cacheProvider.get<PhoneAttribute>(
         keyGetPhoneData,
       );
 
@@ -67,13 +68,11 @@ export class PhoneVerifyCodeConfirmationCreateClientService
       }
 
       const {
-        phone: {
-          countryCode: countryCodeCache,
-          ddd: dddCache,
-          number: numberCache,
-          numberAttempts,
-        },
-      } = cachePhoneData;
+        countryCode: countryCodeCache,
+        ddd: dddCache,
+        number: numberCache,
+        numberAttempts,
+      } = cachePhoneData.phone;
 
       if (
         countryCode !== countryCodeCache &&
@@ -83,15 +82,14 @@ export class PhoneVerifyCodeConfirmationCreateClientService
         throw new CustomException(PHONE_NUMBER_CACHE_CONFLICT_INFO);
       }
 
-      const keyGetTokenData = PHONE_CACHE_KEYS.PHONE_SEND_VERIFY_CODE({
-        email,
+      const keyGetTokenData = USER_CLIENT_CACHE_KEYS.PHONE_SEND_VERIFY_CODE({
+        phone: phoneNumber,
       });
 
       const cacheTokenData =
         await this.cacheProvider.get<PhoneVerifyCodeConfirmationGetTokenCacheDto>(
           keyGetTokenData,
         );
-
       if (!cacheTokenData) {
         throw new CustomException(CACHE_TOKEN_CONFIRMATION_PHONE_NOT_FOUND);
       }
@@ -102,31 +100,33 @@ export class PhoneVerifyCodeConfirmationCreateClientService
           { token },
         );
 
-      if (codeToken.email !== email) {
-        throw new CustomException(EMAIL_TOKEN_CONFIRMATION_INCORRECT);
+      if (codeToken.phone !== phoneNumber) {
+        throw new CustomException(PHONE_TOKEN_CONFIRMATION_INCORRECT);
       }
 
       const payload = {
         countryCode,
         ddd,
         number,
-        confirm: true,
-        numberAttempts: numberAttempts + 1,
+        confirm: false,
+        numberAttempts: String((numberAttempts && numberAttempts + 1) || 1),
       };
 
       if (codeToken.code !== code) {
         await this.cacheProvider.set({
           key: keyGetPhoneData,
-          payload: { [NameCacheKeyFlow.phone]: payload },
-          ttl: USER_CLIENT_CACHE_TTL.CLIENT_CREATE_SERVICE,
+          payload: { phone: payload },
+          ttl: USER_CLIENT_CACHE_TTL.CREATE_SERVICE,
         });
         throw new CustomException(PHONE_NUMBER_CODE_CONFIRMATION_INCORRECT);
       }
 
+      payload.confirm = true;
+
       await this.cacheProvider.set({
         key: keyGetPhoneData,
-        payload: { [NameCacheKeyFlow.phone]: payload },
-        ttl: USER_CLIENT_CACHE_TTL.CLIENT_CREATE_SERVICE,
+        payload: { phone: payload },
+        ttl: USER_CLIENT_CACHE_TTL.CREATE_SERVICE,
       });
 
       await this.cacheProvider.delete(keyGetTokenData);

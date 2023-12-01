@@ -51,6 +51,7 @@ export class StorageProvider implements StorageProviderInterface {
     imageBase64,
   }: StorageUploadBase64ParamsDto): Promise<string> {
     try {
+      console.log(config.storage.image.profile);
       const storage = new Storage({
         keyFilename: config.storage.image.profile.keyFileJson,
       }).bucket(config.storage.image.profile.name);
