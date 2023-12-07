@@ -14,6 +14,7 @@ import {
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
 import {
+  FindByDocumentActiveUserParamsDto,
   FindByPhoneActiveUserParamsDto,
   UpdatePasswordByEmailParamsDto,
 } from '../dto/user.dto';
@@ -30,6 +31,18 @@ export class UserRepository implements UserRepositoryInterface {
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
+  findByDocumentActive(
+    documentParamsDto: FindByDocumentActiveUserParamsDto,
+  ): Promise<User | null> {
+    const { document, documentType } = documentParamsDto;
+    return this.userRepository.findOne({
+      where: {
+        active: true,
+        document,
+        documentType,
+      },
+    });
+  }
   findByPhoneActiveUser(
     phone: FindByPhoneActiveUserParamsDto,
   ): Promise<User | null> {

@@ -1,5 +1,12 @@
 import { HttpStatusCode } from 'axios';
 
+export enum NameSessionTypeFlow {
+  email = 'email',
+  phone = 'phone',
+  cpf = 'cpf',
+  cnpj = 'cnpj',
+}
+
 export const AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE = '15m';
 export const AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE_TTL =
   1000 * 60 * 15;

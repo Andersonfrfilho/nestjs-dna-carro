@@ -28,7 +28,6 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
   catch(exception: Error, host: ArgumentsHost): unknown {
     const http = host.switchToHttp();
     const response = http.getResponse();
-
     this.logger.error('AllExceptionsFilter - catch', {
       exception,
     });

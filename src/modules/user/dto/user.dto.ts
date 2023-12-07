@@ -1,4 +1,5 @@
 import { GENDER } from '@src/commons/enum.common';
+import { NameSessionTypeFlow } from '@src/modules/auth/auth.constant';
 import {
   IsEmail,
   IsEnum,
@@ -62,4 +63,13 @@ export class FindByPhoneActiveUserParamsDto {
   ddd: string;
   @IsString({ message: 'number need format in string valid' })
   number: string;
+}
+
+export class FindByDocumentActiveUserParamsDto {
+  @IsString({ message: 'document need format in string valid' })
+  document: string;
+  @IsEnum(NameSessionTypeFlow, {
+    message: 'documentType need format in string valid',
+  })
+  documentType: NameSessionTypeFlow;
 }

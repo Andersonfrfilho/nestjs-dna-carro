@@ -25,6 +25,9 @@ import {
 import config from '@src/config';
 import * as moment from 'moment';
 import { separatedCharacterNumber } from '@src/utils/separated-character-number';
+import { NameSessionTypeFlow } from '../auth.constant';
+import { separatePhoneInComponent } from '@src/utils/separatePhoneInComponent.util';
+import { User } from '@src/modules/user/entities/user.entity';
 
 @Injectable()
 export class AuthCreateSessionService
@@ -43,9 +46,25 @@ export class AuthCreateSessionService
     params: AuthCreateSessionServiceParamsDto,
   ): Promise<AuthCreateSessionServiceResponse> {
     try {
-      const { email } = params;
-
-      const user = await this.userRepository.findByEmailActive(email);
+      const userIdentifier = params.user;
+      const userType = params.type;
+      let user: User | null = null;
+      switch (userType) {
+        case NameSessionTypeFlow.phone:
+          user = await this.userRepository.findByPhoneActiveUser(
+            separatePhoneInComponent(userIdentifier),
+          );
+          break;
+        case NameSessionTypeFlow.email:
+          user = await this.userRepository.findByEmailActive(userIdentifier);
+          break;
+        default:
+          user = await this.userRepository.findByDocumentActive({
+            document: userIdentifier,
+            documentType: userType,
+          });
+          break;
+      }
 
       if (!user) {
         throw new CustomException(USER_NOT_FOUND);
@@ -65,12 +84,12 @@ export class AuthCreateSessionService
 
       const token = await this.tokenProvider.assign({
         expiresIn: config.token.expireIn,
-        payloadParams: { id, email },
+        payloadParams: { id },
       });
 
       const refreshToken = await this.tokenProvider.assign({
         expiresIn: config.token.expireInRefresh,
-        payloadParams: { id, email },
+        payloadParams: { id },
       });
 
       const date = new Date();

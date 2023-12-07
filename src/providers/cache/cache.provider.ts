@@ -28,6 +28,21 @@ export class CacheProvider implements CacheProviderInterface {
     }
   }
 
+  async deleteAll(key: string): Promise<void> {
+    try {
+      const keys = await this.cacheService.store.keys(key);
+      if (keys.length > 0) {
+        await this.cacheService.store.mdel(...keys);
+      }
+    } catch (err) {
+      this.loggerProvider.error('CacheProvider - delete', {
+        error: err.message,
+      });
+
+      throw new CustomException(CACHE_GET_ERROR);
+    }
+  }
+
   async get<T>(key: string): Promise<T | undefined> {
     try {
       const data = await this.cacheService.get<T>(key);

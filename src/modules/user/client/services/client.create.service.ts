@@ -245,6 +245,8 @@ export class ClientCreateService implements ClientCreateServiceInterface {
         termId: userCache.term.id,
         accept: true,
       });
+
+      await this.cacheProvider.delete(key);
     } catch (error) {
       this.loggerProvider.error('ClientCreateService - execute - error', {
         error: error,

@@ -1,7 +1,8 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Param, Post } from '@nestjs/common';
 import {
-  AuthCreateSessionControllerParamsDto,
+  AuthCreateSessionBodyControllerParamsDto,
   AuthCreateSessionResponseDto,
+  AuthPathParamDto,
 } from './dtos/auth.create-session.dto';
 import {
   AUTH_CREATE_SESSION_SERVICE,
@@ -45,11 +46,17 @@ export class AuthController {
     @Inject(AUTH_FORGOT_PASSWORD_PHONE_VERIFY_CODE_SERVICE)
     private authForgotPasswordPhoneVerifyCodeService: AuthForgotPasswordPhoneVerifyCodeServiceInterface,
   ) {}
-  @Post('/session')
+  @Post('/session/:type')
   async sessionCreate(
-    @Body() authCreateSessionParams: AuthCreateSessionControllerParamsDto,
+    @Param() paramPathCreateSessionParams: AuthPathParamDto,
+    @Body()
+    authCreateSessionBodyParams: AuthCreateSessionBodyControllerParamsDto,
   ): Promise<AuthCreateSessionResponseDto> {
-    return this.authCreateSessionService.execute(authCreateSessionParams);
+    console.log(paramPathCreateSessionParams);
+    return this.authCreateSessionService.execute({
+      ...authCreateSessionBodyParams,
+      type: paramPathCreateSessionParams.type,
+    });
   }
 
   @Post('/session/refresh-token')

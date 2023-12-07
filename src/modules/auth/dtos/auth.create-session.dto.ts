@@ -1,16 +1,28 @@
-import { IsEmail, IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
+import { NameSessionTypeFlow } from '../auth.constant';
 
-export class AuthCreateSessionDto {
-  @IsEmail()
-  email: string;
+export class AuthPathParamDto {
+  @IsEnum(NameSessionTypeFlow)
+  type: NameSessionTypeFlow;
+}
+
+export class AuthCreateSessionDto extends AuthPathParamDto {
+  @IsString()
+  user: string;
+
+  @IsString()
+  password: string;
+}
+
+export class AuthCreateSessionBodyControllerParamsDto {
+  @IsString()
+  user: string;
 
   @IsString()
   password: string;
 }
 
 export class AuthCreateSessionServiceParamsDto extends AuthCreateSessionDto {}
-
-export class AuthCreateSessionControllerParamsDto extends AuthCreateSessionDto {}
 
 export class AuthCreateSessionResponseDto {
   token: string;
