@@ -16,7 +16,11 @@ import {
   AUTH_RENEW_REFRESH_TOKEN_SERVICE,
   AuthRenewRefreshTokenServiceInterface,
 } from './interfaces/auth.renew-refresh-token.interface';
-import { AuthForgotPasswordPhoneSendCodeControllerParamsDto } from './dtos/auth.forgot-password-phone-send-code.dto';
+import {
+  AuthForgotPasswordPhoneSendCodeControllerParamsDto,
+  AuthForgotPasswordPhoneSendCodeControllerResponse,
+  AuthForgotPasswordPhoneSendCodeControllerResultDto,
+} from './dtos/auth.forgot-password-phone-send-code.dto';
 import {
   AUTH_FORGOT_PASSWORD_PHONE_SEND_CODE_SERVICE,
   AuthForgotPasswordPhoneSendCodeServiceInterface,
@@ -73,8 +77,8 @@ export class AuthController {
   async authForgotPasswordPhoneSendCode(
     @Body()
     authForgotPasswordPhoneSendCodeServiceParams: AuthForgotPasswordPhoneSendCodeControllerParamsDto,
-  ): Promise<void> {
-    await this.authForgotPasswordPhoneSendCodeService.execute(
+  ): Promise<AuthForgotPasswordPhoneSendCodeControllerResultDto> {
+    return this.authForgotPasswordPhoneSendCodeService.execute(
       authForgotPasswordPhoneSendCodeServiceParams,
     );
   }

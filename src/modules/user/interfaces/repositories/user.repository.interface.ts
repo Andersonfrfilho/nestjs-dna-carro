@@ -24,9 +24,6 @@ export interface UserRepositoryInterface {
   ): Promise<UserPhone[] | null>;
   findByEmailActive(emailParam: string): Promise<User | null>;
   findByIdActive(id: string): Promise<User | null>;
-  findUserByPhoneActiveUserActive(
-    phoneParams: UserFindByPhoneParamsDto,
-  ): Promise<User | null>;
   inactiveUserByEmail(emailParam: string): Promise<void>;
   updatePasswordByEmailUserActive(
     data: UpdatePasswordByEmailParamsDto,

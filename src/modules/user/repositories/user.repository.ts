@@ -31,7 +31,7 @@ export class UserRepository implements UserRepositoryInterface {
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
-  findByDocumentActive(
+  async findByDocumentActive(
     documentParamsDto: FindByDocumentActiveUserParamsDto,
   ): Promise<User | null> {
     const { document, documentType } = documentParamsDto;
@@ -43,7 +43,7 @@ export class UserRepository implements UserRepositoryInterface {
       },
     });
   }
-  findByPhoneActiveUser(
+  async findByPhoneActiveUser(
     phone: FindByPhoneActiveUserParamsDto,
   ): Promise<User | null> {
     const { countryCode, ddd, number } = phone;
@@ -71,51 +71,7 @@ export class UserRepository implements UserRepositoryInterface {
   async inactiveUserByEmail(emailParam: string): Promise<void> {
     await this.userRepository.update({ email: emailParam }, { active: false });
   }
-  async findUserByPhoneActiveUserActive(
-    phoneParams: UserFindByPhoneParamsDto,
-  ): Promise<User | null> {
-    await this.userRepository.save({
-      active: true,
-      birthDate: 909999,
-      document: '1231241234',
-      documentType: 'cpf',
-      email: '123andersonfrho@gmail.com',
-      gender: 'm',
-      lastName: 'anders',
-      name: 'uihll',
-      password_hash: 'anyway',
-    });
-    const data = await this.userRepository.findOne({
-      where: { id: '8b2712ef-4f78-4af8-831f-325f25d6dc8a' },
-      relations: ['userPhone.phone'],
-    });
-    // console.log(data);
-    // return data;
-    // const phone =
-    //   await this.phoneRepository.findByCountryCodeDDDNumberUserActive(
-    //     phoneParams,
-    //   );
 
-    // if (!phone) {
-    //   return null;
-    // }
-
-    // const [usersPhones] = await this.userPhoneRepository.find({
-    //   where: {
-    //     phoneId: phone.id,
-    //     active: true,
-    //     confirm: true,
-    //   },
-    // });
-
-    // if (!usersPhones.userId) {
-    //   return null;
-    // }
-
-    // const user = await
-
-    return null;
-  }
   async findByIdActive(idParam: string): Promise<User | null> {
     return this.userRepository.findOne({
       where: { id: idParam, active: true },

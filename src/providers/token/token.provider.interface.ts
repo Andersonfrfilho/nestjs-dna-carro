@@ -11,9 +11,15 @@ export interface TokenAssignParamsPayloadDto {
   phone?: string;
 }
 
+export interface TokenDataDto {
+  sub: string;
+  iat: number;
+  exp: number;
+}
+
 export interface TokenProviderInterface {
   assign<T>(
     data: TokenProviderAssignParamsDto<T & TokenAssignParamsPayloadDto>,
   ): Promise<string>;
-  verify<T>(data: TokenProviderVerifyParamsDto): Promise<T>;
+  verify<T>(data: TokenProviderVerifyParamsDto): Promise<T & TokenDataDto>;
 }

@@ -22,6 +22,7 @@ import {
 
 import {
   AUTH_CACHE_KEYS,
+  AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE_RESET_PASSWORD_TTL,
   AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE_TTL,
   CACHE_TOKEN_CONFIRMATION_PHONE_RESET_PASSWORD_NOT_FOUND,
   NUMBER_MAX_ATTEMPT_VERIFY_CODE_RESET_PASSWORD,
@@ -35,6 +36,7 @@ import {
 import { AuthForgotPasswordPhoneVerifyCodeServiceInterface } from '../interfaces/auth.forgot-password-phone-verify-code.interface';
 import { AuthForgotPasswordPhoneVerifyCodeServiceParamsDto } from '../dtos/auth.forgot-password-phone-verify-code.dto';
 import {
+  AuthForgotPasswordPhoneSendCodeServiceResultDto,
   AuthForgotPasswordPhoneSendVerifyTokenCache,
   AuthForgotPasswordPhoneSendVerifyTokenPassCache,
   AuthForgotPasswordPhoneVerifyTokenPayloadDto,
@@ -59,7 +61,7 @@ export class AuthForgotPasswordPhoneVerifyCodeService
     try {
       const { countryCode, ddd, number, code } = params;
 
-      const user = await this.userRepository.findUserByPhoneActiveUserActive({
+      const user = await this.userRepository.findByPhoneActiveUser({
         countryCode,
         ddd,
         number,
@@ -119,7 +121,7 @@ export class AuthForgotPasswordPhoneVerifyCodeService
         {
           key,
           payload: { ...cacheToken, resetPassword: true },
-          ttl: AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE_TTL,
+          ttl: AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE_RESET_PASSWORD_TTL,
         },
       );
     } catch (error) {

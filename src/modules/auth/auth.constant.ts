@@ -7,8 +7,10 @@ export enum NameSessionTypeFlow {
   cnpj = 'cnpj',
 }
 
-export const AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE = '15m';
+export const AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE = '3m';
 export const AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE_TTL =
+  1000 * 60 * 3;
+export const AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE_RESET_PASSWORD_TTL =
   1000 * 60 * 15;
 
 export const AUTH_CACHE_KEYS = {

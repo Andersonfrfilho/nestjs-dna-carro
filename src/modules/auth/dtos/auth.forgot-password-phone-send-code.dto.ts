@@ -54,3 +54,12 @@ export type AuthForgotPasswordPhoneVerifyTokenPayloadDto = {
   iat: number;
   exp: number;
 };
+
+export interface AuthForgotPasswordPhoneSendCodeResultDto {
+  expireInMinutes: string;
+}
+
+export type AuthForgotPasswordPhoneSendCodeServiceResultDto =
+  AuthForgotPasswordPhoneSendCodeResultDto;
+export type AuthForgotPasswordPhoneSendCodeControllerResultDto =
+  AuthForgotPasswordPhoneSendCodeResultDto;
