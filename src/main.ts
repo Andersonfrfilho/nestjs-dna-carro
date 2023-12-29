@@ -22,13 +22,12 @@ async function bootstrap() {
   );
 
   app.useLogger(app.get(LOGGER_PROVIDER));
-  app
-    .useGlobalPipes(
-      new ValidationPipe({
-        exceptionFactory: validationFactoryError,
-      }),
-    )
-    .useGlobalFilters(new AllExceptionsFilter(app.get(LOGGER_PROVIDER)));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: validationFactoryError,
+    }),
+  );
+  app.useGlobalFilters(new AllExceptionsFilter(app.get(LOGGER_PROVIDER)));
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('doc', app, document);
   console.log(JSON.stringify(config));

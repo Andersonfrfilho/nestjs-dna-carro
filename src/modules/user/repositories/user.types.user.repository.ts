@@ -13,6 +13,24 @@ export class UserTypesUserRepository
     @InjectRepository(UserTypesUser)
     private userTypesUserRepository: Repository<UserTypesUser>,
   ) {}
+  async findTypesUserByIdAndActive(
+    userId: string,
+  ): Promise<UserTypesUser | null> {
+    return this.userTypesUserRepository.findOne({
+      where: {
+        userId: userId,
+        userTypeId: USER_PROVIDER_TYPE_ID,
+        active: true,
+      },
+    });
+  }
+
+  async disableUserTypeUserByUserId(props: UserTypesUser): Promise<void> {
+    await this.userTypesUserRepository.update(props.id, {
+      active: false,
+    });
+  }
+
   async findTypesUserById(id: string): Promise<UserTypesUser[]> {
     return this.userTypesUserRepository.find({
       where: {

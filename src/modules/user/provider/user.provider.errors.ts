@@ -24,9 +24,9 @@ export const USER_EMAIL_NOT_FOUND = {
   statusCode: HttpStatusCode.NotFound,
 };
 
-export const USER_NOT_FOUND = {
-  code: 1029,
-  message: 'USER_NOT_FOUND',
+export const USER_PROVIDER_NOT_FOUND = {
+  code: 1041,
+  message: 'USER_PROVIDER_NOT_FOUND',
   statusCode: HttpStatusCode.NotFound,
 };
 
@@ -34,4 +34,22 @@ export const USER_CLIENT_CACHE_INFO_NOT_FOUND = {
   code: 1030,
   message: 'USER_CLIENT_CACHE_INFO_NOT_FOUND',
   statusCode: HttpStatusCode.NotFound,
+};
+
+export const USER_ALREADY_PROVIDER_DISABLE = {
+  code: 1039,
+  message: 'USER_ALREADY_PROVIDER_DISABLE',
+  statusCode: HttpStatusCode.BadRequest,
+};
+
+export const USER_TYPE_PROVIDER_ENABLE_NOT_FOUND = {
+  code: 1040,
+  message: 'USER_TYPE_PROVIDER_ENABLE_NOT_FOUND',
+  statusCode: HttpStatusCode.BadRequest,
+};
+
+export const INVALID_INFO_PROVIDER_USER_ID = {
+  code: 1042,
+  message: 'INVALID_INFO_PROVIDER_USER_ID',
+  statusCode: HttpStatusCode.BadRequest,
 };

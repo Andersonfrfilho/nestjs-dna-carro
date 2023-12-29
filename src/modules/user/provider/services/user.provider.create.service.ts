@@ -15,7 +15,8 @@ import {
 import { UserProviderCreateServiceParamsDto } from '../dtos/user.provider.create.dto';
 import { UserProviderCreateServiceInterface } from '../interfaces/user.provider.create.interface';
 import { USER_PROVIDER_TYPE_ID } from '../user.provider.constant';
-import { USER_NOT_FOUND } from '../user.provider.errors';
+import { USER_ALREADY_PROVIDER_DISABLE } from '../user.provider.errors';
+import { USER_NOT_FOUND } from '@src/modules/auth/auth.error';
 
 @Injectable()
 export class UserProviderCreateService
@@ -43,10 +44,24 @@ export class UserProviderCreateService
       const userIsProvider = userTypesUser.filter(
         (userTypeUser) => userTypeUser.userTypeId === USER_PROVIDER_TYPE_ID,
       );
-      console.log('userIsProvider', userIsProvider);
-      // if (userIsProvider)
-      //   if (userIsProvider) {
-      //   }
+
+      if (userIsProvider.length > 0) {
+        const hasUserIsProviderDisable = userIsProvider.filter(
+          (userTypeUser) => !userTypeUser.active,
+        );
+
+        if (hasUserIsProviderDisable.length > 0) {
+          throw new CustomException(USER_ALREADY_PROVIDER_DISABLE);
+        }
+
+        const hasUserIsProviderEnable = userIsProvider.filter(
+          (userTypeUser) => userTypeUser.active,
+        );
+
+        if (hasUserIsProviderEnable.length > 0) {
+          return;
+        }
+      }
 
       await this.userTypesUserRepository.createUserProvider({
         userId: params.userId,
