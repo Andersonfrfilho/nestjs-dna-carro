@@ -9,7 +9,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Appointment } from './appointment.entity';
-import { PaymentType } from '@src/modules/payments-types/payments-types.entity';
+import { PaymentType } from '../../payments-types/payments-types.entity';
 
 @Entity('appointments_payment_types')
 export class AppointmentPaymentTypes {

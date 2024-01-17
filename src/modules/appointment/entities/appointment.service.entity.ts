@@ -9,7 +9,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Appointment } from './appointment.entity';
-import { Service } from '@src/modules/user/provider/entities/services.entity';
+import { Service } from '../../user/provider/entities/services.entity';
 
 @Entity('appointments_services')
 export class AppointmentService {

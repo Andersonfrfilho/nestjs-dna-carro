@@ -7,7 +7,7 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from 'typeorm';
-import { AppointmentClient } from '@src/modules/appointment/entities/appointment.client.entity';
+import { AppointmentClient } from '../../appointment/entities/appointment.client.entity';
 
 @Entity('users')
 export class Client {

@@ -9,8 +9,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Appointment } from './appointment.entity';
-import { Client } from '@src/modules/user/client/client.entity';
-import { Provider } from '@src/modules/user/provider/entities/provider.entity';
+import { Client } from '../../user/client/client.entity';
+import { Provider } from '../../user/provider/entities/provider.entity';
 
 @Entity('appointments_providers')
 export class AppointmentProvider {

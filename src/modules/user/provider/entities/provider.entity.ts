@@ -17,7 +17,7 @@ import { ProviderAvailableDay } from './provider-available-days.entity';
 import { ProviderAvailableHour } from './provider-available-hours.entity';
 import { Service } from './services.entity';
 import { ProviderPaymentsTypes } from './provider-payment-types.entity';
-import { AppointmentProvider } from '@src/modules/appointment/entities/appointment.provider.entity';
+import { AppointmentProvider } from '../../../appointment/entities/appointment.provider.entity';
 
 @Entity('users')
 export class Provider {
