@@ -10,7 +10,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Provider } from './provider.entity';
-import { AppointmentService } from '@src/modules/appointment/entities/appointment.service.entity';
+import { AppointmentService } from '../../../appointment/entities/appointment.service.entity';
 
 @Entity('services')
 export class Service {
