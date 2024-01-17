@@ -6,7 +6,7 @@ export class CreateProviderAvailability1690696987964
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'providers_availabilities_times',
+        name: 'providers_availabilities_hours',
         columns: [
           {
             name: 'id',
@@ -20,11 +20,11 @@ export class CreateProviderAvailability1690696987964
             type: 'uuid',
           },
           {
-            name: 'start_time',
+            name: 'time',
             type: 'varchar',
           },
           {
-            name: 'end_time',
+            name: 'end',
             type: 'varchar',
           },
           {
@@ -64,6 +64,6 @@ export class CreateProviderAvailability1690696987964
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('providers_availability_time');
+    await queryRunner.dropTable('providers_availabilities_hours');
   }
 }

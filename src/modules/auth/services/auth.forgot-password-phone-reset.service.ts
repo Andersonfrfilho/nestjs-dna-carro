@@ -50,13 +50,9 @@ export class AuthForgotPasswordPhoneResetService
     params: AuthForgotPasswordPhoneResetServiceParamsDto,
   ): Promise<void> {
     try {
-      const { countryCode, ddd, number, password, confirmPassword } = params;
+      const { countryCode, ddd, number, password } = params;
 
-      if (password !== confirmPassword) {
-        throw new CustomException(PASSWORD_CONFIRMATION_NOT_IDENTICAL);
-      }
-
-      const user = await this.userRepository.findUserByPhoneActiveUserActive({
+      const user = await this.userRepository.findByPhoneActiveUser({
         countryCode,
         ddd,
         number,

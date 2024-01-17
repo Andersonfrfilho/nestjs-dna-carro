@@ -7,6 +7,7 @@ import { ConfigEnvsModule } from './config/config.module';
 import { LoggerModule } from './providers/logger/logger.module';
 import { ClientModule } from './modules/user/client/client.module';
 import { AddressModule } from './modules/address/address.module';
+import { UserProviderModule } from './modules/user/provider/user.provider.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AddressModule } from './modules/address/address.module';
     AuthModule,
     LoggerModule,
     AddressModule,
+    UserProviderModule,
   ],
 })
 export class AppModule {}

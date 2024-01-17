@@ -5,11 +5,13 @@ import { VALIDATION_FIELDS_REQUEST_ERROR } from './error.constant';
 export const validationFactoryError = (
   validationErrors: ValidationError[] = [],
 ) => {
+  console.log('##################=>', validationErrors);
   const contents = validationErrors.map((validate) => ({
     property: validate.property,
     message: !!validate.constraints && Object.values(validate.constraints),
   }));
 
+  console.log(contents);
   throw new CustomException({
     code: VALIDATION_FIELDS_REQUEST_ERROR.code,
     message: VALIDATION_FIELDS_REQUEST_ERROR.message,

@@ -7,10 +7,6 @@ export class AuthForgotPasswordPhoneResetDto {
   password: string;
 
   @IsString()
-  @Match('password')
-  confirmPassword: string;
-
-  @IsString()
   countryCode: string;
 
   @IsString()

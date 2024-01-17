@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   TokenProviderInterface,
   TokenAssignParamsPayloadDto,
+  TokenDataDto,
 } from './token.provider.interface';
 import config from '@src/config';
 import {
@@ -15,6 +16,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { CustomException } from '@src/error/custom.exception';
 import { TOKEN_ERROR } from './token.error';
+
 @Injectable()
 export class TokenProvider implements TokenProviderInterface {
   private secret: string;
@@ -25,12 +27,14 @@ export class TokenProvider implements TokenProviderInterface {
   ) {
     this.secret = config.token.secret;
   }
-  async verify<T>({ token }: TokenProviderVerifyParamsDto): Promise<T> {
+  async verify<T>({
+    token,
+  }: TokenProviderVerifyParamsDto): Promise<T & TokenDataDto> {
     try {
       const payload = await this.jwtService.verifyAsync<any>(token, {
         secret: this.secret,
       });
-      return payload as unknown as T;
+      return payload as unknown as T & TokenDataDto;
     } catch (error) {
       this.loggerProvider.error('TokenProvider - verify', {
         error,

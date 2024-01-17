@@ -19,6 +19,7 @@ import { ENVIRONMENT_TEST_CONFIG, configEnvironment } from '@src/config';
 import { AuthForgotPasswordPhoneSendCodeServiceInterface } from '../interfaces/auth.forgot-password-phone-send-code.interface';
 import {
   AuthForgotPasswordPhoneSendCodeServiceParamsDto,
+  AuthForgotPasswordPhoneSendCodeServiceResultDto,
   AuthForgotPasswordPhoneSendVerifyTokenCache,
   PhoneSendCodeAuthForgotPasswordPhoneSendCodeTokenPayload,
 } from '../dtos/auth.forgot-password-phone-send-code.dto';
@@ -38,6 +39,7 @@ import {
   SMS_PROVIDER,
   SmsProviderInterface,
 } from '@src/providers/sms/sms.provider.interface';
+import { convertMillisecondsInMinutes } from '@src/utils/convert-milliseconds-in-minutes';
 
 @Injectable()
 export class AuthForgotPasswordPhoneSendCodeService
@@ -56,10 +58,10 @@ export class AuthForgotPasswordPhoneSendCodeService
   ) {}
   async execute(
     params: AuthForgotPasswordPhoneSendCodeServiceParamsDto,
-  ): Promise<void> {
+  ): Promise<AuthForgotPasswordPhoneSendCodeServiceResultDto> {
     try {
       const { countryCode, ddd, number } = params;
-      const user = await this.userRepository.findUserByPhoneActiveUserActive({
+      const user = await this.userRepository.findByPhoneActiveUser({
         countryCode,
         ddd,
         number,
@@ -113,6 +115,14 @@ export class AuthForgotPasswordPhoneSendCodeService
           to,
         });
       }
+
+      const timeExpirationInMinutes = convertMillisecondsInMinutes(
+        AUTH_EXPIRE_IN_TOKEN_FORGOT_PASSWORD_PHONE_CODE_TTL,
+      );
+
+      return {
+        expireInMinutes: timeExpirationInMinutes,
+      };
     } catch (error) {
       this.loggerProvider.error(
         'AuthForgotPasswordPhoneSendCodeService - execute - error',
