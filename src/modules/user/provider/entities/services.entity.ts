@@ -7,8 +7,10 @@ import {
   DeleteDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Provider } from './provider.entity';
+import { AppointmentService } from '@src/modules/appointment/entities/appointment.service.entity';
 
 @Entity('services')
 export class Service {
@@ -21,6 +23,12 @@ export class Service {
   @ManyToOne(() => Provider, (provider) => provider.providerAvailableHours)
   @JoinColumn({ name: 'provider_id', referencedColumnName: 'id' })
   provider?: Provider;
+
+  @OneToMany(
+    () => AppointmentService,
+    (appointmentService) => appointmentService.service,
+  )
+  appointmentServices?: AppointmentService[];
 
   @Column()
   name: string;

@@ -42,7 +42,7 @@ export class UserProviderRepository implements UserProviderRepositoryInterface {
   ) {}
   async findServiceByProviderIdServiceId(
     props: UserProviderServiceDisableRepositoryParamsDto,
-  ): Promise<Service> {
+  ): Promise<Service | null> {
     try {
       const service =
         await this.userProviderServiceRepository.findServiceByProviderIdServiceId(

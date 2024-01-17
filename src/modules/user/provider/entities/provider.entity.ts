@@ -17,6 +17,7 @@ import { ProviderAvailableDay } from './provider-available-days.entity';
 import { ProviderAvailableHour } from './provider-available-hours.entity';
 import { Service } from './services.entity';
 import { ProviderPaymentsTypes } from './provider-payment-types.entity';
+import { AppointmentProvider } from '@src/modules/appointment/entities/appointment.provider.entity';
 
 @Entity('users')
 export class Provider {
@@ -91,6 +92,12 @@ export class Provider {
     (providerPaymentsTypes) => providerPaymentsTypes.provider,
   )
   paymentsAvailable?: ProviderPaymentsTypes[];
+
+  @OneToMany(
+    () => AppointmentProvider,
+    (appointmentProvider) => appointmentProvider.provider,
+  )
+  appointmentProviders?: AppointmentProvider[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

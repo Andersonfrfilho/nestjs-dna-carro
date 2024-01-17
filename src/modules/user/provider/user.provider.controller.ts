@@ -20,15 +20,19 @@ import {
 import { UserProviderDaysAvailableControllerParamsBodyDto } from './dtos/user.provider.days-available.dto';
 import { RequestUserProviderId } from './decorators/request-provider-user-id';
 import { UserProviderHoursAvailableControllerBodyParamsDto } from './dtos/user.provider.hours-available.dto';
-import { UserProviderCreateServiceControllerParamsBodyDto } from './dtos/user.provider.create-service.dto';
 import {
   USER_PROVIDER_CREATE_SERVICE_SERVICE,
+  USER_PROVIDER_DISABLE_SERVICE_SERVICE,
   UserProviderCreateServiceServiceInterface,
+  UserProviderDisableServiceServiceInterface,
 } from './interfaces/user.provider.service.interface';
+import { UserProviderServiceDisableControllerParamsDto } from './dtos/user.provider.disable-service.dto';
+import { UserProviderCreateServiceControllerParamsBodyDto } from './dtos/user.provider.service.dto';
+import { UserProviderAppointmentConfirmControllerParamsDto } from './dtos/user.provider.appointment-confirm.dto';
 import {
-  UserProviderServiceDisableControllerParamsDto,
-  UserProviderServiceDisableServiceParamsDto,
-} from './dtos/user.provider.disable-service.dto';
+  USER_PROVIDER_APPOINTMENT_CONFIRM_SERVICE,
+  UserProviderAppointmentConfirmServiceInterface,
+} from './interfaces/user.provider.appointment-confirm.interface';
 
 @Controller('user/provider')
 export class UserProviderController {
@@ -43,6 +47,10 @@ export class UserProviderController {
     private userProviderHoursAvailableService: UserProviderHoursAvailableServiceInterface,
     @Inject(USER_PROVIDER_CREATE_SERVICE_SERVICE)
     private userProviderCreateServiceService: UserProviderCreateServiceServiceInterface,
+    @Inject(USER_PROVIDER_DISABLE_SERVICE_SERVICE)
+    private userProviderServiceDisableService: UserProviderDisableServiceServiceInterface,
+    @Inject(USER_PROVIDER_APPOINTMENT_CONFIRM_SERVICE)
+    private userProviderAppointmentConfirmService: UserProviderAppointmentConfirmServiceInterface,
   ) {}
 
   @Post('')
@@ -104,15 +112,15 @@ export class UserProviderController {
     });
   }
 
-  // @Post('/:providerId/appointments/:appointmentId/confirm') {
-
-  // }
-
-  // @Get('/:userId/appointments') {
-
-  // }
-
-  // @Get('/:userId/appointments/:appointmentId') {
-
-  // }
+  @Post('appointments/:appointmentId/confirm')
+  async userProviderAppointmentConfirm(
+    @RequestUserProviderId() providerId: string,
+    @Param()
+    userProviderAppointmentConfirm: UserProviderAppointmentConfirmControllerParamsDto,
+  ) {
+    return this.userProviderAppointmentConfirmService.execute({
+      providerId,
+      appointmentId: userProviderAppointmentConfirm.appointmentId,
+    });
+  }
 }

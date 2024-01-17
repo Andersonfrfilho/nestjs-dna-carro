@@ -21,6 +21,6 @@ export interface UserProviderRepositoryInterface {
   createService(props: Partial<Service>): Promise<Service>;
   findServiceByProviderIdServiceId(
     props: UserProviderServiceDisableRepositoryParamsDto,
-  ): Promise<Service>;
+  ): Promise<Service | null>;
   disableService(service: Service): Promise<void>;
 }

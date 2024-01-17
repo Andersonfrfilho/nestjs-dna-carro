@@ -34,76 +34,169 @@ export class UserRepository implements UserRepositoryInterface {
   async findByDocumentActive(
     documentParamsDto: FindByDocumentActiveUserParamsDto,
   ): Promise<User | null> {
-    const { document, documentType } = documentParamsDto;
-    return this.userRepository.findOne({
-      where: {
-        active: true,
-        document,
-        documentType,
-      },
-    });
+    try {
+      const { document, documentType } = documentParamsDto;
+      const user = await this.userRepository.findOne({
+        where: {
+          active: true,
+          document,
+          documentType,
+        },
+      });
+
+      return user;
+    } catch (error) {
+      this.loggerProvider.error('UserRepository - findByDocumentActive -', {
+        error,
+      });
+
+      throw error;
+    }
   }
   async findByPhoneActiveUser(
     phone: FindByPhoneActiveUserParamsDto,
   ): Promise<User | null> {
-    const { countryCode, ddd, number } = phone;
-    return this.userRepository.findOne({
-      where: {
-        active: true,
-        userPhones: {
-          phone: {
-            ddd,
-            number,
-            countryCode,
+    try {
+      const { countryCode, ddd, number } = phone;
+      const user = await this.userRepository.findOne({
+        where: {
+          active: true,
+          userPhones: {
+            phone: {
+              ddd,
+              number,
+              countryCode,
+            },
           },
         },
-      },
-    });
+      });
+
+      return user;
+    } catch (error) {
+      this.loggerProvider.error('UserRepository - findByPhoneActiveUser -', {
+        error,
+      });
+
+      throw error;
+    }
   }
   async updatePasswordByEmailUserActive(
     data: UpdatePasswordByEmailParamsDto,
   ): Promise<void> {
-    await this.userRepository.update(
-      { email: data.email, active: true },
-      { password_hash: data.passwordHash },
-    );
+    try {
+      await this.userRepository.update(
+        { email: data.email, active: true },
+        { password_hash: data.passwordHash },
+      );
+    } catch (error) {
+      this.loggerProvider.error(
+        'UserRepository - updatePasswordByEmailUserActive -',
+        {
+          error,
+        },
+      );
+
+      throw error;
+    }
   }
   async inactiveUserByEmail(emailParam: string): Promise<void> {
-    await this.userRepository.update({ email: emailParam }, { active: false });
+    try {
+      await this.userRepository.update(
+        { email: emailParam },
+        { active: false },
+      );
+    } catch (error) {
+      this.loggerProvider.error('UserRepository - inactiveUserByEmail -', {
+        error,
+      });
+
+      throw error;
+    }
   }
 
   async findByIdActive(idParam: string): Promise<User | null> {
-    return this.userRepository.findOne({
-      where: { id: idParam, active: true },
-    });
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id: idParam, active: true },
+      });
+
+      return user;
+    } catch (error) {
+      this.loggerProvider.error('UserRepository - findByIdActive -', {
+        error,
+      });
+
+      throw error;
+    }
   }
   async findByEmailActive(emailParam: string): Promise<User | null> {
-    return this.userRepository.findOne({
-      where: { email: emailParam, active: true },
-    });
+    try {
+      const user = await this.userRepository.findOne({
+        where: { email: emailParam, active: true },
+      });
+      return user;
+    } catch (error) {
+      this.loggerProvider.error('UserRepository - findByEmailActive -', {
+        error,
+      });
+
+      throw error;
+    }
   }
   async findByCpf(documentParam: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { document: documentParam } });
+    try {
+      const user = await this.userRepository.findOne({
+        where: { document: documentParam },
+      });
+
+      return user;
+    } catch (error) {
+      this.loggerProvider.error('UserRepository - findByEmail -', {
+        error,
+      });
+
+      throw error;
+    }
   }
   async findByEmail(emailParam: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { email: emailParam } });
+    try {
+      const user = await this.userRepository.findOne({
+        where: { email: emailParam },
+      });
+
+      return user;
+    } catch (error) {
+      this.loggerProvider.error('UserRepository - findByEmail -', {
+        error,
+      });
+
+      throw error;
+    }
   }
   async findByPhone(
     phoneParams: UserFindByPhoneParamsDto,
   ): Promise<UserPhone[] | null> {
-    const phone = await this.phoneRepository.findByCountryCodeDDDNumberUser(
-      phoneParams,
-    );
+    try {
+      const phone = await this.phoneRepository.findByCountryCodeDDDNumberUser(
+        phoneParams,
+      );
 
-    if (!phone) {
-      return null;
+      if (!phone) {
+        return null;
+      }
+
+      return this.userPhoneRepository.find({
+        where: {
+          phoneId: phone.id,
+        },
+      });
+    } catch (error) {
+      this.loggerProvider.error('UserRepository - findByPhone -', {
+        error,
+      });
+
+      throw error;
     }
-
-    return this.userPhoneRepository.find({
-      where: {
-        phoneId: phone.id,
-      },
-    });
   }
   async save(props: Partial<User>): Promise<User> {
     try {

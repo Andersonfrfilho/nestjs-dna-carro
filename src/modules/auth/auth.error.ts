@@ -28,3 +28,9 @@ export const PASSWORD_CONFIRMATION_NOT_IDENTICAL = {
   message: 'PASSWORD_CONFIRMATION_NOT_IDENTICAL',
   statusCode: HttpStatusCode.Forbidden,
 };
+
+export const SERVICE_NOT_FOUND = {
+  code: 1050,
+  message: 'SERVICE_NOT_FOUND',
+  statusCode: HttpStatusCode.NotFound,
+};

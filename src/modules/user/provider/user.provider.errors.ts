@@ -53,3 +53,9 @@ export const INVALID_INFO_PROVIDER_USER_ID = {
   message: 'INVALID_INFO_PROVIDER_USER_ID',
   statusCode: HttpStatusCode.BadRequest,
 };
+
+export const PROVIDER_NOT_BELONGS_TO_APPOINTMENT = {
+  code: 1046,
+  message: 'PROVIDER_NOT_BELONGS_TO_APPOINTMENT',
+  statusCode: HttpStatusCode.NotFound,
+};

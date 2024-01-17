@@ -4,7 +4,10 @@ import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
-import { USER_NOT_FOUND } from '@src/modules/auth/auth.error';
+import {
+  SERVICE_NOT_FOUND,
+  USER_NOT_FOUND,
+} from '@src/modules/auth/auth.error';
 import {
   USER_PROVIDER_REPOSITORY,
   UserProviderRepositoryInterface,
@@ -36,9 +39,13 @@ export class UserProviderDisableServiceService
 
       const service =
         await this.userProviderRepository.findServiceByProviderIdServiceId({
-          id: params.serviceId,
+          serviceId: params.serviceId,
           providerId: params.providerId,
         });
+
+      if (!service) {
+        throw new CustomException(SERVICE_NOT_FOUND);
+      }
 
       await this.userProviderRepository.disableService(service);
     } catch (error) {

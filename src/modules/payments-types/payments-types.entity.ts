@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { ProviderPaymentsTypes } from '../user/provider/entities/provider-payment-types.entity';
+import { AppointmentPaymentTypes } from '../appointment/entities/appointment.payment-type.entity';
 
 @Entity('payments_types')
 export class PaymentType {
@@ -28,6 +29,12 @@ export class PaymentType {
     (providerPaymentsTypes) => providerPaymentsTypes.paymentType,
   )
   typePaymentProviderPaymentsTypes?: ProviderPaymentsTypes[];
+
+  @OneToMany(
+    () => AppointmentPaymentTypes,
+    (appointmentPaymentsTypes) => appointmentPaymentsTypes.paymentType,
+  )
+  appointmentPaymentsTypes?: AppointmentPaymentTypes[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

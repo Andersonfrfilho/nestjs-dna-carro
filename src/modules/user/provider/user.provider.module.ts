@@ -30,8 +30,19 @@ import { USER_PROVIDER_REPOSITORY } from './interfaces/user.provider.repository.
 import { UserProviderRepository } from './repositories/user.provider.repository';
 import { UserProviderDaysAvailableService } from './services/user.provider.days-available.service';
 import { UserProviderHoursAvailableService } from './services/user.provider.hours-available.service';
-import { USER_PROVIDER_CREATE_SERVICE_SERVICE } from './interfaces/user.provider.service.interface';
+import {
+  USER_PROVIDER_CREATE_SERVICE_SERVICE,
+  USER_PROVIDER_DISABLE_SERVICE_SERVICE,
+  USER_PROVIDER_SERVICE_REPOSITORY,
+} from './interfaces/user.provider.service.interface';
 import { UserProviderCreateServiceService } from './services/user.provider.create-service.service';
+import { UserProviderAppointmentConfirmService } from './services/user.provider.appointment-confirm.service';
+import { USER_PROVIDER_APPOINTMENT_CONFIRM_SERVICE } from './interfaces/user.provider.appointment-confirm.interface';
+import { UserModule } from '../user.module';
+import { UserProviderServicesRepository } from './repositories/user.provider.services.repository';
+import { AppointmentModule } from '@src/modules/appointment/appointment.module';
+import { UserProviderDisableServiceService } from './services/user.provider.disable-service.service';
+import { TokenModule } from '@src/providers/token/token.module';
 
 @Module({
   imports: [
@@ -41,7 +52,10 @@ import { UserProviderCreateServiceService } from './services/user.provider.creat
       ProviderAvailableHour,
       Service,
     ]),
+    UserModule,
+    AppointmentModule,
     LoggerModule,
+    TokenModule,
   ],
   providers: [
     {
@@ -65,6 +79,10 @@ import { UserProviderCreateServiceService } from './services/user.provider.creat
       useClass: UserProviderRepository,
     },
     {
+      provide: USER_PROVIDER_SERVICE_REPOSITORY,
+      useClass: UserProviderServicesRepository,
+    },
+    {
       provide: USER_PROVIDER_DAYS_AVAILABLE_SERVICE,
       useClass: UserProviderDaysAvailableService,
     },
@@ -76,11 +94,28 @@ import { UserProviderCreateServiceService } from './services/user.provider.creat
       provide: USER_PROVIDER_CREATE_SERVICE_SERVICE,
       useClass: UserProviderCreateServiceService,
     },
+    {
+      provide: USER_PROVIDER_APPOINTMENT_CONFIRM_SERVICE,
+      useClass: UserProviderAppointmentConfirmService,
+    },
+    {
+      provide: USER_PROVIDER_DISABLE_SERVICE_SERVICE,
+      useClass: UserProviderDisableServiceService,
+    },
   ],
   controllers: [UserProviderController],
   exports: [
+    USER_PROVIDER_REPOSITORY,
+    USER_PROVIDER_SERVICE_REPOSITORY,
+    USER_PROVIDER_AVAILABLE_DAYS_REPOSITORY,
+    USER_PROVIDER_AVAILABLE_HOURS_REPOSITORY,
     USER_PROVIDER_CREATE_SERVICE,
     USER_PROVIDER_INTERNAL_DISABLE_SERVICE,
+    USER_PROVIDER_DAYS_AVAILABLE_SERVICE,
+    USER_PROVIDER_HOURS_AVAILABLE_SERVICE,
+    USER_PROVIDER_CREATE_SERVICE_SERVICE,
+    USER_PROVIDER_APPOINTMENT_CONFIRM_SERVICE,
+    USER_PROVIDER_DISABLE_SERVICE_SERVICE,
   ],
 })
 export class UserProviderModule implements NestModule {
