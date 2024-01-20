@@ -31,6 +31,25 @@ export class UserRepository implements UserRepositoryInterface {
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
+  async findByIdActiveWithTypes(id: string): Promise<User | null> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          active: true,
+          id,
+        },
+        relations: ['userTypesUsers'],
+      });
+
+      return user;
+    } catch (error) {
+      this.loggerProvider.error('UserRepository - findByIdActiveWithTypes -', {
+        error,
+      });
+
+      throw error;
+    }
+  }
   async findByDocumentActive(
     documentParamsDto: FindByDocumentActiveUserParamsDto,
   ): Promise<User | null> {

@@ -28,4 +28,5 @@ export interface UserRepositoryInterface {
   updatePasswordByEmailUserActive(
     data: UpdatePasswordByEmailParamsDto,
   ): Promise<void>;
+  findByIdActiveWithTypes(id: string): Promise<User | null>;
 }
