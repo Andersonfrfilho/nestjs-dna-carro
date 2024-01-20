@@ -25,6 +25,9 @@ import { PhoneModule } from '../phone/phone.module';
 import { AddressModule } from '../address/address.module';
 import { TypesUserModule } from '../types-users/types-users.module';
 import { LoggerModule } from '@src/providers/logger/logger.module';
+import { USER_GET_TYPES_SERVICE } from './interfaces/user.get-types.interface';
+import { UserGetTypesService } from './services/user.get-types.service';
+import { UserController } from './user.controller';
 
 @Module({
   imports: [
@@ -71,7 +74,12 @@ import { LoggerModule } from '@src/providers/logger/logger.module';
       provide: USER_TOKEN_REPOSITORY,
       useClass: UserTokenRepository,
     },
+    {
+      provide: USER_GET_TYPES_SERVICE,
+      useClass: UserGetTypesService,
+    },
   ],
+  controllers: [UserController],
   exports: [
     USER_REPOSITORY,
     USER_PHONE_REPOSITORY,
@@ -80,6 +88,7 @@ import { LoggerModule } from '@src/providers/logger/logger.module';
     USER_TERM_REPOSITORY,
     USER_TOKEN_REPOSITORY,
     USER_TYPES_USER_REPOSITORY,
+    USER_GET_TYPES_SERVICE,
   ],
 })
 export class UserModule {}

@@ -11,6 +11,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { User } from '../entities/user.entity';
 
 export class UserRelationshipDto {
   @IsUUID(undefined, { message: 'userId need format in uuid valid' })
@@ -73,3 +74,9 @@ export class FindByDocumentActiveUserParamsDto {
   })
   documentType: NameSessionTypeFlow;
 }
+
+export class UserGetTypesServiceParamsDto {
+  userId: string;
+}
+
+export class UserGetTypesControllerResponseDto extends User {}
