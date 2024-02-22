@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { UserImageProfile } from '../user/entities/user.image.profile.entity';
+import { UserClientImageProfile } from '../user/client/entities/client.images-profiles.entity';
 
 @Entity('images')
 export class Image {
@@ -25,6 +26,12 @@ export class Image {
     (userImageProfile) => userImageProfile.imageProfile,
   )
   userImagesProfiles?: UserImageProfile[];
+
+  @OneToMany(
+    () => UserClientImageProfile,
+    (userClientImageProfile) => userClientImageProfile.imageProfile,
+  )
+  userClientImagesProfiles?: UserClientImageProfile[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

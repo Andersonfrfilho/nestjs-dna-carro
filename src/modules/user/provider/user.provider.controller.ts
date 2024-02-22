@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  Post,
+} from '@nestjs/common';
 import {
   USER_PROVIDER_CREATE_SERVICE,
   UserProviderCreateServiceInterface,
@@ -9,16 +17,12 @@ import {
   USER_PROVIDER_INTERNAL_DISABLE_SERVICE,
   UserProviderInternalDisableServiceInterface,
 } from './interfaces/user.provider.internal-disable.interface';
-import {
-  USER_PROVIDER_DAYS_AVAILABLE_SERVICE,
-  UserProviderDaysAvailableServiceInterface,
-} from './interfaces/user.provider.days-available.interface';
+
 import {
   USER_PROVIDER_HOURS_AVAILABLE_SERVICE,
   UserProviderHoursAvailableServiceInterface,
 } from './interfaces/user.provider.hours-available.interface';
-import { UserProviderDaysAvailableControllerParamsBodyDto } from './dtos/user.provider.days-available.dto';
-import { RequestUserProviderId } from './decorators/request-provider-user-id';
+import { RequestUserProviderId } from './decorators/request-user-provider-id';
 import { UserProviderHoursAvailableControllerBodyParamsDto } from './dtos/user.provider.hours-available.dto';
 import {
   USER_PROVIDER_CREATE_SERVICE_SERVICE,
@@ -33,6 +37,24 @@ import {
   USER_PROVIDER_APPOINTMENT_CONFIRM_SERVICE,
   UserProviderAppointmentConfirmServiceInterface,
 } from './interfaces/user.provider.appointment-confirm.interface';
+import { GetRequestUrl } from '@src/modules/common/decorators/get-request-url';
+import {
+  USER_PROVIDER_GET_APPOINTMENTS_BY_STATUS_SERVICE,
+  UserProviderGetAppointmentsByStatusServiceInterface,
+} from './interfaces/user.provider.get-appointments-by-status.interface';
+import { UserProviderGetAppointmentsByStatusControllerParamsDto } from './dtos/user.provider.get-appointments-by-status.dto';
+import {
+  USER_PROVIDER_GET_APPOINTMENT_BY_ID_SERVICE,
+  UserProviderGetAppointmentByIdServiceInterface,
+} from './interfaces/user.provider.get-appointment-by-id.interface';
+import { UserProviderGetAppointmentByIdControllerParamsDto } from './dtos/user.provider.get-appointment-by-id.dto';
+import {
+  USER_PROVIDER_CREATE_AVAILABLE_DAYS_SERVICE,
+  USER_PROVIDER_GET_AVAILABLE_DAYS_SERVICE,
+  UserProviderCreateAvailableDaysServiceInterface,
+  UserProviderGetAvailableDaysServiceInterface,
+} from './interfaces/user.provider.available-days.interface';
+import { UserProviderCreateAvailableDaysControllerParamsBodyDto } from './dtos/user.provider.available-days.dto';
 
 @Controller('user/provider')
 export class UserProviderController {
@@ -41,8 +63,8 @@ export class UserProviderController {
     private userProviderCreateService: UserProviderCreateServiceInterface,
     @Inject(USER_PROVIDER_INTERNAL_DISABLE_SERVICE)
     private userProviderInternalDisableService: UserProviderInternalDisableServiceInterface,
-    @Inject(USER_PROVIDER_DAYS_AVAILABLE_SERVICE)
-    private userProviderDaysAvailableService: UserProviderDaysAvailableServiceInterface,
+    @Inject(USER_PROVIDER_CREATE_AVAILABLE_DAYS_SERVICE)
+    private userProviderCreateAvailableDaysService: UserProviderCreateAvailableDaysServiceInterface,
     @Inject(USER_PROVIDER_HOURS_AVAILABLE_SERVICE)
     private userProviderHoursAvailableService: UserProviderHoursAvailableServiceInterface,
     @Inject(USER_PROVIDER_CREATE_SERVICE_SERVICE)
@@ -51,6 +73,12 @@ export class UserProviderController {
     private userProviderServiceDisableService: UserProviderDisableServiceServiceInterface,
     @Inject(USER_PROVIDER_APPOINTMENT_CONFIRM_SERVICE)
     private userProviderAppointmentConfirmService: UserProviderAppointmentConfirmServiceInterface,
+    @Inject(USER_PROVIDER_GET_APPOINTMENTS_BY_STATUS_SERVICE)
+    private userProviderGetAppointmentByStatusService: UserProviderGetAppointmentsByStatusServiceInterface,
+    @Inject(USER_PROVIDER_GET_APPOINTMENT_BY_ID_SERVICE)
+    private userProviderGetAppointmentByIdService: UserProviderGetAppointmentByIdServiceInterface,
+    @Inject(USER_PROVIDER_GET_AVAILABLE_DAYS_SERVICE)
+    private userProviderGetAvailableDaysService: UserProviderGetAvailableDaysServiceInterface,
   ) {}
 
   @Post('')
@@ -67,12 +95,13 @@ export class UserProviderController {
     await this.userProviderInternalDisableService.execute(disable);
   }
 
-  @Post('/days/available')
+  @Post('/available-days')
   async availableDays(
     @RequestUserProviderId() providerId: string,
-    @Body() availableDays: UserProviderDaysAvailableControllerParamsBodyDto,
+    @Body()
+    availableDays: UserProviderCreateAvailableDaysControllerParamsBodyDto,
   ) {
-    await this.userProviderDaysAvailableService.execute({
+    await this.userProviderCreateAvailableDaysService.execute({
       days: availableDays.days,
       providerId,
     });
@@ -100,7 +129,7 @@ export class UserProviderController {
     });
   }
 
-  @Delete('services/:serviceId/disable')
+  @Delete('/services/:serviceId/disable')
   async disableService(
     @RequestUserProviderId() providerId: string,
     @Param()
@@ -112,7 +141,7 @@ export class UserProviderController {
     });
   }
 
-  @Post('appointments/:appointmentId/confirm')
+  @Post('/appointments/:appointmentId/confirm')
   async userProviderAppointmentConfirm(
     @RequestUserProviderId() providerId: string,
     @Param()
@@ -121,6 +150,39 @@ export class UserProviderController {
     return this.userProviderAppointmentConfirmService.execute({
       providerId,
       appointmentId: userProviderAppointmentConfirm.appointmentId,
+    });
+  }
+
+  @Get('/appointments/status/:status')
+  async userProviderAppointmentByStatus(
+    @RequestUserProviderId() providerId: string,
+    @GetRequestUrl() url: string,
+    @Param()
+    userProviderGetAppointmentsByStatus: UserProviderGetAppointmentsByStatusControllerParamsDto,
+  ) {
+    return this.userProviderGetAppointmentByStatusService.execute({
+      providerId,
+      url: url,
+      ...userProviderGetAppointmentsByStatus,
+    });
+  }
+
+  @Get('/appointments/:appointmentId')
+  async userProviderAppointmentById(
+    @RequestUserProviderId() providerId: string,
+    @Param()
+    path: UserProviderGetAppointmentByIdControllerParamsDto,
+  ) {
+    return this.userProviderGetAppointmentByIdService.execute({
+      providerId,
+      ...path,
+    });
+  }
+
+  @Get('/available-days')
+  async getProviderDaysAvailable(@RequestUserProviderId() providerId: string) {
+    return this.userProviderGetAvailableDaysService.execute({
+      providerId,
     });
   }
 }

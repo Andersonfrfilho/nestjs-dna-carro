@@ -71,14 +71,14 @@ export class AuthRenewRefreshTokenService
 
       const expireInUnix = moment(date)
         .add(numberExpireIn, symbolExpireIn as any)
-        .unix();
+        .valueOf();
 
       const [symbolRefreshExpireIn, numberRefreshExpireIn] =
         separatedCharacterNumber(config.token.expireInRefresh);
 
       const expireInRefreshTokenUnix = moment(date)
         .add(numberRefreshExpireIn, symbolRefreshExpireIn as any)
-        .unix();
+        .valueOf();
 
       return {
         token: renewToken,

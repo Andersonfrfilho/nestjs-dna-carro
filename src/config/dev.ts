@@ -2,6 +2,7 @@ import { Config } from '.';
 
 export const dev = (): Config => ({
   api: {
+    baseUrl: process.env.BASE_URL || '',
     port: parseInt(process.env.PORT ?? '', 10) || 3333,
     phone: {
       numberPossibleAttempts:

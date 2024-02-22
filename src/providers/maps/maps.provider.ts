@@ -130,7 +130,7 @@ export class MapsProvider implements MapsProviderInterface {
             };
             return prev;
           }, {});
-        console.log(addressComponents);
+
         return {
           components: addressComponents,
           formattedAddress: address.formatted_address || '',

@@ -7,10 +7,6 @@ import {
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
 
-import {
-  USER_PROVIDER_AVAILABLE_DAYS_REPOSITORY,
-  UserProviderAvailableDaysRepositoryInterface,
-} from '../interfaces/user.provider.days-available.interface';
 import { UserProviderRepositoryInterface } from '../interfaces/user.provider.repository.interface';
 import { ProviderAvailableHour } from '../entities/provider-available-hours.entity';
 import { Provider } from '../entities/provider.entity';
@@ -25,6 +21,10 @@ import {
 } from '../interfaces/user.provider.service.interface';
 import { Service } from '../entities/services.entity';
 import { UserProviderServiceDisableRepositoryParamsDto } from '../dtos/user.provider.service.dto';
+import {
+  USER_PROVIDER_AVAILABLE_DAYS_REPOSITORY,
+  UserProviderAvailableDaysRepositoryInterface,
+} from '../interfaces/user.provider.available-days.interface';
 
 @Injectable()
 export class UserProviderRepository implements UserProviderRepositoryInterface {
@@ -115,8 +115,12 @@ export class UserProviderRepository implements UserProviderRepositoryInterface {
       );
 
       if (daysAvailable.length > 0) {
-        const daysAvailableIds = daysAvailable.map((day) => day.id);
-        await this.userProviderAvailableDaysRepository.delete(daysAvailableIds);
+        const daysAvailableIds = daysAvailable.map((day) => {
+          return this.userProviderAvailableDaysRepository.updateDeleteAt(
+            day.id,
+          );
+        });
+        Promise.all(daysAvailableIds);
       }
     } catch (error) {
       this.loggerProvider.error(
@@ -190,14 +194,14 @@ export class UserProviderRepository implements UserProviderRepositoryInterface {
           id,
           active: true,
         },
-        relations: ['user', 'availableHours', 'availableHours.day'],
       });
       return provider;
     } catch (error) {
       this.loggerProvider.error(
         'UserProviderRepository - findByIdActive - error',
         {
-          error,
+          ...error,
+          id,
         },
       );
       throw error;
@@ -205,9 +209,10 @@ export class UserProviderRepository implements UserProviderRepositoryInterface {
   }
   async createAvailableDay(
     props: Partial<ProviderAvailableDay>,
-  ): Promise<void> {
+  ): Promise<ProviderAvailableDay> {
     try {
-      await this.userProviderAvailableDaysRepository.save(props);
+      const day = await this.userProviderAvailableDaysRepository.save(props);
+      return day;
     } catch (error) {
       this.loggerProvider.error(
         'UserProviderRepository - createAvailableDay - error',
@@ -215,6 +220,7 @@ export class UserProviderRepository implements UserProviderRepositoryInterface {
           error,
         },
       );
+      throw error;
     }
   }
 }

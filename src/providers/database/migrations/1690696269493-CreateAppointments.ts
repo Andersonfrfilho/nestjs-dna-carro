@@ -29,6 +29,20 @@ export class CreateAppointments1690696269493 implements MigrationInterface {
             default: false,
           },
           {
+            name: 'confirm',
+            type: 'boolean',
+            default: false,
+          },
+          {
+            name: 'status',
+            type: 'varchar',
+          },
+          {
+            name: 'details',
+            type: 'jsonb',
+            isNullable: true,
+          },
+          {
             name: 'duration',
             type: 'bigint',
             isNullable: true,
@@ -49,6 +63,7 @@ export class CreateAppointments1690696269493 implements MigrationInterface {
             isNullable: true,
           },
         ],
+        indices: [{ columnNames: ['status'], isUnique: false }],
       }),
     );
   }

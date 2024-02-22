@@ -13,6 +13,7 @@ import { UserAddress } from './user.address.entity';
 import { UserImageProfile } from './user.image.profile.entity';
 import { UserTerm } from './user.term.entity';
 import { UserTypesUser } from './user.types.user.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class User {
@@ -34,6 +35,7 @@ export class User {
   @Column()
   email: string;
 
+  @Exclude()
   @Column()
   password_hash: string;
 

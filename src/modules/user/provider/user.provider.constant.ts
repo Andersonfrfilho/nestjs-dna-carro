@@ -1,11 +1,13 @@
 export const USER_PROVIDER_TYPE_ID = 2;
 
 export enum DAYS_WEEK {
-  MONDAY = 'MONDAY',
-  TUESDAY = 'TUESDAY',
-  FRIDAY = 'FRIDAY',
-  SATURDAY = 'SATURDAY',
-  SUNDAY = 'SUNDAY',
+  MONDAY = 'monday',
+  TUESDAY = 'tuesday',
+  WEDNESDAY = 'wednesday',
+  THURSDAY = 'thursday',
+  FRIDAY = 'friday',
+  SATURDAY = 'saturday',
+  SUNDAY = 'sunday',
 }
 
 export enum HOURS_DAY_PER_FIFTEEN_MINUTE_PERIOD {

@@ -9,8 +9,9 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { Provider } from './provider.entity';
 import { AppointmentService } from '../../../appointment/entities/appointment.service.entity';
+import { Provider } from './provider.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('services')
 export class Service {
@@ -45,12 +46,15 @@ export class Service {
   @Column()
   active: boolean;
 
+  @Exclude()
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
 
+  @Exclude()
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt?: Date;
 
+  @Exclude()
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt?: Date;
 }

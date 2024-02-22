@@ -1,5 +1,6 @@
 import { IsBoolean, IsNumber, IsObject, IsString } from 'class-validator';
 import { PrimaryGeneratedColumn } from 'typeorm';
+import { Appointment } from '../entities/appointment.entity';
 
 export class AppointmentCreateDto {
   @PrimaryGeneratedColumn()
@@ -22,4 +23,5 @@ export class AppointmentCreateDto {
 }
 
 export class AppointmentCreateServiceParamsDto extends AppointmentCreateDto {}
+export class AppointmentCreateServiceResultDto extends Appointment {}
 export class AppointmentCreateControllerParamsBodyDto extends AppointmentCreateDto {}

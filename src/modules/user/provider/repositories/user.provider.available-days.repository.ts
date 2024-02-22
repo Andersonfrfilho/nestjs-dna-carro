@@ -7,8 +7,8 @@ import {
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
 
-import { UserProviderAvailableDaysRepositoryInterface } from '../interfaces/user.provider.days-available.interface';
 import { ProviderAvailableDay } from '../entities/provider-available-days.entity';
+import { UserProviderAvailableDaysRepositoryInterface } from '../interfaces/user.provider.available-days.interface';
 
 @Injectable()
 export class UserProviderAvailableDaysRepository
@@ -20,6 +20,22 @@ export class UserProviderAvailableDaysRepository
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
+  async updateDeleteAt(id: string): Promise<void> {
+    try {
+      await this.providerAvailableDaysRepository.update(id, {
+        deletedAt: new Date(),
+      });
+    } catch (error) {
+      this.loggerProvider.error(
+        'UserProviderAvailableDaysRepository - updateDeleteAt - error',
+        {
+          error,
+        },
+      );
+      throw error;
+    }
+  }
+
   async findByUserProviderId(
     providerId: string,
   ): Promise<ProviderAvailableDay[]> {

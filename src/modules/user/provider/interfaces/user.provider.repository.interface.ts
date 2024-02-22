@@ -7,7 +7,9 @@ import { Service } from '../entities/services.entity';
 export const USER_PROVIDER_REPOSITORY = 'USER_PROVIDER_REPOSITORY';
 
 export interface UserProviderRepositoryInterface {
-  createAvailableDay(props: Partial<ProviderAvailableDay>): Promise<void>;
+  createAvailableDay(
+    props: Partial<ProviderAvailableDay>,
+  ): Promise<ProviderAvailableDay>;
   createAvailableHour(props: Partial<ProviderAvailableHour>): Promise<void>;
   findByIdActive(id: string): Promise<Provider | null>;
   findDaysAvailableByProviderId(

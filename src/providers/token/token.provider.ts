@@ -58,7 +58,6 @@ export class TokenProvider implements TokenProviderInterface {
       });
       return token;
     } catch (error) {
-      console.log(error);
       this.loggerProvider.error('TokenProvider - assign', {
         error,
       });

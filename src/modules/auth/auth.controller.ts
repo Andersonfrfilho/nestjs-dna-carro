@@ -56,7 +56,6 @@ export class AuthController {
     @Body()
     authCreateSessionBodyParams: AuthCreateSessionBodyControllerParamsDto,
   ): Promise<AuthCreateSessionResponseDto> {
-    console.log(paramPathCreateSessionParams);
     return this.authCreateSessionService.execute({
       ...authCreateSessionBodyParams,
       type: paramPathCreateSessionParams.type,
