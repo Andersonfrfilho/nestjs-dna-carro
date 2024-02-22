@@ -12,6 +12,8 @@ import { AppointmentClient } from './appointment.client.entity';
 import { AppointmentPaymentTypes } from './appointment.payment-type.entity';
 import { AppointmentProvider } from './appointment.provider.entity';
 import { AppointmentService } from './appointment.service.entity';
+import { AppointmentEvents } from './appointment.events.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('appointments')
 export class Appointment {
@@ -30,8 +32,17 @@ export class Appointment {
   @Column()
   duration: number;
 
+  @Column()
+  status: string;
+
   @Column('jsonb', { nullable: false, default: {} })
   details: string;
+
+  @OneToMany(
+    () => AppointmentEvents,
+    (appointmentEvents) => appointmentEvents.appointment,
+  )
+  events?: AppointmentEvents[];
 
   @OneToMany(
     () => AppointmentAddress,
@@ -63,12 +74,15 @@ export class Appointment {
   )
   appointmentService?: AppointmentService[];
 
+  @Exclude()
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
 
+  @Exclude()
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt?: Date;
 
+  @Exclude()
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt?: Date;
 }

@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserProviderDaysAvailableServiceInterface } from '../interfaces/user.provider.days-available.interface';
-import { UserProviderDaysAvailableServiceParamsDto } from '../dtos/user.provider.days-available.dto';
 import { CustomException } from '@src/error/custom.exception';
 import { USER_PROVIDER_NOT_FOUND } from '../user.provider.errors';
 import {
@@ -11,10 +9,15 @@ import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
+import { UserProviderCreateAvailableDaysServiceInterface } from '../interfaces/user.provider.available-days.interface';
+import {
+  UserProviderCreateAvailableDaysControllerResultDto,
+  UserProviderCreateAvailableDaysServiceParamsDto,
+} from '../dtos/user.provider.available-days.dto';
 
 @Injectable()
-export class UserProviderDaysAvailableService
-  implements UserProviderDaysAvailableServiceInterface
+export class UserProviderCreateAvailableDaysService
+  implements UserProviderCreateAvailableDaysServiceInterface
 {
   constructor(
     @Inject(USER_PROVIDER_REPOSITORY)
@@ -23,8 +26,8 @@ export class UserProviderDaysAvailableService
     private loggerProvider: LoggerProviderInterface,
   ) {}
   async execute(
-    params: UserProviderDaysAvailableServiceParamsDto,
-  ): Promise<void> {
+    params: UserProviderCreateAvailableDaysServiceParamsDto,
+  ): Promise<UserProviderCreateAvailableDaysControllerResultDto[]> {
     try {
       const provider = await this.userProviderRepository.findByIdActive(
         params.providerId,
@@ -52,7 +55,9 @@ export class UserProviderDaysAvailableService
         }),
       );
 
-      await Promise.all(saveDaysPromise);
+      const data = await Promise.all(saveDaysPromise);
+
+      return data;
     } catch (error) {
       this.loggerProvider.error(
         'UserProviderDaysAvailableService - execute - error',

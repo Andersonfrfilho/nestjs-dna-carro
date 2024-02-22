@@ -40,11 +40,10 @@ export class UserRepository implements UserRepositoryInterface {
         },
         relations: ['userTypesUsers'],
       });
-
       return user;
     } catch (error) {
       this.loggerProvider.error('UserRepository - findByIdActiveWithTypes -', {
-        error,
+        error: { ...error, userId: id },
       });
 
       throw error;

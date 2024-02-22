@@ -21,9 +21,13 @@ import { ClientGetCacheInfoWithoutFlowByEmailService } from './services/client.g
 import { CLIENT_GET_CACHE_INFO_WITHOUT_FLOW_BY_EMAIL_SERVICE } from './interfaces/client.get-cache-info-without-flow-by-email.interface';
 import { CLIENT_GET_CACHE_INFO_WITHOUT_FLOW_BY_PHONE_SERVICE } from './interfaces/client.get-cache-info-without-flow-by-phone.interface';
 import { ClientGetCacheInfoWithoutFlowByPhoneService } from './services/client.get-cache-info-without-flow-by-phone.service';
+import { Client } from './entities/client.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserClientImageProfile } from './entities/client.images-profiles.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Client, UserClientImageProfile]),
     UserModule,
     PhoneModule,
     AddressModule,

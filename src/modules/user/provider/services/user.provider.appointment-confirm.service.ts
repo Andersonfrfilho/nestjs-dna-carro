@@ -10,16 +10,17 @@ import {
   UserProviderRepositoryInterface,
 } from '../interfaces/user.provider.repository.interface';
 import { UserProviderAppointmentConfirmServiceInterface } from '../interfaces/user.provider.appointment-confirm.interface';
-import {
-  APPOINTMENT_REPOSITORY,
-  AppointmentRepositoryInterface,
-} from '@src/modules/appointment/interfaces/appointment.interface';
+
 import { UserProviderAppointmentConfirmServiceParamsDto } from '../dtos/user.provider.appointment-confirm.dto';
 import {
   APPOINTMENT_NOT_FOUND,
   APPOINTMENT_NOT_HAS_PROVIDER,
 } from '@src/modules/appointment/appointment.error';
 import { PROVIDER_NOT_BELONGS_TO_APPOINTMENT } from '../user.provider.errors';
+import {
+  APPOINTMENT_REPOSITORY,
+  AppointmentRepositoryInterface,
+} from '@src/modules/appointment/interfaces/appointment.repository.interface';
 
 @Injectable()
 export class UserProviderAppointmentConfirmService

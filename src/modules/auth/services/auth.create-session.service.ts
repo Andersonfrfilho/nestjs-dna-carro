@@ -94,20 +94,24 @@ export class AuthCreateSessionService
 
       const date = new Date();
 
-      const [symbolExpireIn, numberExpireIn] = separatedCharacterNumber(
-        config.token.expireIn,
-      );
-
+      // const [symbolExpireIn, numberExpireIn] = separatedCharacterNumber(
+      //   config.token.expireIn,
+      // );
+      const symbolExpireIn = 's';
+      const numberExpireIn = '1';
       const expireInUnix = moment(date)
         .add(numberExpireIn, symbolExpireIn as any)
-        .unix();
+        .valueOf();
 
-      const [symbolRefreshExpireIn, numberRefreshExpireIn] =
-        separatedCharacterNumber(config.token.expireInRefresh);
+      // const [symbolRefreshExpireIn, numberRefreshExpireIn] =
+      //   separatedCharacterNumber(config.token.expireInRefresh);
+
+      const symbolRefreshExpireIn = 's';
+      const numberRefreshExpireIn = '1';
 
       const expireInRefreshTokenUnix = moment(date)
         .add(numberRefreshExpireIn, symbolRefreshExpireIn as any)
-        .unix();
+        .valueOf();
 
       return {
         token,

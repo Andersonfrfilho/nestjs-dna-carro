@@ -6,9 +6,9 @@ import { AppointmentClient } from './entities/appointment.client.entity';
 import { AppointmentPaymentTypes } from './entities/appointment.payment-type.entity';
 import { AppointmentProvider } from './entities/appointment.provider.entity';
 import { AppointmentService } from './entities/appointment.service.entity';
-import { APPOINTMENT_REPOSITORY } from './interfaces/appointment.interface';
 import { AppointmentRepository } from './appointment.repository';
 import { LoggerModule } from '@src/providers/logger/logger.module';
+import { APPOINTMENT_REPOSITORY } from './interfaces/appointment.repository.interface';
 
 @Module({
   imports: [

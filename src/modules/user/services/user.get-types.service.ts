@@ -14,6 +14,7 @@ import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
+import { instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class UserGetTypesService implements UserGetTypesServiceInterface {
@@ -33,7 +34,7 @@ export class UserGetTypesService implements UserGetTypesServiceInterface {
         throw new CustomException(USER_NOT_FOUND);
       }
 
-      return user;
+      return instanceToPlain(user) as User;
     } catch (error) {
       this.loggerProvider.error('UserGetTypesService - execute - error', {
         error: error,

@@ -15,6 +15,7 @@ export const ENVIRONMENT_TEST_CONFIG = [
 
 export type Config = {
   api: {
+    baseUrl: string;
     port: number;
     phone: {
       numberPossibleAttempts: number;

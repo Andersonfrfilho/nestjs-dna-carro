@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
-  // JoinTable,
 } from 'typeorm';
 import { UserPhone } from '../../entities/user.phone.entity';
 import { UserAddress } from '../../entities/user.address.entity';
@@ -18,6 +17,7 @@ import { ProviderAvailableHour } from './provider-available-hours.entity';
 import { Service } from './services.entity';
 import { ProviderPaymentsTypes } from './provider-payment-types.entity';
 import { AppointmentProvider } from '../../../appointment/entities/appointment.provider.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class Provider {
@@ -39,6 +39,7 @@ export class Provider {
   @Column()
   email: string;
 
+  @Exclude()
   @Column()
   password_hash: string;
 
@@ -99,12 +100,15 @@ export class Provider {
   )
   appointmentProviders?: AppointmentProvider[];
 
+  @Exclude()
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
 
+  @Exclude()
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt?: Date;
 
+  @Exclude()
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt?: Date;
 }

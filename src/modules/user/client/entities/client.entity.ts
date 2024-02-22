@@ -7,7 +7,8 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from 'typeorm';
-import { AppointmentClient } from '../../appointment/entities/appointment.client.entity';
+import { UserClientImageProfile } from './client.images-profiles.entity';
+import { AppointmentClient } from '../../../appointment/entities/appointment.client.entity';
 
 @Entity('users')
 export class Client {
@@ -37,6 +38,12 @@ export class Client {
     (appointmentClient) => appointmentClient.client,
   )
   appointmentClients?: AppointmentClient[];
+
+  @OneToMany(
+    () => UserClientImageProfile,
+    (userClientImageProfile) => userClientImageProfile.client,
+  )
+  userClientImageProfiles?: UserClientImageProfile[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

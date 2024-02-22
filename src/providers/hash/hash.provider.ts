@@ -35,7 +35,6 @@ export class HashProvider implements HashProviderInterface {
       const hashResult = await bcrypt.hash(password, salt);
       return hashResult;
     } catch (error) {
-      console.log(error);
       this.loggerProvider.error('HashProvider - hash', {
         error,
       });

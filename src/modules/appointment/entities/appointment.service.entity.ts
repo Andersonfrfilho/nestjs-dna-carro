@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Appointment } from './appointment.entity';
 import { Service } from '../../user/provider/entities/services.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('appointments_services')
 export class AppointmentService {
@@ -36,12 +37,15 @@ export class AppointmentService {
   @JoinColumn({ name: 'appointment_id', referencedColumnName: 'id' })
   appointment?: Appointment;
 
+  @Exclude()
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
 
+  @Exclude()
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt?: Date;
 
+  @Exclude()
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt?: Date;
 }

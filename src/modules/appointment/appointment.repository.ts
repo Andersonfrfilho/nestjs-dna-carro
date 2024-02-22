@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AppointmentRepositoryInterface } from './interfaces/appointment.interface';
 import { Appointment } from './entities/appointment.entity';
 import { AppointmentAddress } from './entities/appointment.address.entity';
 import { AppointmentClient } from './entities/appointment.client.entity';
@@ -12,6 +11,14 @@ import {
   LOGGER_PROVIDER,
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
+import {
+  FindByIdWithProvidersByStatusWithPaginationRepositoryParamsDto,
+  FindByIdWithProvidersByStatusWithPaginationRepositoryResultDto,
+} from './interfaces/appointment.create.interface';
+import { ORDER } from '../common/enums/commons.pagination.enum';
+import { AppointmentStatus } from './appointment.constant';
+import { AppointmentRepositoryInterface } from './interfaces/appointment.repository.interface';
+import { AppointmentGetByIdProviderIdRepositoryParamsDto } from './dtos/appointment.get-by-id-provider-id.dto';
 
 @Injectable()
 export class AppointmentRepository implements AppointmentRepositoryInterface {
@@ -31,6 +38,93 @@ export class AppointmentRepository implements AppointmentRepositoryInterface {
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
+  async findByIdProviderId(
+    params: AppointmentGetByIdProviderIdRepositoryParamsDto,
+  ): Promise<Appointment | null> {
+    try {
+      const appointment = await this.appointmentRepository.findOne({
+        where: {
+          id: params.id,
+          appointmentProvider: {
+            providerId: params.providerId,
+          },
+        },
+        relations: [
+          'appointmentProvider',
+          'appointmentProvider.provider',
+          'appointmentAddresses',
+          'appointmentAddresses.address',
+          'appointmentClients',
+          'appointmentClients.client.userClientImageProfiles.imageProfile',
+          'appointmentService',
+          'appointmentService.service',
+          'events',
+        ],
+      });
+      return appointment;
+    } catch (error) {
+      this.loggerProvider.error(
+        'AppointmentRepository - findByIdProviderId -',
+        {
+          error,
+        },
+      );
+      throw error;
+    }
+  }
+  async findByIdWithProvidersByStatusWithPagination({
+    page = '0',
+    size = '10',
+    status = AppointmentStatus.created,
+    order = {
+      field: 'createdAt',
+      order: ORDER.ASC,
+    },
+    providerId,
+  }: FindByIdWithProvidersByStatusWithPaginationRepositoryParamsDto): Promise<FindByIdWithProvidersByStatusWithPaginationRepositoryResultDto> {
+    try {
+      const appointments = await this.appointmentRepository.findAndCount({
+        where: {
+          status,
+          appointmentProvider: {
+            providerId,
+          },
+        },
+        relations: [
+          'appointmentProvider',
+          'appointmentProvider.provider',
+          'appointmentAddresses',
+          'appointmentAddresses.address',
+          'appointmentClients',
+          'appointmentClients.client.userClientImageProfiles.imageProfile',
+          'appointmentService',
+          'appointmentService.service',
+          'events',
+        ],
+        take: Number(size),
+        skip: Number(page),
+        order: {
+          [order.field]: ORDER.ASC,
+        },
+      });
+      return {
+        data: appointments[0],
+        total: appointments[1],
+        page,
+        size,
+      };
+    } catch (error) {
+      this.loggerProvider.error(
+        'AppointmentRepository - findByIdWithProvidersByStatusWithPagination -',
+        {
+          error,
+        },
+      );
+
+      throw error;
+    }
+  }
+
   async findByIdWithProviders(providerId: string): Promise<Appointment | null> {
     try {
       const appointmentWithProviders = await this.appointmentRepository.findOne(

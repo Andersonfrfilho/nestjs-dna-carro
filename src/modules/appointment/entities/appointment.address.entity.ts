@@ -10,6 +10,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Appointment } from './appointment.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('appointments_addresses')
 export class AppointmentAddress {
@@ -22,9 +23,6 @@ export class AppointmentAddress {
   @Column({ name: 'address_id' })
   addressId: string;
 
-  @Column()
-  active: boolean;
-
   @ManyToOne(() => Address, (address) => address.appointmentAddresses)
   @JoinColumn({ name: 'address_id', referencedColumnName: 'id' })
   address?: Address;
@@ -36,12 +34,15 @@ export class AppointmentAddress {
   @JoinColumn({ name: 'appointment_id', referencedColumnName: 'id' })
   appointment?: Appointment;
 
+  @Exclude()
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
 
+  @Exclude()
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt?: Date;
 
+  @Exclude()
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt?: Date;
 }

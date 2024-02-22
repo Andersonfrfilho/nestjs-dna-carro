@@ -4,3 +4,10 @@ export enum PaymentTypes {
   credit = 'credit',
   pix = 'pix',
 }
+
+export enum AppointmentStatus {
+  confirm = 'confirm',
+  created = 'created',
+  cancel = 'cancel',
+  expired = 'expired',
+}

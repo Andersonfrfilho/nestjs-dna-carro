@@ -65,6 +65,7 @@ export class CreateAppointmentProvider1690696521446
             onUpdate: 'SET NULL',
           },
         ],
+        indices: [{ columnNames: ['status'], isUnique: false }],
       }),
     );
   }
