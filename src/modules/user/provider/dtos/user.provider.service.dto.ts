@@ -36,3 +36,8 @@ export class UserProviderServiceDisableRepositoryParamsDto {
   @IsUUID()
   providerId: string;
 }
+
+export class DeleteServiceByProviderIdParamsDto {
+  providerId: string;
+  serviceId: string;
+}

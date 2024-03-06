@@ -7,9 +7,14 @@ import {
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
 
-import { ProviderAvailableDay } from '../entities/provider-available-days.entity';
-import { UserProviderServiceRepositoryInterface } from '../interfaces/user.provider.service.interface';
 import { Service } from '../entities/services.entity';
+import { UserProviderServiceRepositoryInterface } from '../interfaces/user.provider.repository.interface';
+import {
+  FindByProvidersIdActiveWithPaginationParamsDto,
+  FindByProvidersIdActiveWithPaginationResultDto,
+} from '../dtos/user.provider.repository.dto';
+import { ORDER } from '@src/modules/common/enums/commons.pagination.enum';
+import { DeleteServiceByProviderIdParamsDto } from '../dtos/user.provider.service.dto';
 
 @Injectable()
 export class UserProviderServicesRepository
@@ -21,6 +26,68 @@ export class UserProviderServicesRepository
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
+  async updateDeleteAt({
+    providerId,
+    serviceId,
+  }: DeleteServiceByProviderIdParamsDto): Promise<void> {
+    try {
+      await this.userProviderServiceRepository.update(
+        {
+          providerId,
+          id: serviceId,
+        },
+        {
+          deletedAt: new Date(),
+        },
+      );
+    } catch (error) {
+      this.loggerProvider.error(
+        'UserProviderServicesRepository - updateDeleteAt - error',
+        {
+          error,
+        },
+      );
+      throw error;
+    }
+  }
+
+  async findServicesByProviderId({
+    page = '0',
+    size = '10',
+    order = {
+      field: 'createdAt',
+      order: ORDER.ASC,
+    },
+    providerId,
+  }: FindByProvidersIdActiveWithPaginationParamsDto): Promise<FindByProvidersIdActiveWithPaginationResultDto> {
+    try {
+      const services = await this.userProviderServiceRepository.findAndCount({
+        where: {
+          providerId,
+        },
+        take: Number(size),
+        skip: Number(page),
+        order: {
+          [order.field]: ORDER.ASC,
+        },
+      });
+
+      return {
+        data: services[0],
+        total: services[1],
+        page,
+        size,
+      };
+    } catch (error) {
+      this.loggerProvider.error(
+        'UserProviderServicesRepository - findServicesActiveByProviderId - error',
+        {
+          error,
+        },
+      );
+      throw error;
+    }
+  }
   async findServiceByProviderIdServiceId(
     params: Partial<Service>,
   ): Promise<Service | null> {

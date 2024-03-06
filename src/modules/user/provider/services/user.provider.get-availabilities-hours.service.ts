@@ -12,15 +12,20 @@ import {
 } from '../interfaces/user.provider.repository.interface';
 
 import { ProviderAvailableDay } from '../entities/provider-available-days.entity';
-import { UserProviderGetAvailableDaysServiceInterface } from '../interfaces/user.provider.available-days.interface';
 import {
   UserProviderGetAvailableDaysServiceParamsDto,
   UserProviderGetAvailableDaysServiceResultDto,
 } from '../dtos/user.provider.available-days.dto';
+import { UserProviderGetAvailabilitiesHoursServiceInterface } from '../interfaces/user.provider.availabilities-hours.interface';
+import {
+  UserProviderGetAvailabilitiesHoursServiceParamsDto,
+  UserProviderGetAvailabilitiesHoursServiceResultDto,
+} from '../dtos/user.provider.availabilities-hours.dto';
+import { getHoursByPeriodFifteenMinutes } from '../provider.utils';
 
 @Injectable()
-export class UserProviderGetAvailableDaysService
-  implements UserProviderGetAvailableDaysServiceInterface
+export class UserProviderGetAvailabilitiesHoursService
+  implements UserProviderGetAvailabilitiesHoursServiceInterface
 {
   constructor(
     @Inject(USER_PROVIDER_REPOSITORY)
@@ -29,22 +34,19 @@ export class UserProviderGetAvailableDaysService
     private loggerProvider: LoggerProviderInterface,
   ) {}
   async execute(
-    params: UserProviderGetAvailableDaysServiceParamsDto,
-  ): Promise<UserProviderGetAvailableDaysServiceResultDto[]> {
+    params: UserProviderGetAvailabilitiesHoursServiceParamsDto,
+  ): Promise<UserProviderGetAvailabilitiesHoursServiceResultDto[]> {
     try {
-      const providerDays =
-        await this.userProviderRepository.findDaysAvailableByProviderId(
+      const providerHours =
+        await this.userProviderRepository.findHoursAvailableByProviderId(
           params.providerId,
         );
 
-      const formattedAppointment = instanceToPlain<ProviderAvailableDay>(
-        providerDays,
-      ) as ProviderAvailableDay[];
-
-      return formattedAppointment;
+      const hourByPeriod = getHoursByPeriodFifteenMinutes(providerHours);
+      return hourByPeriod;
     } catch (error) {
       this.loggerProvider.error(
-        'UserProviderGetDaysService - execute - error',
+        'UserProviderGetAvailableHoursService - execute - error',
         {
           error: { ...error, params },
         },

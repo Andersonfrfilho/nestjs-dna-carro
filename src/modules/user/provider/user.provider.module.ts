@@ -17,18 +17,16 @@ import { ProviderAvailableHour } from './entities/provider-available-hours.entit
 import { Service } from './entities/services.entity';
 
 import { UserProviderAvailableDaysRepository } from './repositories/user.provider.available-days.repository';
-import {
-  USER_PROVIDER_AVAILABLE_HOURS_REPOSITORY,
-  USER_PROVIDER_HOURS_AVAILABLE_SERVICE,
-} from './interfaces/user.provider.hours-available.interface';
+
 import { UserProviderAvailableHoursRepository } from './repositories/user.provider.available-hours.repository';
-import { USER_PROVIDER_REPOSITORY } from './interfaces/user.provider.repository.interface';
+import {
+  USER_PROVIDER_REPOSITORY,
+  USER_PROVIDER_SERVICE_REPOSITORY,
+} from './interfaces/user.provider.repository.interface';
 import { UserProviderRepository } from './repositories/user.provider.repository';
-import { UserProviderHoursAvailableService } from './services/user.provider.hours-available.service';
 import {
   USER_PROVIDER_CREATE_SERVICE_SERVICE,
   USER_PROVIDER_DISABLE_SERVICE_SERVICE,
-  USER_PROVIDER_SERVICE_REPOSITORY,
 } from './interfaces/user.provider.service.interface';
 import { UserProviderCreateServiceService } from './services/user.provider.create-service.service';
 import { UserProviderAppointmentConfirmService } from './services/user.provider.appointment-confirm.service';
@@ -51,6 +49,17 @@ import {
 } from './interfaces/user.provider.available-days.interface';
 import { UserProviderCreateAvailableDaysService } from './services/user.provider.create-available-days.service';
 import { UserProviderGetAvailableDaysService } from './services/user.provider.get-available-days.service';
+import {
+  USER_PROVIDER_AVAILABLE_HOURS_REPOSITORY,
+  USER_PROVIDER_CREATE_AVAILABILITIES_HOURS_SERVICE,
+  USER_PROVIDER_GET_AVAILABILITIES_HOURS_SERVICE,
+} from './interfaces/user.provider.availabilities-hours.interface';
+import { UserProviderCreateAvailabilitiesHoursService } from './services/user.provider.create-hours-available.service';
+import { UserProviderGetAvailabilitiesHoursService } from './services/user.provider.get-availabilities-hours.service';
+import { USER_PROVIDER_GET_SERVICES_SERVICE } from './interfaces/user.provider.get-services.interface';
+import { USER_PROVIDER_DELETE_SERVICE_SERVICE } from './interfaces/user.provider.delete-service.interface';
+import { UserProviderGetServicesService } from './services/user.provider.get-services.service';
+import { UserProviderDeleteServiceService } from './services/user.provider.delete-service.service';
 
 @Module({
   imports: [
@@ -99,10 +108,6 @@ import { UserProviderGetAvailableDaysService } from './services/user.provider.ge
       useClass: UserProviderServicesRepository,
     },
     {
-      provide: USER_PROVIDER_HOURS_AVAILABLE_SERVICE,
-      useClass: UserProviderHoursAvailableService,
-    },
-    {
       provide: USER_PROVIDER_CREATE_SERVICE_SERVICE,
       useClass: UserProviderCreateServiceService,
     },
@@ -122,6 +127,22 @@ import { UserProviderGetAvailableDaysService } from './services/user.provider.ge
       provide: USER_PROVIDER_GET_APPOINTMENT_BY_ID_SERVICE,
       useClass: UserProviderGetAppointmentByIdService,
     },
+    {
+      provide: USER_PROVIDER_CREATE_AVAILABILITIES_HOURS_SERVICE,
+      useClass: UserProviderCreateAvailabilitiesHoursService,
+    },
+    {
+      provide: USER_PROVIDER_GET_AVAILABILITIES_HOURS_SERVICE,
+      useClass: UserProviderGetAvailabilitiesHoursService,
+    },
+    {
+      provide: USER_PROVIDER_GET_SERVICES_SERVICE,
+      useClass: UserProviderGetServicesService,
+    },
+    {
+      provide: USER_PROVIDER_DELETE_SERVICE_SERVICE,
+      useClass: UserProviderDeleteServiceService,
+    },
   ],
   controllers: [UserProviderController],
   exports: [
@@ -132,13 +153,16 @@ import { UserProviderGetAvailableDaysService } from './services/user.provider.ge
     USER_PROVIDER_CREATE_SERVICE,
     USER_PROVIDER_INTERNAL_DISABLE_SERVICE,
     USER_PROVIDER_GET_AVAILABLE_DAYS_SERVICE,
-    USER_PROVIDER_HOURS_AVAILABLE_SERVICE,
+    USER_PROVIDER_CREATE_AVAILABILITIES_HOURS_SERVICE,
     USER_PROVIDER_CREATE_SERVICE_SERVICE,
     USER_PROVIDER_APPOINTMENT_CONFIRM_SERVICE,
     USER_PROVIDER_DISABLE_SERVICE_SERVICE,
     USER_PROVIDER_GET_APPOINTMENTS_BY_STATUS_SERVICE,
     USER_PROVIDER_GET_APPOINTMENT_BY_ID_SERVICE,
     USER_PROVIDER_CREATE_AVAILABLE_DAYS_SERVICE,
+    USER_PROVIDER_GET_AVAILABILITIES_HOURS_SERVICE,
+    USER_PROVIDER_GET_SERVICES_SERVICE,
+    USER_PROVIDER_DELETE_SERVICE_SERVICE,
   ],
 })
 export class UserProviderModule implements NestModule {
@@ -163,16 +187,28 @@ export class UserProviderModule implements NestModule {
         method: RequestMethod.GET,
       },
       {
-        path: 'user/provider/hours/available',
+        path: 'user/provider/available-hours',
         method: RequestMethod.POST,
+      },
+      {
+        path: 'user/provider/available-hours',
+        method: RequestMethod.GET,
       },
       {
         path: 'user/provider/services',
         method: RequestMethod.POST,
       },
       {
+        path: 'user/provider/services',
+        method: RequestMethod.GET,
+      },
+      {
         path: 'user/provider/services/:serviceId/disable',
         method: RequestMethod.POST,
+      },
+      {
+        path: 'user/provider/services/:serviceId',
+        method: RequestMethod.DELETE,
       },
       {
         path: 'user/provider/services/:appointmentId/confirm',

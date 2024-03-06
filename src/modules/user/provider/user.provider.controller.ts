@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import {
   USER_PROVIDER_CREATE_SERVICE,
@@ -18,12 +19,7 @@ import {
   UserProviderInternalDisableServiceInterface,
 } from './interfaces/user.provider.internal-disable.interface';
 
-import {
-  USER_PROVIDER_HOURS_AVAILABLE_SERVICE,
-  UserProviderHoursAvailableServiceInterface,
-} from './interfaces/user.provider.hours-available.interface';
 import { RequestUserProviderId } from './decorators/request-user-provider-id';
-import { UserProviderHoursAvailableControllerBodyParamsDto } from './dtos/user.provider.hours-available.dto';
 import {
   USER_PROVIDER_CREATE_SERVICE_SERVICE,
   USER_PROVIDER_DISABLE_SERVICE_SERVICE,
@@ -55,6 +51,26 @@ import {
   UserProviderGetAvailableDaysServiceInterface,
 } from './interfaces/user.provider.available-days.interface';
 import { UserProviderCreateAvailableDaysControllerParamsBodyDto } from './dtos/user.provider.available-days.dto';
+import {
+  USER_PROVIDER_CREATE_AVAILABILITIES_HOURS_SERVICE,
+  USER_PROVIDER_GET_AVAILABILITIES_HOURS_SERVICE,
+  UserProviderCreateAvailabilitiesHoursServiceInterface,
+  UserProviderGetAvailabilitiesHoursServiceInterface,
+} from './interfaces/user.provider.availabilities-hours.interface';
+import { UserProviderCreateAvailabilitiesHoursControllerBodyParamsDto } from './dtos/user.provider.availabilities-hours.dto';
+import {
+  USER_PROVIDER_DELETE_SERVICE_SERVICE,
+  UserProviderDeleteServiceServiceInterface,
+} from './interfaces/user.provider.delete-service.interface';
+import {
+  UserProviderDeleteServiceControllerParamsDto,
+  UserProviderDeleteServiceServiceParamsDto,
+} from './dtos/user.provier-delete-services.dto';
+import { UserProviderGetServicesControllerParamsDto } from './dtos/user.provier-get-services.dto';
+import {
+  USER_PROVIDER_GET_SERVICES_SERVICE,
+  UserProviderGetServicesServiceInterface,
+} from './interfaces/user.provider.get-services.interface';
 
 @Controller('user/provider')
 export class UserProviderController {
@@ -65,8 +81,8 @@ export class UserProviderController {
     private userProviderInternalDisableService: UserProviderInternalDisableServiceInterface,
     @Inject(USER_PROVIDER_CREATE_AVAILABLE_DAYS_SERVICE)
     private userProviderCreateAvailableDaysService: UserProviderCreateAvailableDaysServiceInterface,
-    @Inject(USER_PROVIDER_HOURS_AVAILABLE_SERVICE)
-    private userProviderHoursAvailableService: UserProviderHoursAvailableServiceInterface,
+    @Inject(USER_PROVIDER_CREATE_AVAILABILITIES_HOURS_SERVICE)
+    private userProviderCreateAvailabilitiesHoursService: UserProviderCreateAvailabilitiesHoursServiceInterface,
     @Inject(USER_PROVIDER_CREATE_SERVICE_SERVICE)
     private userProviderCreateServiceService: UserProviderCreateServiceServiceInterface,
     @Inject(USER_PROVIDER_DISABLE_SERVICE_SERVICE)
@@ -79,6 +95,12 @@ export class UserProviderController {
     private userProviderGetAppointmentByIdService: UserProviderGetAppointmentByIdServiceInterface,
     @Inject(USER_PROVIDER_GET_AVAILABLE_DAYS_SERVICE)
     private userProviderGetAvailableDaysService: UserProviderGetAvailableDaysServiceInterface,
+    @Inject(USER_PROVIDER_GET_AVAILABILITIES_HOURS_SERVICE)
+    private userProviderGetAvailabilitiesHoursService: UserProviderGetAvailabilitiesHoursServiceInterface,
+    @Inject(USER_PROVIDER_DELETE_SERVICE_SERVICE)
+    private userProviderDeleteServiceService: UserProviderDeleteServiceServiceInterface,
+    @Inject(USER_PROVIDER_GET_SERVICES_SERVICE)
+    private userProviderGetServicesService: UserProviderGetServicesServiceInterface,
   ) {}
 
   @Post('')
@@ -101,20 +123,42 @@ export class UserProviderController {
     @Body()
     availableDays: UserProviderCreateAvailableDaysControllerParamsBodyDto,
   ) {
-    await this.userProviderCreateAvailableDaysService.execute({
+    return this.userProviderCreateAvailableDaysService.execute({
       days: availableDays.days,
       providerId,
     });
   }
 
-  @Post('/hours/available')
-  async availableHours(
+  @Post('/available-hours')
+  async setAvailableHours(
     @RequestUserProviderId() providerId: string,
-    @Body() availableHours: UserProviderHoursAvailableControllerBodyParamsDto,
+    @Body()
+    availableHours: UserProviderCreateAvailabilitiesHoursControllerBodyParamsDto,
   ) {
-    await this.userProviderHoursAvailableService.execute({
+    return this.userProviderCreateAvailabilitiesHoursService.execute({
       providerId,
       hours: availableHours.hours,
+    });
+  }
+
+  @Get('/available-hours')
+  async getAvailableHours(@RequestUserProviderId() providerId: string) {
+    return this.userProviderGetAvailabilitiesHoursService.execute({
+      providerId,
+    });
+  }
+
+  @Get('/services')
+  async getService(
+    @RequestUserProviderId() providerId: string,
+    @GetRequestUrl() url: string,
+    @Param()
+    userProviderGetServicesControllerParamsDto: UserProviderGetServicesControllerParamsDto,
+  ) {
+    return this.userProviderGetServicesService.execute({
+      ...userProviderGetServicesControllerParamsDto,
+      providerId,
+      url,
     });
   }
 
@@ -129,7 +173,19 @@ export class UserProviderController {
     });
   }
 
-  @Delete('/services/:serviceId/disable')
+  @Delete('/services/:serviceId')
+  async deleteService(
+    @RequestUserProviderId() providerId: string,
+    @Param()
+    userProviderDeleteServiceControllerParamsDto: UserProviderDeleteServiceControllerParamsDto,
+  ) {
+    await this.userProviderDeleteServiceService.execute({
+      ...userProviderDeleteServiceControllerParamsDto,
+      providerId,
+    });
+  }
+
+  @Put('/services/:serviceId/disable')
   async disableService(
     @RequestUserProviderId() providerId: string,
     @Param()

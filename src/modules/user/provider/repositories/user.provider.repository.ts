@@ -7,24 +7,26 @@ import {
   LoggerProviderInterface,
 } from '@src/providers/logger/logger.provider.interface';
 
-import { UserProviderRepositoryInterface } from '../interfaces/user.provider.repository.interface';
+import {
+  USER_PROVIDER_SERVICE_REPOSITORY,
+  UserProviderRepositoryInterface,
+  UserProviderServiceRepositoryInterface,
+} from '../interfaces/user.provider.repository.interface';
 import { ProviderAvailableHour } from '../entities/provider-available-hours.entity';
 import { Provider } from '../entities/provider.entity';
 import { ProviderAvailableDay } from '../entities/provider-available-days.entity';
-import {
-  USER_PROVIDER_AVAILABLE_HOURS_REPOSITORY,
-  UserProviderAvailableHoursRepositoryInterface,
-} from '../interfaces/user.provider.hours-available.interface';
-import {
-  USER_PROVIDER_SERVICE_REPOSITORY,
-  UserProviderServiceRepositoryInterface,
-} from '../interfaces/user.provider.service.interface';
+
 import { Service } from '../entities/services.entity';
 import { UserProviderServiceDisableRepositoryParamsDto } from '../dtos/user.provider.service.dto';
 import {
   USER_PROVIDER_AVAILABLE_DAYS_REPOSITORY,
   UserProviderAvailableDaysRepositoryInterface,
 } from '../interfaces/user.provider.available-days.interface';
+import {
+  USER_PROVIDER_AVAILABLE_HOURS_REPOSITORY,
+  UserProviderAvailableHoursRepositoryInterface,
+} from '../interfaces/user.provider.availabilities-hours.interface';
+import { DeleteServiceByProviderIdParamsDto } from '../dtos/user.provider.repository.dto';
 
 @Injectable()
 export class UserProviderRepository implements UserProviderRepositoryInterface {
@@ -40,6 +42,21 @@ export class UserProviderRepository implements UserProviderRepositoryInterface {
     @Inject(LOGGER_PROVIDER)
     private loggerProvider: LoggerProviderInterface,
   ) {}
+  async deleteService(
+    params: DeleteServiceByProviderIdParamsDto,
+  ): Promise<void> {
+    try {
+      await this.userProviderServiceRepository.updateDeleteAt(params);
+    } catch (error) {
+      this.loggerProvider.error(
+        'UserProviderRepository - deleteService - error',
+        {
+          error,
+        },
+      );
+      throw error;
+    }
+  }
   async findServiceByProviderIdServiceId(
     props: UserProviderServiceDisableRepositoryParamsDto,
   ): Promise<Service | null> {
@@ -140,9 +157,11 @@ export class UserProviderRepository implements UserProviderRepositoryInterface {
 
       if (hoursAvailable.length > 0) {
         const hoursAvailableIds = hoursAvailable.map((hour) => hour.id);
-        await this.userProviderAvailableHoursRepository.delete(
-          hoursAvailableIds,
-        );
+
+        const deleteHours = hoursAvailableIds.map((id) => {
+          return this.userProviderAvailableHoursRepository.updateDeleteAt(id);
+        });
+        await Promise.all(deleteHours);
       }
     } catch (error) {
       this.loggerProvider.error(
@@ -175,9 +194,10 @@ export class UserProviderRepository implements UserProviderRepositoryInterface {
   }
   async createAvailableHour(
     props: Partial<ProviderAvailableHour>,
-  ): Promise<void> {
+  ): Promise<ProviderAvailableHour> {
     try {
-      await this.userProviderAvailableHoursRepository.save(props);
+      const hour = await this.userProviderAvailableHoursRepository.save(props);
+      return hour;
     } catch (error) {
       this.loggerProvider.error(
         'UserProviderRepository - createAvailableHour - error',
@@ -185,6 +205,7 @@ export class UserProviderRepository implements UserProviderRepositoryInterface {
           error,
         },
       );
+      throw error;
     }
   }
   async findByIdActive(id: string): Promise<Provider | null> {

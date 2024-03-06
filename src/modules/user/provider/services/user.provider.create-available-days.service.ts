@@ -14,6 +14,13 @@ import {
   UserProviderCreateAvailableDaysControllerResultDto,
   UserProviderCreateAvailableDaysServiceParamsDto,
 } from '../dtos/user.provider.available-days.dto';
+import {
+  instanceToInstance,
+  instanceToPlain,
+  plainToClass,
+  plainToInstance,
+} from 'class-transformer';
+import { ProviderAvailableDay } from '../entities/provider-available-days.entity';
 
 @Injectable()
 export class UserProviderCreateAvailableDaysService
@@ -55,9 +62,9 @@ export class UserProviderCreateAvailableDaysService
         }),
       );
 
-      const data = await Promise.all(saveDaysPromise);
-
-      return data;
+      const daysAdd = await Promise.all(saveDaysPromise);
+      const formattedDaysAdd = plainToInstance(ProviderAvailableDay, daysAdd);
+      return formattedDaysAdd;
     } catch (error) {
       this.loggerProvider.error(
         'UserProviderDaysAvailableService - execute - error',

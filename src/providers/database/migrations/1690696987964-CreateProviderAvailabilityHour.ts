@@ -56,7 +56,7 @@ export class CreateProviderAvailability1690696987964
         indices: [
           {
             columnNames: ['provider_id', 'start_time', 'end_time'],
-            isUnique: true,
+            isUnique: false,
           },
         ],
       }),

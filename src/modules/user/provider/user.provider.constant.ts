@@ -10,6 +10,13 @@ export enum DAYS_WEEK {
   SUNDAY = 'sunday',
 }
 
+export const BASE_NUMBER = 10;
+export const YEAR_TO_COMPARE = 2020;
+export const MONTH_TO_COMPARE = 1;
+export const DAY_TO_COMPARE = 1;
+export const SECONDS_TO_COMPARE = 0;
+export const MILLISECONDS_TO_COMPARE = 0;
+
 export enum HOURS_DAY_PER_FIFTEEN_MINUTE_PERIOD {
   '00:00' = '00:00',
   '00:15' = '00:15',
