@@ -29,11 +29,6 @@ export class CreateAppointments1690696269493 implements MigrationInterface {
             default: false,
           },
           {
-            name: 'confirm',
-            type: 'boolean',
-            default: false,
-          },
-          {
             name: 'status',
             type: 'varchar',
           },

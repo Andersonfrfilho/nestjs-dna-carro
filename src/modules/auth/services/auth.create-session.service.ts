@@ -73,7 +73,7 @@ export class AuthCreateSessionService
 
       const isValidPassword = await this.hashProvider.compare({
         value: password,
-        hash: user.password_hash,
+        hash: user.passwordHash,
       });
 
       if (!isValidPassword) {

@@ -20,7 +20,7 @@ export class CreateProviderAvailability1690696987964
             type: 'uuid',
           },
           {
-            name: 'time',
+            name: 'start',
             type: 'varchar',
           },
           {
@@ -55,7 +55,7 @@ export class CreateProviderAvailability1690696987964
         ],
         indices: [
           {
-            columnNames: ['provider_id', 'start_time', 'end_time'],
+            columnNames: ['provider_id', 'start', 'end'],
             isUnique: true,
           },
         ],

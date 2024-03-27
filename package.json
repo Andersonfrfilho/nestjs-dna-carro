@@ -22,6 +22,7 @@
     "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create ./src/providers/database/migrations/$npm_config_name",
     "migration:run:local": "typeorm-ts-node-commonjs migration:run -d ./src/providers/database/database.local.source.ts",
     "migration:run:container": "typeorm-ts-node-commonjs migration:run -d ./src/providers/database/database.container.source.ts",
+    "seed:run:container": "typeorm-ts-node-commonjs migration:run -d ./src/providers/database/seeders.container.source.ts",
     "migration:revert": "typeorm-ts-node-commonjs migration:revert -d ./src/providers/database/database.source.ts"
   },
   "dependencies": {
@@ -54,6 +55,7 @@
     "winston-daily-rotate-file": "^4.5.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",

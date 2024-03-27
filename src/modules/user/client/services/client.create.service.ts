@@ -190,7 +190,7 @@ export class ClientCreateService implements ClientCreateServiceInterface {
 
       const user = await queryRunner.manager.save(User, {
         ...userCache.user,
-        password_hash: password,
+        passwordHash: password,
         active: true,
       });
 

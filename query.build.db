@@ -1,0 +1,15 @@
+DELETE FROM users_addresses;
+DELETE FROM users_phones;
+DELETE FROM users_profiles_images;
+DELETE FROM users_terms;
+DELETE FROM users_types_users;
+DELETE FROM terms;
+DELETE FROM users;
+DELETE FROM phones;
+DELETE FROM addresses;
+DELETE FROM images;
+DELETE FROM migrations WHERE name <> '%Seeds%';
+
+
+DROP DATABASE dna_carro;
+
