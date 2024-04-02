@@ -8,7 +8,7 @@ DELETE FROM users;
 DELETE FROM phones;
 DELETE FROM addresses;
 DELETE FROM images;
-DELETE FROM migrations WHERE name <> '%Seeds%';
+DELETE FROM migrations WHERE name LIKE '%Seeds%';
 
 
 DROP DATABASE dna_carro;

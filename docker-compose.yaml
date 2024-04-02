@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   dna-carro-api:
-    image: node:16.14.2
+    image: node:21.7.1
     container_name: dna-carro-api
     command: sh -c "npm install && npm run start:debug"
     working_dir: /app
@@ -15,10 +15,10 @@ services:
     depends_on:
       - dna-carro-database
   dna-carro-database:
-    image: postgres:15.3-alpine
+    image: postgres:16.2
     container_name: dna-carro-database
     volumes:
-      - .:/app
+      - db_data:/var/lib/postgresql/data
     ports:
       - '${DATABASE_PORT}:${DATABASE_PORT}'
     command: -p ${DATABASE_PORT}
@@ -41,4 +41,6 @@ services:
       - .env
 volumes:
   redis:
+    driver: local
+  db_data:
     driver: local
