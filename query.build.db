@@ -1,5 +1,6 @@
-DELETE FROM appointments_clients;
 DELETE FROM appointments_events;
+DELETE FROM appointments_payment_types;
+DELETE FROM appointments_clients;
 DELETE FROM appointments_addresses;
 DELETE FROM appointments_services;
 DELETE FROM appointments_providers;
