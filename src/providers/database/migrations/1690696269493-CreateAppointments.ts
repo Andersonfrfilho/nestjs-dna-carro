@@ -15,18 +15,13 @@ export class CreateAppointments1690696269493 implements MigrationInterface {
           },
           {
             name: 'initial_date',
-            type: 'int',
+            type: 'bigint',
             isNullable: true,
           },
           {
             name: 'final_date',
-            type: 'int',
+            type: 'bigint',
             isNullable: true,
-          },
-          {
-            name: 'confirm',
-            type: 'boolean',
-            default: false,
           },
           {
             name: 'confirm',

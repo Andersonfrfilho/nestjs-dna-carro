@@ -16,7 +16,7 @@ export class Image {
   id: string;
 
   @Column()
-  name: string;
+  type: string;
 
   @Column()
   url: string;

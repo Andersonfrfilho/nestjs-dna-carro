@@ -26,7 +26,6 @@ export class PhoneTable1690682986726 implements MigrationInterface {
           {
             name: 'number',
             type: 'varchar',
-            isUnique: true,
             isNullable: false,
           },
           {

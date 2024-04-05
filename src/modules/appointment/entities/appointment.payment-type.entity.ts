@@ -24,7 +24,7 @@ export class AppointmentPaymentTypes {
   paymentTypeId: string;
 
   @Column()
-  active: boolean;
+  amount: number;
 
   @ManyToOne(
     () => PaymentType,

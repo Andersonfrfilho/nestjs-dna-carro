@@ -1,5 +1,6 @@
-import config from '@src/config';
+import config from '../../config';
 
+export const COUNTRY_CODE_BRAZIL = '55';
 export const EXPIRE_IN_TOKEN_SEND_CODE = '3m';
 export const EXPIRE_IN_TOKEN_SEND_CODE_TTL = 1000 * 60 * 3;
 export const EXPIRE_IN_TOKEN_SEND_CODE_MILLISECONDS = 1000 * 60 * 3;

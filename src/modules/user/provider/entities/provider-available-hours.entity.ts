@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Provider } from './provider.entity';
 
-@Entity('providers_available_hours')
+@Entity('providers_availabilities_hours')
 export class ProviderAvailableHour {
   @PrimaryGeneratedColumn()
   id: string;

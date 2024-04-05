@@ -14,7 +14,7 @@ export class Images1690695879749 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'name',
+            name: 'type',
             type: 'varchar',
           },
           {
@@ -35,6 +35,11 @@ export class Images1690695879749 implements MigrationInterface {
             name: 'deleted_at',
             type: 'timestamp',
             isNullable: true,
+          },
+        ],
+        indices: [
+          {
+            columnNames: ['type'],
           },
         ],
       }),

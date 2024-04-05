@@ -1,4 +1,4 @@
-import { GENDER } from '@src/commons/enum.common';
+import { GENDERS } from '@src/commons/enum.common';
 import { NameSessionTypeFlow } from '@src/modules/auth/auth.constant';
 import {
   IsEmail,
@@ -41,7 +41,7 @@ export class UserDto {
   @IsEmail({}, { message: 'email need format in email valid' })
   email: string;
 
-  @IsEnum(GENDER, { message: 'gender need to be value M or F' })
+  @IsEnum(GENDERS, { message: 'gender need to be value M or F' })
   gender: string;
 
   @IsObject()

@@ -36,8 +36,8 @@ export class User {
   email: string;
 
   @Exclude()
-  @Column()
-  password_hash: string;
+  @Column({ name: 'password_hash' })
+  passwordHash: string;
 
   @Column()
   gender: string;

@@ -1,0 +1,24 @@
+DELETE FROM appointments_clients;
+DELETE FROM appointments_events;
+DELETE FROM appointments_addresses;
+DELETE FROM appointments_services;
+DELETE FROM appointments_providers;
+DELETE FROM appointments;
+DELETE FROM services;
+DELETE FROM providers_payments_types;
+DELETE FROM providers_availabilities_hours;
+DELETE FROM providers_availabilities_days;
+DELETE FROM users_addresses;
+DELETE FROM users_phones;
+DELETE FROM users_profiles_images;
+DELETE FROM users_terms;
+DELETE FROM users_types_users;
+DELETE FROM terms;
+DELETE FROM users;
+DELETE FROM phones;
+DELETE FROM addresses;
+DELETE FROM images;
+DELETE FROM migrations WHERE name LIKE '%Seeds%';
+
+DROP DATABASE dna_carro;
+

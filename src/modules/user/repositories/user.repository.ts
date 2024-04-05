@@ -104,7 +104,7 @@ export class UserRepository implements UserRepositoryInterface {
     try {
       await this.userRepository.update(
         { email: data.email, active: true },
-        { password_hash: data.passwordHash },
+        { passwordHash: data.passwordHash },
       );
     } catch (error) {
       this.loggerProvider.error(
