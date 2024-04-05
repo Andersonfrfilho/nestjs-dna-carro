@@ -2,6 +2,10 @@ import { faker } from '@faker-js/faker';
 import { User } from '../../../modules/user/entities/user.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { random } from 'lodash';
+import {
+  FIFTEEN_MINUTES,
+  TWELVE_HOURS,
+} from '../../../modules/common/commons.constants';
 
 export class SeedsServicesProvider1690679684634 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -21,6 +25,7 @@ export class SeedsServicesProvider1690679684634 implements MigrationInterface {
           MINIMUM_NUMBER_SERVICES,
           MAXIMUM_NUMBER_SERVICES,
         );
+
         const providerServicesInstance = Array.from(
           { length: providerNumberServices },
           () => {
@@ -28,7 +33,10 @@ export class SeedsServicesProvider1690679684634 implements MigrationInterface {
               providerId: provider.id,
               name: faker.commerce.productName(),
               amount: faker.number.int(100),
-              duration: faker.number.int(1000 * 60 * 15),
+              duration: faker.number.int({
+                min: FIFTEEN_MINUTES,
+                max: TWELVE_HOURS,
+              }),
               active: faker.datatype.boolean(),
             });
           },
@@ -41,6 +49,6 @@ export class SeedsServicesProvider1690679684634 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.manager.getRepository('providers_services').delete({});
+    await queryRunner.manager.getRepository('services').delete({});
   }
 }

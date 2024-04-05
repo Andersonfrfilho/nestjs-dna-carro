@@ -23,7 +23,7 @@ export class Appointment {
   @Column({ name: 'initial_date' })
   initialDate: string;
 
-  @Column({ name: 'initial_date' })
+  @Column({ name: 'final_date' })
   finalDate: string;
 
   @Column()
